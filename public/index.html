@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vibe check — reactions that teach your agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Nunito:wght@400..800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #FDFBF7;
+      --ink: #4A4458;
+      --ink-soft: #8A8496;
+      --blush: #F4A7B9;
+      --blush-deep: #E98AA2;
+      --powder: #BFE0F5;
+      --butter: #FCE8A8;
+      --mint: #C9EBD4;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Nunito', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Intro video overlay */
+    #intro {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: opacity 0.9s ease;
+    }
+    #intro.done { opacity: 0; pointer-events: none; }
+    #intro video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+    #skip {
+      position: absolute;
+      bottom: 28px;
+      right: 32px;
+      background: none;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: var(--ink-soft);
+      cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 0;
+      padding: 24px;
+    }
+    .fade-item {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    body.revealed .fade-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    body.revealed .fade-item:nth-child(2) { transition-delay: 0.15s; }
+    body.revealed .fade-item:nth-child(3) { transition-delay: 0.35s; }
+    body.revealed .fade-item:nth-child(4) { transition-delay: 0.55s; }
+    body.revealed .fade-item:nth-child(5) { transition-delay: 0.8s; }
+
+    .eyebrow {
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      font-size: clamp(56px, 9vw, 96px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .blurb {
+      max-width: 640px;
+      font-size: 19px;
+      line-height: 30px;
+      font-weight: 500;
+      margin-top: 40px;
+    }
+    .cta {
+      margin-top: 44px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--blush);
+      color: #fff;
+      font-family: 'Baloo 2', cursive;
+      font-weight: 700;
+      font-size: 22px;
+      padding: 18px 44px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .cta:hover { background: var(--blush-deep); transform: translateY(-2px); }
+    .cta-sub {
+      margin-top: 14px;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: var(--ink-soft);
+    }
+
+    .faces {
+      margin-top: 72px;
+      display: flex;
+      gap: 64px;
+    }
+    .face {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 54px;
+      animation: bob 3.2s ease-in-out infinite;
+    }
+    .face:nth-child(1) { background: var(--blush); transform: rotate(-6deg); }
+    .face:nth-child(2) { background: var(--powder); transform: rotate(4deg); animation-delay: 0.4s; }
+    .face:nth-child(3) { background: var(--mint); transform: rotate(-3deg); animation-delay: 0.8s; }
+    .face:nth-child(4) { background: var(--butter); transform: rotate(7deg); animation-delay: 1.2s; }
+    @keyframes bob {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -12px; }
+    }
+
+    @media (max-width: 720px) {
+      .faces { gap: 24px; }
+      .face { width: 64px; height: 64px; font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="intro">
+    <video id="introVideo" autoplay muted playsinline src="intro.mp4"></video>
+    <button id="skip">SKIP →</button>
+  </div>
+
+  <main class="hero">
+    <h1 class="fade-item">vibe check</h1>
+    <p class="blurb fade-item">React to what Codex is doing with a smile, a wince, or a full-on 🤢<br />now your face is a feedback loop.</p>
+    <div class="fade-item">
+      <a class="cta" href="Vibecheck-0.2.0-arm64.dmg" download>Install for macOS</a>
+      <div class="cta-sub">Apple Silicon · .dmg · free</div>
+    </div>
+    <div class="faces fade-item">
+      <div class="face">😠</div>
+      <div class="face">😲</div>
+      <div class="face">🤢</div>
+      <div class="face">😄</div>
+    </div>
+  </main>
+
+  <script>
+    const intro = document.getElementById('intro');
+    const video = document.getElementById('introVideo');
+    let revealed = false;
+
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      intro.classList.add('done');
+      document.body.classList.add('revealed');
+      setTimeout(() => intro.remove(), 1000);
+    }
+
+    // Start the crossfade as the holy emoji is rising (last ~1.2s of the video)
+    video.addEventListener('timeupdate', () => {
+      if (video.duration && video.currentTime > video.duration - 1.2) reveal();
+    });
+    video.addEventListener('ended', reveal);
+    video.addEventListener('error', reveal);
+    document.getElementById('skip').addEventListener('click', reveal);
+    // Fallback if autoplay is blocked
+    video.play().catch(reveal);
+    setTimeout(reveal, 13000);
+  </script>
+</body>
+</html>

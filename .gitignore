@@ -1,0 +1,7 @@
+node_modules/
+remotion-animation/node_modules/
+.DS_Store
+
+# Too large for GitHub (278 MB) — copy from the vibe-check repo:
+# cp /Users/computer/vibe-check/src/electron/out/make/Vibecheck-0.2.0-arm64.dmg public/
+public/*.dmg
