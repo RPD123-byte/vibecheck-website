@@ -27,37 +27,6 @@
       overflow-x: hidden;
     }
 
-    /* Intro video overlay */
-    #intro {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      transition: opacity 0.9s ease;
-    }
-    #intro.done { opacity: 0; pointer-events: none; }
-    #intro video {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-    }
-    #skip {
-      position: absolute;
-      bottom: 28px;
-      right: 32px;
-      background: none;
-      border: none;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      color: var(--ink-soft);
-      cursor: pointer;
-    }
-
     /* Hero */
     .hero {
       min-height: 100vh;
@@ -159,11 +128,6 @@
   </style>
 </head>
 <body>
-  <div id="intro">
-    <video id="introVideo" autoplay muted playsinline src="intro.mp4"></video>
-    <button id="skip">SKIP →</button>
-  </div>
-
   <main class="hero">
     <h1 class="fade-item">vibe check</h1>
     <p class="blurb fade-item">React to what Codex is doing with a smile, a wince, or a full-on 🤢<br />now your face is a feedback loop.</p>
@@ -180,28 +144,8 @@
   </main>
 
   <script>
-    const intro = document.getElementById('intro');
-    const video = document.getElementById('introVideo');
-    let revealed = false;
-
-    function reveal() {
-      if (revealed) return;
-      revealed = true;
-      intro.classList.add('done');
-      document.body.classList.add('revealed');
-      setTimeout(() => intro.remove(), 1000);
-    }
-
-    // Start the crossfade as the holy emoji is rising (last ~1.2s of the video)
-    video.addEventListener('timeupdate', () => {
-      if (video.duration && video.currentTime > video.duration - 1.2) reveal();
-    });
-    video.addEventListener('ended', reveal);
-    video.addEventListener('error', reveal);
-    document.getElementById('skip').addEventListener('click', reveal);
-    // Fallback if autoplay is blocked
-    video.play().catch(reveal);
-    setTimeout(reveal, 13000);
+    // Gentle fade-in on load
+    requestAnimationFrame(() => document.body.classList.add('revealed'));
   </script>
 </body>
 </html>
