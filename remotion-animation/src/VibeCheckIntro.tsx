@@ -3,6 +3,7 @@ import {
   AbsoluteFill,
   Easing,
   interpolate,
+  random,
   spring,
   useCurrentFrame,
   useVideoConfig,
@@ -11,9 +12,14 @@ import {
 const BG = '#FDFBF7';
 
 const EMOJIS = ['😠', '😲', '🤢', '😄'];
+const COUNT = 44;
 
-const SIZE = 300;
-const SPACING = 380;
+// Phase timings (frames @ 30fps, 10s total)
+const ROLL_START = 165;
+const ROLL_END = 225;
+const HOLY_START = 222;
+const RISE_START = 245;
+const RISE_END = 295;
 
 export const VibeCheckIntro: React.FC = () => {
   const frame = useCurrentFrame();
@@ -21,15 +27,6 @@ export const VibeCheckIntro: React.FC = () => {
 
   const cx = width / 2;
   const cy = height / 2;
-
-  // Phase timings (frames @ 30fps, ~9s total)
-  const FALL_STAGGER = 12;
-  const FALL_DURATION = 70;
-  const ROLL_START = 130;
-  const ROLL_END = 195;
-  const HOLY_START = 192;
-  const RISE_START = 215;
-  const RISE_END = 270;
 
   const rollProgress = interpolate(frame, [ROLL_START, ROLL_END], [0, 1], {
     extrapolateLeft: 'clamp',
@@ -43,54 +40,65 @@ export const VibeCheckIntro: React.FC = () => {
     config: {damping: 11, stiffness: 80},
   });
 
-  const riseY = interpolate(frame, [RISE_START, RISE_END], [0, -320], {
+  const riseY = interpolate(frame, [RISE_START, RISE_END], [0, -340], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
     easing: Easing.out(Easing.quad),
   });
-  const riseOpacity = interpolate(frame, [RISE_START + 10, RISE_END - 6], [1, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const riseOpacity = interpolate(
+    frame,
+    [RISE_START + 10, RISE_END - 6],
+    [1, 0],
+    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}
+  );
 
   return (
     <AbsoluteFill style={{backgroundColor: BG}}>
-      {EMOJIS.map((emoji, i) => {
-        // Slow fall from above the top of the frame, with a soft settle
-        const fall = spring({
-          frame: frame - i * FALL_STAGGER,
-          fps,
-          durationInFrames: FALL_DURATION,
-          config: {damping: 14, stiffness: 30, mass: 1.4},
+      {Array.from({length: COUNT}, (_, i) => {
+        const emoji = EMOJIS[i % EMOJIS.length];
+        const size = 90 + random(`size-${i}`) * 190;
+        const startX = random(`x-${i}`) * width;
+        const targetY = random(`y-${i}`) * height;
+        const delay = random(`delay-${i}`) * 100;
+        const fallFrames = 80 + random(`dur-${i}`) * 50;
+        const spinSpeed = (random(`spin-${i}`) - 0.5) * 6;
+        const drift = (random(`drift-${i}`) - 0.5) * 220;
+
+        // Slow tumble down from above the viewport to a scattered resting spot
+        const fall = interpolate(frame, [delay, delay + fallFrames], [0, 1], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+          easing: Easing.out(Easing.quad),
         });
-        const baseX = cx + (i - 1.5) * SPACING;
-        const x = baseX + (cx - baseX) * rollProgress;
-        // Spin like a ball rolling toward the center
-        const rollRotation = rollProgress * ((cx - baseX) / SIZE) * 360;
-        const fallY = (1 - fall) * -(cy + SIZE);
-        const fadeIntoOne = interpolate(rollProgress, [0.78, 1], [1, 0], {
+        const fallY = -size + (targetY + size) * fall;
+        const fallX = startX + drift * fall;
+
+        // Roll together into the center
+        const x = fallX + (cx - fallX) * rollProgress;
+        const y = fallY + (cy - fallY) * rollProgress;
+        const scale = 1 - rollProgress * 0.45;
+        const fadeIntoOne = interpolate(rollProgress, [0.8, 1], [1, 0], {
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp',
         });
-        const wobble =
-          rollProgress === 0 && fall > 0.97
-            ? Math.sin((frame + i * 14) / 12) * 8
-            : 0;
+        const rotation =
+          frame * spinSpeed + rollProgress * 540 * Math.sign(cx - fallX);
+
         return (
           <div
-            key={emoji}
+            key={i}
             style={{
               position: 'absolute',
-              left: x - SIZE / 2,
-              top: cy - SIZE / 2 + fallY + wobble,
-              width: SIZE,
-              height: SIZE,
+              left: x - size / 2,
+              top: y - size / 2,
+              width: size,
+              height: size,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: SIZE * 0.9,
+              fontSize: size * 0.92,
               lineHeight: 1,
-              transform: `rotate(${rollRotation}deg)`,
+              transform: `rotate(${rotation}deg) scale(${scale})`,
               opacity: fadeIntoOne,
             }}
           >
@@ -103,14 +111,14 @@ export const VibeCheckIntro: React.FC = () => {
       <div
         style={{
           position: 'absolute',
-          left: cx - SIZE / 2,
-          top: cy - SIZE / 2 + riseY,
-          width: SIZE,
-          height: SIZE,
+          left: cx - 160,
+          top: cy - 160 + riseY,
+          width: 320,
+          height: 320,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: SIZE * 0.9,
+          fontSize: 290,
           lineHeight: 1,
           transform: `scale(${holyPop})`,
           opacity: frame < HOLY_START ? 0 : riseOpacity,
