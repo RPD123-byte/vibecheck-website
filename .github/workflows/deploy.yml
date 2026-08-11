@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: team_6YUA5WVQ0N3ct07RZxSp6Gl1
-      VERCEL_PROJECT_ID: prj_7Cn9XpQoMwx9bYEna5rvjkXRXzIB
+      VERCEL_PROJECT_ID: prj_D5t2G8dCFdWlZEob85GPR0EVGGis
     steps:
       - uses: actions/checkout@v4
       - name: Install Vercel CLI
