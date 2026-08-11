@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapport — it sees what caught your eye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4ead9;            /* warm cream */
+    --ink: #241a2e;
+    --ink-soft: #6d5f7a;
+    --vermilion: #e8501f;
+    --gold: #e6a63c;
+    --cream: #fdf6ef;
+    --serif: "Fraunces", Georgia, serif;
+    --serif-display: "Instrument Serif", Georgia, serif;
+    --mono: "SF Mono", ui-monospace, "Fira Code", monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--ink); overflow-x: hidden; }
+  body { font-family: var(--serif); -webkit-font-smoothing: antialiased; }
+
+  .hero {
+    position: relative; min-height: 100vh;
+    display: grid; grid-template-columns: minmax(320px, 5fr) 6fr;
+    align-items: center; gap: 2rem;
+    padding: 0 clamp(2rem, 6vw, 6rem);
+  }
+  nav {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 5;
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 2rem clamp(2rem, 6vw, 6rem);
+  }
+  .wordmark { font-family: var(--serif-display); font-size: 1.6rem; }
+  .wordmark::after { content: "."; color: var(--vermilion); }
+  nav .tag-note { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-soft); }
+
+  h1 {
+    font-family: var(--serif-display); font-weight: 400;
+    font-size: clamp(3rem, 5.4vw, 5.2rem);
+    line-height: 1.02; letter-spacing: -0.01em;
+  }
+  h1 em { font-style: italic; color: var(--vermilion); }
+  .sub {
+    margin-top: 1.5rem;
+    font-family: var(--serif); font-weight: 340;
+    font-size: 1.08rem; line-height: 1.6; color: var(--ink-soft); max-width: 36ch;
+  }
+
+  .cta-row { margin-top: 2.6rem; }
+  .cta {
+    position: relative;
+    display: inline-flex; align-items: baseline; gap: 0.7rem;
+    background: var(--vermilion); color: var(--cream);
+    font-family: var(--serif-display); font-size: 1.35rem; font-style: italic;
+    padding: 0.9rem 1.9rem 1rem;
+    border: 2px solid var(--ink); border-radius: 14px;
+    box-shadow: 6px 6px 0 var(--ink);
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .cta .os { font-family: var(--mono); font-size: 0.68rem; font-style: normal; opacity: 0.85; letter-spacing: 0.06em; }
+  .cta:hover { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--ink); }
+  .cta:active { transform: translate(6px, 6px); box-shadow: 0 0 0 var(--ink); }
+
+  .stage { position: relative; height: min(88vh, 820px); display: flex; align-items: center; justify-content: center; }
+  .portrait-wrap { position: relative; height: 100%; aspect-ratio: 900 / 1125; max-width: 100%; }
+  canvas#dots { width: 100%; height: 100%; display: block; }
+
+  .tag {
+    position: absolute; z-index: 5; transform: translateX(-50%) translateY(6px);
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--cream); background: var(--ink);
+    padding: 5px 10px; white-space: nowrap;
+    opacity: 0; transition: opacity 0.4s, transform 0.4s;
+    pointer-events: none;
+  }
+  .tag.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .tag b { color: var(--gold); font-weight: 400; }
+  .tag .v { color: var(--vermilion); filter: brightness(1.35); }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; padding-top: 6rem; }
+    .stage { height: 60vh; order: -1; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <nav>
+    <span class="wordmark">rapport</span>
+    <span class="tag-note">fully on-device</span>
+  </nav>
+
+  <div class="copy">
+    <h1>It sees what<br><em>caught your eye.</em></h1>
+    <p class="sub">Rapport watches how you react to your agent's design work — and hands the agent a structured brief about what you actually felt, element by element.</p>
+    <div class="cta-row">
+      <a class="cta" href="#">Try Rapport <span class="os">FREE&nbsp;·&nbsp;MACOS</span></a>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="portrait-wrap" id="wrap">
+      <canvas id="dots"></canvas>
+      <div class="tag" id="tag"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(() => {
+  const canvas = document.getElementById('dots');
+  const ctx = canvas.getContext('2d');
+  const tag = document.getElementById('tag');
+
+  const CELL = 8;
+  const CONVERGE_MS = 1800, HOLD_MS = 350;
+  const dots = [];
+  let W, H, t0 = null;
+  let photo = null;            // offscreen canvas with the cover-drawn photo
+  let reveal = null;           // temp canvas for the region reveal
+
+  const img = new Image();
+  img.src = 'face2.jpg';
+
+  // regions: center + radius (fractions of canvas), read label
+  const REGIONS = [
+    { rx: 0.415, ry: 0.505, rr: 0.20, label: 'eyes',  read: 'attention · <b>curiosity</b> · <span class="v">+0.72</span>' },
+    { rx: 0.500, ry: 0.700, rr: 0.15, label: 'mouth', read: 'micro-tension · <b>valence</b> · <span class="v">−0.18</span>' },
+    { rx: 0.548, ry: 0.620, rr: 0.12, label: 'detail',read: 'fixation 1.2s · <b>interest</b> · <span class="v">+0.55</span>' },
+    { rx: 0.590, ry: 0.462, rr: 0.16, label: 'brow',  read: 'raise detected · <b>surprise</b> · <span class="v">+0.31</span>' },
+    { rx: 0.245, ry: 0.610, rr: 0.11, label: 'edge',  read: 'glance 0.4s · <b>arousal</b> · <span class="v">0.22</span>' },
+  ];
+
+  // active region animation state
+  let region = null, sTarget = 0, s = 0, idx = -1;
+  const S_SPEED = 0.045;       // per-frame approach rate
+
+  function boost(r, g, b, sat, lift) {
+    const l = 0.299 * r + 0.587 * g + 0.114 * b;
+    r = l + (r - l) * sat; g = l + (g - l) * sat; b = l + (b - l) * sat;
+    return [Math.min(255, r * lift), Math.min(255, g * lift), Math.min(255, b * lift)];
+  }
+
+  function build() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const SW = Math.floor(W), SH = Math.floor(H);
+    photo = document.createElement('canvas');
+    photo.width = SW; photo.height = SH;
+    photo.getContext('2d').drawImage(img, 0, 0, SW, SH);
+    reveal = document.createElement('canvas');
+    reveal.width = SW; reveal.height = SH;
+
+    const data = photo.getContext('2d').getImageData(0, 0, SW, SH).data;
+    const bi = (8 * SW + 8) * 4;
+    const bgR = data[bi], bgG = data[bi + 1], bgB = data[bi + 2];
+
+    dots.length = 0;
+    for (let y = CELL / 2; y < SH; y += CELL) {
+      for (let x = CELL / 2; x < SW; x += CELL) {
+        const i = ((y | 0) * SW + (x | 0)) * 4;
+        const r = data[i], g = data[i + 1], b = data[i + 2];
+        const dbg = Math.abs(r - bgR) + Math.abs(g - bgG) + Math.abs(b - bgB);
+        if (dbg < 70) continue;          // cutout: drop backdrop cells
+        const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        const rad = (0.35 + (1 - lum) * 0.65) * CELL * 0.58;
+        const [cr, cg, cb] = boost(r, g, b, 1.8, 1.1);
+        dots.push({
+          tx: x, ty: y, r: rad,
+          col: `rgb(${cr | 0},${cg | 0},${cb | 0})`,
+          sx: Math.random() * W, sy: Math.random() * H,
+          delay: Math.random() * 500
+        });
+      }
+    }
+  }
+
+  const easeOut = p => 1 - Math.pow(1 - p, 4);
+  const smooth = p => p * p * (3 - 2 * p);
+
+  function frame(now) {
+    if (!t0) t0 = now;
+    const t = now - t0 - HOLD_MS;
+    s += (sTarget - s) * S_SPEED * (60 / 60);
+    ctx.clearRect(0, 0, W, H);
+
+    const R = region;
+    const rpx = R ? R.rr * W : 0;
+    const cx = R ? R.rx * W : 0, cy = R ? R.ry * H : 0;
+
+    // dots: inside the active region they dissolve as s rises
+    for (const d of dots) {
+      const p = Math.min(Math.max((t - d.delay) / CONVERGE_MS, 0), 1);
+      const e = easeOut(p);
+      const x = d.sx + (d.tx - d.sx) * e;
+      const y = d.sy + (d.ty - d.sy) * e;
+
+      let g = 0;
+      if (R && s > 0.01) {
+        const dx = x - cx, dy = y - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < rpx) g = s * smooth(1 - dist / rpx);
+      }
+      const rad = d.r * (0.25 + 0.75 * e) * (1 - g);
+      if (rad < 0.2) continue;
+      ctx.beginPath();
+      ctx.arc(x, y, rad, 0, 6.2832);
+      ctx.fillStyle = d.col;
+      ctx.globalAlpha = (0.25 + 0.75 * e) * (1 - g * 0.6);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // sharp image fades in inside the region with a soft radial edge
+    if (R && s > 0.01 && photo) {
+      const rc = reveal.getContext('2d');
+      rc.clearRect(0, 0, reveal.width, reveal.height);
+      rc.globalCompositeOperation = 'source-over';
+      rc.drawImage(photo, 0, 0);
+      const grad = rc.createRadialGradient(cx, cy, 0, cx, cy, rpx);
+      grad.addColorStop(0, `rgba(0,0,0,${s})`);
+      grad.addColorStop(0.65, `rgba(0,0,0,${s * 0.9})`);
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      rc.globalCompositeOperation = 'destination-in';
+      rc.fillStyle = grad;
+      rc.fillRect(0, 0, reveal.width, reveal.height);
+      ctx.drawImage(reveal, 0, 0, W, H);
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  function next() {
+    idx = (idx + 1) % REGIONS.length;
+    region = REGIONS[idx];
+    sTarget = 1;
+    tag.innerHTML = region.label + ' · ' + region.read;
+    tag.style.left = (region.rx * 100) + '%';
+    tag.style.top = ((region.ry + region.rr) * 100 + 3) + '%';
+    tag.classList.add('on');
+
+    setTimeout(() => { sTarget = 0; tag.classList.remove('on'); }, 2600);
+    setTimeout(next, 3800);
+  }
+
+  img.onload = () => {
+    build();
+    requestAnimationFrame(frame);
+    setTimeout(next, HOLD_MS + CONVERGE_MS + 600);
+  };
+
+  window.addEventListener('resize', () => {
+    if (!img.complete) return;
+    build();
+    t0 = performance.now() - (HOLD_MS + CONVERGE_MS + 600);
+  });
+})();
+</script>
+</body>
+</html>

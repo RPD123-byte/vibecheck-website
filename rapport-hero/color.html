@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapport — color halftone variant</title>
+<style>
+  :root {
+    --bg: #f4ead9;            /* warm cream with more butter than bone */
+    --ink: #241a2e;           /* aubergine-ink */
+    --ink-soft: #6d5f7a;
+    --vermilion: #e8501f;
+    --purple: #7c3aed;
+    --lime: #b4e62e;
+    --mono: "SF Mono", ui-monospace, "Fira Code", monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--ink); overflow-x: hidden; }
+  body { font-family: -apple-system, "Helvetica Neue", sans-serif; -webkit-font-smoothing: antialiased; }
+
+  .hero {
+    position: relative; min-height: 100vh;
+    display: grid; grid-template-columns: minmax(320px, 5fr) 6fr;
+    align-items: center; gap: 2rem;
+    padding: 0 clamp(2rem, 6vw, 6rem);
+  }
+  nav {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 2rem clamp(2rem, 6vw, 6rem);
+    opacity: 0; animation: ink-in 1.2s ease 3.2s forwards;
+  }
+  .wordmark { font-family: Georgia, serif; font-size: 1.35rem; }
+  .wordmark::after { content: "."; color: var(--vermilion); }
+  nav .dl { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-soft); text-decoration: none; }
+  nav .dl:hover { color: var(--purple); }
+
+  .copy > * { opacity: 0; transform: translateY(14px); }
+  .copy .reveal { animation: ink-in 1.1s cubic-bezier(.2,.7,.2,1) forwards; }
+  h1 {
+    font-family: Georgia, serif; font-weight: 400;
+    font-size: clamp(2.6rem, 4.6vw, 4.4rem);
+    line-height: 1.06; letter-spacing: -0.02em;
+  }
+  h1 em { font-style: italic; color: var(--vermilion); }
+  .sub { margin-top: 1.4rem; font-size: 1.02rem; line-height: 1.55; color: var(--ink-soft); max-width: 34ch; }
+  .cta-row { margin-top: 2.2rem; display: flex; align-items: center; gap: 1.4rem; }
+  .cta {
+    display: inline-block; background: var(--purple); color: #fff;
+    font-size: 0.95rem; padding: 0.85rem 1.6rem; border-radius: 999px; text-decoration: none;
+    transition: background 0.25s;
+  }
+  .cta:hover { background: var(--vermilion); }
+  .cta-note { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-soft); }
+  @keyframes ink-in { to { opacity: 1; transform: translateY(0); } }
+
+  .face-wrap { position: relative; height: min(82vh, 760px); }
+  canvas#face { width: 100%; height: 100%; display: block; }
+
+  .readout {
+    position: absolute; transform: translateX(-50%);
+    font-family: var(--mono); font-size: 0.72rem;
+    color: #fff; background: var(--purple); padding: 4px 10px;
+    white-space: nowrap; opacity: 0; transition: opacity 0.6s; pointer-events: none;
+  }
+  .readout.on { opacity: 1; }
+  .readout .tick { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--lime); margin-right: 8px; vertical-align: -1px;
+    animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse { 50% { transform: scale(1.5); opacity: 0.6; } }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; padding-top: 6rem; }
+    .face-wrap { height: 55vh; order: -1; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <nav>
+    <span class="wordmark">rapport</span>
+    <a class="dl" href="#">download for mac ↓</a>
+  </nav>
+
+  <div class="copy">
+    <h1 class="reveal" style="animation-delay: 2.5s">Feedback before<br>you find <em>the words.</em></h1>
+    <p class="sub reveal" style="animation-delay: 2.9s">Rapport reads your reactions while you review your agent's design work — and hands the agent one structured brief about what you actually felt.</p>
+    <div class="cta-row reveal" style="animation-delay: 3.3s">
+      <a class="cta" href="#">Try Rapport</a>
+      <span class="cta-note">macOS · runs on device</span>
+    </div>
+  </div>
+
+  <div class="face-wrap">
+    <canvas id="face"></canvas>
+    <div class="readout" id="readout"><span class="tick"></span><span id="readout-text"></span></div>
+  </div>
+</section>
+
+<script>
+(() => {
+  const canvas = document.getElementById('face');
+  const ctx = canvas.getContext('2d');
+  const CELL = 8;
+  const dots = [];
+  let W, H, dpr;
+  let mouse = { x: -9999, y: -9999 };
+  let t0 = null;
+  const CONVERGE_MS = 2200, HOLD_MS = 500;
+
+  const img = new Image();
+  img.src = 'face2.jpg';
+
+  // saturation boost in-place on r,g,b
+  function boost(r, g, b, sat, lift) {
+    const l = 0.299 * r + 0.587 * g + 0.114 * b;
+    r = l + (r - l) * sat; g = l + (g - l) * sat; b = l + (b - l) * sat;
+    return [Math.min(255, r * lift), Math.min(255, g * lift), Math.min(255, b * lift)];
+  }
+
+  function build() {
+    dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const SW = Math.floor(W), SH = Math.floor(H);
+    const off = document.createElement('canvas');
+    off.width = SW; off.height = SH;
+    const octx = off.getContext('2d');
+    const s = Math.max(SW / img.width, SH / img.height);
+    const iw = img.width * s, ih = img.height * s;
+    octx.drawImage(img, (SW - iw) / 2, (SH - ih) * 0.2, iw, ih);
+    const data = octx.getImageData(0, 0, SW, SH).data;
+
+    // sample the photo's backdrop color (top-left corner) so we can drop those dots
+    const bi = (8 * SW + 8) * 4;
+    const bgR = data[bi], bgG = data[bi + 1], bgB = data[bi + 2];
+
+    dots.length = 0;
+    for (let y = CELL / 2; y < SH; y += CELL) {
+      for (let x = CELL / 2; x < SW; x += CELL) {
+        const i = ((y | 0) * SW + (x | 0)) * 4;
+        const r = data[i], g = data[i + 1], b = data[i + 2];
+        // skip cells close to the backdrop color -> silhouette cutout
+        const dbg = Math.abs(r - bgR) + Math.abs(g - bgG) + Math.abs(b - bgB);
+        if (dbg < 70) continue;
+        const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        const rad = (0.35 + (1 - lum) * 0.65) * CELL * 0.58;
+        const [cr, cg, cb] = boost(r, g, b, 1.9, 1.12);
+        dots.push({
+          tx: x, ty: y, r: rad,
+          col: `rgb(${cr | 0},${cg | 0},${cb | 0})`,
+          sx: Math.random() * W, sy: Math.random() * H,
+          delay: Math.random() * 600, x: 0, y: 0
+        });
+      }
+    }
+  }
+
+  const easeOut = p => 1 - Math.pow(1 - p, 4);
+
+  function frame(now) {
+    if (!t0) t0 = now;
+    const t = now - t0 - HOLD_MS;
+    ctx.clearRect(0, 0, W, H);
+
+    for (const d of dots) {
+      const p = Math.min(Math.max((t - d.delay) / CONVERGE_MS, 0), 1);
+      const e = easeOut(p);
+      d.x = d.sx + (d.tx - d.sx) * e;
+      d.y = d.sy + (d.ty - d.sy) * e;
+
+      const dx = d.x - mouse.x, dy = d.y - mouse.y;
+      const dist2 = dx * dx + dy * dy;
+      const near = dist2 < 2500 ? 1 - Math.sqrt(dist2) / 50 : 0;
+
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r * (0.25 + 0.75 * e) * (1 + near * 0.3), 0, 6.2832);
+      ctx.fillStyle = d.col;
+      ctx.globalAlpha = 0.25 + 0.75 * e;
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(frame);
+  }
+
+  img.onload = () => {
+    build();
+    requestAnimationFrame(frame);
+    setTimeout(() => {
+      const ro = document.getElementById('readout');
+      ro.style.left = '50%'; ro.style.top = '34%';
+      ro.classList.add('on');
+      typeOut('neutral · valence +0.05 · arousal 0.14');
+    }, HOLD_MS + CONVERGE_MS + 300);
+  };
+
+  function typeOut(str) {
+    const el = document.getElementById('readout-text');
+    let i = 0;
+    const tick = () => { el.textContent = str.slice(0, ++i); if (i < str.length) setTimeout(tick, 28); };
+    tick();
+  }
+
+  window.addEventListener('resize', () => { if (img.complete) build(); });
+  canvas.parentElement.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+  });
+  canvas.parentElement.addEventListener('mouseleave', () => { mouse.x = mouse.y = -9999; });
+})();
+</script>
+</body>
+</html>
