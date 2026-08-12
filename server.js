@@ -50,4 +50,5 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, createApp };
+module.exports = app;
+module.exports.createApp = createApp;

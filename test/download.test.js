@@ -1,7 +1,8 @@
 const assert = require('node:assert/strict');
 const { once } = require('node:events');
 const test = require('node:test');
-const { createApp } = require('../server');
+const serverModule = require('../server');
+const { createApp } = serverModule;
 
 const origin = 'https://store.public.blob.vercel-storage.com';
 const stable = {
@@ -16,6 +17,11 @@ const stable = {
     },
   },
 };
+
+test('server module exports the Express app for Vercel', () => {
+  assert.equal(typeof serverModule, 'function');
+  assert.equal(typeof serverModule.createApp, 'function');
+});
 
 async function serve(app, callback) {
   const server = app.listen(0, '127.0.0.1');
