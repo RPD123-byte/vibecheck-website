@@ -1,0 +1,10 @@
+{
+  "date": "2026-08-24",
+  "framework": "Vite 8 with raw TypeScript",
+  "styles": "Tailwind CSS 4 through @tailwindcss/vite with src/tokens.css",
+  "fonts": ["Balto or Libre Franklin", "Fraunces", "SF Mono"],
+  "palette": ["paper", "paper-light", "ink", "quiet", "orange", "cream"],
+  "motion": "CSS only; restrained and reduced-motion aware",
+  "spacing": "4-point named spacing scale",
+  "preserve": ["current Rapport tokens", "navigation component", "footer component", "download route"]
+}
