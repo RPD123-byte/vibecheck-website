@@ -1,5 +1,8 @@
 const assert = require('node:assert/strict');
 const { once } = require('node:events');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 const test = require('node:test');
 const serverModule = require('../server');
 const { createApp } = serverModule;
@@ -106,4 +109,44 @@ test('GET /privacy serves the canonical site shell', async () => {
     assert.match(html, /<!doctype html>/i);
     assert.doesNotMatch(html, /<title>Rapport Privacy Policy<\/title>/);
   });
+});
+
+test('HTML shells are never stored by the browser', async () => {
+  const app = createApp();
+  await serve(app, async (baseUrl) => {
+    for (const pathname of ['/', '/privacy']) {
+      const response = await fetch(`${baseUrl}${pathname}`);
+      const cacheControl = response.headers.get('cache-control');
+
+      assert.equal(response.status, 200);
+      assert.match(response.headers.get('content-type'), /text\/html/);
+      assert.match(cacheControl, /(?:^|,)\s*no-store(?:,|$)/);
+      assert.match(cacheControl, /(?:^|,)\s*must-revalidate(?:,|$)/);
+    }
+  });
+});
+
+test('fingerprinted Vite assets are cached immutably', async () => {
+  const staticRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'rapport-static-'));
+  fs.mkdirSync(path.join(staticRoot, 'assets'));
+  fs.writeFileSync(
+    path.join(staticRoot, 'index.html'),
+    '<!doctype html><script type="module" src="/assets/index-abc12345.js"></script>',
+  );
+  fs.writeFileSync(path.join(staticRoot, 'assets', 'index-abc12345.js'), 'export {};');
+
+  try {
+    const app = createApp({ staticRoot });
+    await serve(app, async (baseUrl) => {
+      const assetResponse = await fetch(`${baseUrl}/assets/index-abc12345.js`);
+      const cacheControl = assetResponse.headers.get('cache-control');
+
+      assert.equal(assetResponse.status, 200);
+      assert.match(cacheControl, /(?:^|,)\s*public(?:,|$)/);
+      assert.match(cacheControl, /(?:^|,)\s*max-age=31536000(?:,|$)/);
+      assert.match(cacheControl, /(?:^|,)\s*immutable(?:,|$)/);
+    });
+  } finally {
+    fs.rmSync(staticRoot, { recursive: true, force: true });
+  }
 });
