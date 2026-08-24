@@ -173,10 +173,10 @@ export const pageMarkup = String.raw`
               </div>
             </div>
             <div class="rapport-typed-note" role="textbox" aria-readonly="true" aria-label="Typed feedback">
-              <span class="rapport-note-silhouette" data-layer="shadow" aria-hidden="true"><span class="rapport-note-shell"></span><span class="rapport-note-lobe" data-lobe="large"></span><span class="rapport-note-lobe" data-lobe="small"></span></span>
-              <span class="rapport-note-silhouette" data-layer="outline" aria-hidden="true"><span class="rapport-note-shell"></span><span class="rapport-note-lobe" data-lobe="large"></span><span class="rapport-note-lobe" data-lobe="small"></span></span>
-              <span class="rapport-note-silhouette" data-layer="fill" aria-hidden="true"><span class="rapport-note-shell"></span><span class="rapport-note-lobe" data-lobe="large"></span><span class="rapport-note-lobe" data-lobe="small"></span></span>
-              <span class="rapport-note-bubble-bridge" aria-hidden="true"></span>
+              <span class="rapport-note-silhouette" data-layer="shadow" aria-hidden="true"><span class="rapport-note-shell"></span><span class="rapport-note-connector-shape"><span class="rapport-note-lobe" data-lobe="large"></span><span class="rapport-note-lobe" data-lobe="small"></span></span></span>
+              <span class="rapport-note-silhouette" data-layer="outline" aria-hidden="true"><span class="rapport-note-shell"></span><span class="rapport-note-connector-shape"><span class="rapport-note-lobe" data-lobe="large"></span><span class="rapport-note-lobe" data-lobe="small"></span></span></span>
+              <span class="rapport-note-silhouette" data-layer="fill" aria-hidden="true"><span class="rapport-note-shell"></span><span class="rapport-note-connector-shape"><span class="rapport-note-lobe" data-lobe="large"></span><span class="rapport-note-lobe" data-lobe="small"></span></span></span>
+              <span class="rapport-note-connector-bridge" aria-hidden="true"><span class="rapport-note-bubble-bridge"></span></span>
               <span data-typed-note data-copy="decrease the font size of the tagline and left justify with the graphic underneath"></span>
             </div>
           </div>

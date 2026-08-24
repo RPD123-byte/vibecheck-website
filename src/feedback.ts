@@ -116,6 +116,7 @@ export function setupFeedbackDemo(
     const scale = Number.parseFloat(
       getComputedStyle(cornerBubble).getPropertyValue("--rapport-corner-scale"),
     ) || 1;
+    typedNote.style.setProperty("--rapport-note-connector-scale", scale.toFixed(4));
     const noteGap = Number.parseFloat(
       getComputedStyle(typedNote).getPropertyValue("--rapport-note-gap"),
     ) || 24;

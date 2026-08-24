@@ -44,8 +44,19 @@
       z-index: 50;
       inset: 0 0 auto;
       height: var(--nav-h);
-      background: rgba(249, 241, 229, .94);
-      backdrop-filter: blur(12px);
+      background-color: transparent;
+      box-shadow: 0 1px 0 rgba(36, 26, 46, 0);
+      -webkit-backdrop-filter: blur(0);
+      backdrop-filter: blur(0);
+      transition-property: background-color, box-shadow, backdrop-filter;
+      transition-duration: 240ms;
+      transition-timing-function: var(--ease-out);
+    }
+    .site-header.is-scrolled {
+      background-color: rgba(255, 255, 255, .96);
+      box-shadow: 0 1px 0 rgba(36, 26, 46, 0);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
     }
     .nav {
       @apply flex items-center justify-between;
@@ -622,6 +633,8 @@
     .rapport-typed-note {
       --rapport-note-gap: 24px;
       --rapport-note-rise: 42px;
+      --rapport-note-connector-scale: .88;
+      --rapport-note-connector-y: 23.32px;
       position: absolute;
       z-index: 25;
       width: clamp(128px, 9.5vw, 144px);
@@ -666,6 +679,18 @@
     .rapport-note-silhouette[data-layer="shadow"] .rapport-note-shell { left: 4px; top: 4px; width: 100%; height: 100%; }
     .rapport-note-silhouette[data-layer="outline"] .rapport-note-shell { inset: 0; }
     .rapport-note-silhouette[data-layer="fill"] .rapport-note-shell { left: 2px; top: 2px; width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 13px; }
+    .rapport-note-connector-shape,
+    .rapport-note-connector-bridge {
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      top: var(--rapport-note-connector-y);
+      width: 0;
+      height: 0;
+      pointer-events: none;
+      transform: scale(var(--rapport-note-connector-scale));
+      transform-origin: left top;
+    }
     .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="large"] { left: -20px; top: 48px; width: 32px; height: 32px; }
     .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="small"] { left: -32px; top: 58px; width: 18px; height: 18px; }
     .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="large"] { left: -24px; top: 44px; width: 32px; height: 32px; }
@@ -874,11 +899,12 @@
 
     @media (min-width: 981px) {
       .site-header {
-        position: sticky;
+        position: fixed;
         top: 0;
         height: 60px;
-        background: rgba(255, 255, 255, .96);
-        backdrop-filter: blur(10px);
+        background-color: transparent;
+        -webkit-backdrop-filter: blur(0);
+        backdrop-filter: blur(0);
       }
       .nav {
         width: var(--rv-rail);
@@ -1422,9 +1448,11 @@
 
     /* Responsive continuity pass: one component set, fluid geometry. */
     .site-header {
-      position: sticky;
+      position: fixed;
       top: 0;
-      background: rgba(255, 255, 255, .96);
+      background-color: transparent;
+      -webkit-backdrop-filter: blur(0);
+      backdrop-filter: blur(0);
     }
 
     .hero,
@@ -1445,7 +1473,7 @@
 
     @media (min-width: 981px) {
       .hero {
-        padding-top: clamp(20px, 3dvh, 32px);
+        padding-top: calc(var(--nav-h) + clamp(20px, 3dvh, 32px));
         gap: clamp(20px, 3dvh, 32px);
       }
 
@@ -1491,7 +1519,7 @@
 
       .hero {
         min-height: 0;
-        padding: clamp(20px, 3dvh, 32px) 0 0;
+        padding: calc(var(--nav-h) + clamp(20px, 3dvh, 32px)) 0 0;
         display: flex;
         flex-direction: column;
         gap: clamp(20px, 4vw, 32px);
@@ -1908,27 +1936,28 @@
       }
     }
 
-    /* Mirror the typed-note connector when the bubble flips to the tile's left edge. */
+    /* The note connector shares the control bar's responsive scale. */
+    .rapport-note-silhouette[data-layer="shadow"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="large"] { left: -20px; top: -12px; width: 32px; height: 32px; }
+    .rapport-note-silhouette[data-layer="shadow"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="small"] { left: -32px; top: -5px; width: 18px; height: 18px; }
+    .rapport-note-silhouette[data-layer="outline"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="large"] { left: -24px; top: -16px; width: 32px; height: 32px; }
+    .rapport-note-silhouette[data-layer="outline"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="small"] { left: -36px; top: -9px; width: 18px; height: 18px; }
+    .rapport-note-silhouette[data-layer="fill"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="large"] { left: -22px; top: -14px; width: 28px; height: 28px; }
+    .rapport-note-silhouette[data-layer="fill"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="small"] { left: -34px; top: -7px; width: 14px; height: 14px; }
+    .rapport-note-connector-bridge .rapport-note-bubble-bridge { left: -40px; top: -5px; width: 20px; height: 10px; }
+
+    /* Mirror the typed-note connector when the note flips to the tile's left edge. */
     .rapport-typed-note[data-note-side="left"] {
       transform-origin: right top;
     }
-    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="large"] { left: auto; right: -20px; }
-    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="small"] { left: auto; right: -32px; }
-    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="large"] { left: auto; right: -24px; }
-    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="small"] { left: auto; right: -36px; }
-    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="large"] { left: auto; right: -22px; }
-    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="small"] { left: auto; right: -34px; }
-    .rapport-typed-note[data-note-side="left"] .rapport-note-bubble-bridge { left: auto; right: -40px; }
-
-    /* The note and control share one top edge; their connector follows the rendered control scale. */
-    .rapport-typed-note { --rapport-note-connector-y: 26.5px; }
-    .rapport-typed-note .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="large"] { top: calc(var(--rapport-note-connector-y) - 12px); }
-    .rapport-typed-note .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="small"] { top: calc(var(--rapport-note-connector-y) - 5px); }
-    .rapport-typed-note .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="large"] { top: calc(var(--rapport-note-connector-y) - 16px); }
-    .rapport-typed-note .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="small"] { top: calc(var(--rapport-note-connector-y) - 9px); }
-    .rapport-typed-note .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="large"] { top: calc(var(--rapport-note-connector-y) - 14px); }
-    .rapport-typed-note .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="small"] { top: calc(var(--rapport-note-connector-y) - 7px); }
-    .rapport-typed-note .rapport-note-bubble-bridge { top: calc(var(--rapport-note-connector-y) - 5px); }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-connector-shape,
+    .rapport-typed-note[data-note-side="left"] .rapport-note-connector-bridge { left: 100%; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="shadow"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="large"] { left: -12px; right: auto; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="shadow"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="small"] { left: 14px; right: auto; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="outline"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="large"] { left: -8px; right: auto; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="outline"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="small"] { left: 18px; right: auto; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="fill"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="large"] { left: -6px; right: auto; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="fill"] .rapport-note-connector-shape .rapport-note-lobe[data-lobe="small"] { left: 20px; right: auto; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-connector-bridge .rapport-note-bubble-bridge { left: 20px; right: auto; }
 
     /* Scattered studies should dissolve into the page instead of forming a shadow seam. */
     .hook-stack .hook-card { box-shadow: none; }

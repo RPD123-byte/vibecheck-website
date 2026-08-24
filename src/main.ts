@@ -1,6 +1,6 @@
 import "./styles.css";
 import "./privacy.css";
-import { initializeInteractions } from "./interactions";
+import { initializeInteractions, setupHeaderScroll } from "./interactions";
 import { pageMarkup } from "./page";
 import { privacyMarkup } from "./privacy";
 
@@ -28,3 +28,5 @@ if (isPrivacyRoute) {
   app.innerHTML = pageMarkup;
   initializeInteractions();
 }
+
+setupHeaderScroll();
