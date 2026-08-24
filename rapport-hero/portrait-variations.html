@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapport — portrait variation tabs</title>
+  <style>
+    :root {
+      --paper: #f9f1e5;
+      --ink: #241a2e;
+      --quiet: #75677f;
+      --line: rgba(36, 26, 46, .16);
+      --orange: #ef4d1f;
+      --display: "Instrument Serif", Georgia, serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; margin: 0; background: #e7dacb; color: var(--ink); }
+    body {
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: var(--mono);
+      -webkit-font-smoothing: antialiased;
+    }
+    body.export { padding: 0; place-items: stretch; }
+    body.export .capture {
+      width: 100vw;
+      height: 100vh;
+      aspect-ratio: auto;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    button { font: inherit; }
+    .capture {
+      width: min(1120px, calc(100vw - 48px));
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      border-radius: 18px;
+      box-shadow: 8px 8px 0 var(--ink), 0 28px 80px rgba(36,26,46,.18);
+    }
+    .browser-top {
+      height: 76px;
+      padding: 10px 12px 0;
+      background: #eadfd2;
+      border-bottom: 1px solid var(--line);
+    }
+    .chrome-row { display: flex; align-items: center; gap: 12px; height: 22px; }
+    .traffic { display: flex; gap: 7px; }
+    .traffic i { width: 11px; height: 11px; border-radius: 50%; background: #bfada2; }
+    .address {
+      flex: 1;
+      color: var(--quiet);
+      font-size: 10px;
+      letter-spacing: .03em;
+      text-align: center;
+    }
+    .tabs {
+      display: flex;
+      align-items: end;
+      gap: 2px;
+      height: 43px;
+      margin-top: 1px;
+      overflow: hidden;
+    }
+    .tab {
+      position: relative;
+      min-width: 0;
+      flex: 1 1 0;
+      height: 32px;
+      padding: 0 7px;
+      overflow: hidden;
+      color: var(--quiet);
+      background: rgba(249,241,229,.5);
+      border: 1px solid transparent;
+      border-bottom: 0;
+      border-radius: 8px 8px 0 0;
+      font-size: 9px;
+      line-height: 32px;
+      text-align: left;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      transition-property: color, background-color;
+      transition-duration: 120ms;
+    }
+    .tab::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 6px;
+      border-radius: 50%;
+      background: var(--tab-accent, var(--orange));
+      vertical-align: 1px;
+    }
+    .tab[aria-selected="true"] {
+      color: var(--ink);
+      background: var(--paper);
+      border-color: var(--line);
+    }
+    .viewport { position: relative; height: calc(100% - 76px); overflow: hidden; }
+    .portrait-stage { position: absolute; inset: 0; background: var(--stage-bg, var(--paper)); }
+    #portrait { width: 100%; height: 100%; display: block; }
+    .selection {
+      position: absolute;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 28%, transparent);
+    }
+    .selection::before, .selection::after {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      background: var(--paper);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+    }
+    .selection::before { left: -5px; top: -5px; }
+    .selection::after { right: -5px; bottom: -5px; }
+    .selection.eye { left: 46%; top: 24%; width: 19%; height: 14%; }
+    .selection.mouth { left: 50%; top: 50%; width: 17%; height: 13%; }
+    .selection.shape { left: 39%; top: 17%; width: 34%; height: 56%; border-style: dashed; opacity: .74; }
+    .tag {
+      position: absolute;
+      left: -2px;
+      top: calc(100% + 7px);
+      padding: 4px 8px;
+      color: var(--paper);
+      background: var(--ink);
+      border: 1px solid var(--accent);
+      border-radius: 5px;
+      font-size: 9px;
+      line-height: 1;
+      letter-spacing: .03em;
+      white-space: nowrap;
+    }
+    .variant-meta {
+      position: absolute;
+      left: 22px;
+      bottom: 20px;
+      display: flex;
+      align-items: baseline;
+      gap: 13px;
+      padding: 10px 14px;
+      color: var(--paper);
+      background: var(--ink);
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      box-shadow: 4px 4px 0 var(--accent);
+    }
+    .variant-meta strong { font-family: var(--display); font-size: 21px; font-style: italic; font-weight: 400; }
+    .variant-meta span { font-size: 9px; letter-spacing: .08em; }
+    .counter {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      color: var(--quiet);
+      font-size: 10px;
+      font-variant-numeric: tabular-nums;
+    }
+    @media (max-width: 700px) {
+      body { padding: 8px; }
+      .capture { width: calc(100vw - 16px); border-radius: 12px; }
+      .browser-top { height: 61px; padding-top: 7px; }
+      .tabs { height: 31px; }
+      .tab { height: 25px; padding: 0 4px; font-size: 0; line-height: 25px; }
+      .tab::before { margin: 0; }
+      .viewport { height: calc(100% - 61px); }
+      .selection .tag, .variant-meta span { display: none; }
+      .variant-meta { left: 10px; bottom: 10px; padding: 6px 9px; }
+      .variant-meta strong { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="capture" aria-label="Rapport portrait variation browser">
+    <header class="browser-top">
+      <div class="chrome-row">
+        <span class="traffic" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="address">localhost:4001/design-review/portrait</span>
+      </div>
+      <div class="tabs" id="tabs" role="tablist" aria-label="Design variations"></div>
+    </header>
+    <section class="viewport" id="viewport" role="tabpanel">
+      <div class="portrait-stage">
+        <canvas id="portrait"></canvas>
+        <div class="selection shape"></div>
+        <div class="selection eye"><span class="tag">eye · attention</span></div>
+        <div class="selection mouth"><span class="tag">mouth · tension</span></div>
+      </div>
+      <div class="variant-meta"><strong id="variant-name"></strong><span id="variant-readout"></span></div>
+      <div class="counter" id="counter"></div>
+    </section>
+  </main>
+
+  <script>
+    const variants = [
+      { name: "Apricot", file: "face3.png", bg: "#d97e2f", accent: "#fff7e8", mode: "mono", readout: "warmth +0.84 · tension 0.12" },
+      { name: "Electric", file: "face2.jpg", bg: "#241a2e", accent: "#ff2ad1", accent2: "#35d6ff", mode: "source", readout: "curiosity +0.72 · arousal 0.35" },
+      { name: "Blue light", file: "c1.jpg", bg: "#132f5d", accent: "#74d7ff", mode: "duo", readout: "clarity +0.66 · contrast 0.81" },
+      { name: "Vermilion", file: "c2.jpg", bg: "#f4ead9", accent: "#ef4d1f", mode: "ink", readout: "focus +0.58 · valence +0.22" },
+      { name: "Lime study", file: "c4.jpg", bg: "#dff06a", accent: "#241a2e", mode: "mono", readout: "surprise +0.61 · novelty 0.74" },
+      { name: "Soft profile", file: "c5.jpg", bg: "#f0d8ca", accent: "#8b3b7a", mode: "source", readout: "ease +0.55 · confidence 0.63" },
+      { name: "Cyan edge", file: "cand4.jpg", bg: "#1c1426", accent: "#35d6ff", mode: "duo", readout: "attention +0.79 · gaze 0.88" },
+      { name: "Red signal", file: "face.jpg", bg: "#e8501f", accent: "#241a2e", mode: "ink", readout: "tension +0.42 · urgency 0.70" },
+      { name: "Lavender", file: "face2.jpg", bg: "#ded1ee", accent: "#7c3aed", mode: "duo", readout: "interest +0.64 · novelty 0.59" },
+      { name: "Satin", file: "face3.png", bg: "#e7c697", accent: "#bf4a00", mode: "source", readout: "warmth +0.70 · ease 0.48" },
+      { name: "High contrast", file: "c1.jpg", bg: "#f9f1e5", accent: "#241a2e", mode: "mono", readout: "readability +0.91 · noise 0.09" },
+      { name: "Neon quiet", file: "c4.jpg", bg: "#241a2e", accent: "#b4e62e", accent2: "#ff2ad1", mode: "source", readout: "delight +0.68 · energy 0.76" }
+    ];
+
+    const tabs = document.getElementById("tabs");
+    const viewport = document.getElementById("viewport");
+    const canvas = document.getElementById("portrait");
+    const ctx = canvas.getContext("2d");
+    const params = new URLSearchParams(location.search);
+    if (params.get("export") === "1") document.body.classList.add("export");
+    let active = Math.min(Math.max(Number(params.get("capture")) || 0, 0), variants.length - 1);
+    let drawToken = 0;
+
+    variants.forEach((variant, index) => {
+      const tab = document.createElement("button");
+      tab.className = "tab";
+      tab.type = "button";
+      tab.role = "tab";
+      tab.textContent = `${String(index + 1).padStart(2, "0")} ${variant.name}`;
+      tab.style.setProperty("--tab-accent", variant.accent);
+      tab.addEventListener("click", () => select(index));
+      tabs.append(tab);
+    });
+
+    function paletteFor(v, r, g, b, lum) {
+      if (v.mode === "source") return `rgb(${Math.min(255, r * 1.22) | 0},${Math.min(255, g * 1.18) | 0},${Math.min(255, b * 1.28) | 0})`;
+      if (v.mode === "ink") return lum > .58 ? v.accent : "#241a2e";
+      if (v.mode === "duo") return lum > .56 ? v.accent : (v.accent2 || "#241a2e");
+      return lum > .58 ? v.accent : "#241a2e";
+    }
+
+    function draw(index) {
+      const token = ++drawToken;
+      const v = variants[index];
+      const img = new Image();
+      img.onload = () => {
+        if (token !== drawToken) return;
+        const rect = canvas.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const W = Math.round(rect.width), H = Math.round(rect.height);
+        canvas.width = W * dpr; canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, W, H);
+        const off = document.createElement("canvas");
+        off.width = W; off.height = H;
+        const ox = off.getContext("2d", { willReadFrequently: true });
+        const scale = Math.max(W / img.width, H / img.height);
+        const iw = img.width * scale, ih = img.height * scale;
+        ox.drawImage(img, (W - iw) / 2, (H - ih) * .28, iw, ih);
+        const pixels = ox.getImageData(0, 0, W, H).data;
+        const bi = ((Math.min(8, H - 1) * W) + Math.min(8, W - 1)) * 4;
+        const br = pixels[bi], bg = pixels[bi + 1], bb = pixels[bi + 2];
+        const cell = Math.max(5, Math.round(W / 150));
+        for (let y = cell / 2; y < H; y += cell) {
+          for (let x = cell / 2; x < W; x += cell) {
+            const i = (((y | 0) * W) + (x | 0)) * 4;
+            const r = pixels[i], g = pixels[i + 1], b = pixels[i + 2];
+            if (Math.abs(r - br) + Math.abs(g - bg) + Math.abs(b - bb) < 44) continue;
+            const lum = (r * .299 + g * .587 + b * .114) / 255;
+            const radius = (.24 + (1 - lum) * .44) * cell;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = paletteFor(v, r, g, b, lum);
+            ctx.fill();
+          }
+        }
+        document.body.dataset.ready = "true";
+      };
+      img.src = v.file;
+    }
+
+    function select(index) {
+      active = index;
+      const v = variants[index];
+      [...tabs.children].forEach((tab, i) => {
+        tab.setAttribute("aria-selected", String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+      });
+      viewport.style.setProperty("--stage-bg", v.bg);
+      viewport.style.setProperty("--accent", v.accent);
+      document.getElementById("variant-name").textContent = v.name;
+      document.getElementById("variant-readout").textContent = v.readout;
+      document.getElementById("counter").textContent = `${String(index + 1).padStart(2, "0")} / ${variants.length}`;
+      draw(index);
+    }
+
+    tabs.addEventListener("keydown", event => {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+      event.preventDefault();
+      const direction = event.key === "ArrowRight" ? 1 : -1;
+      select((active + direction + variants.length) % variants.length);
+      tabs.children[active].focus();
+    });
+    window.addEventListener("resize", () => draw(active));
+    select(active);
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "jsx": "preserve",
+    "jsxImportSource": "@motion-canvas/2d",
+    "types": ["@motion-canvas/core"],
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}

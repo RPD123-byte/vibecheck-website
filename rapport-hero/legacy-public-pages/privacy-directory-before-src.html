@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rapport Privacy Policy</title>
+    <meta
+      name="description"
+      content="Privacy policy for the Rapport Chrome extension and companion macOS app."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #f6ead4;
+        --ink: #27172f;
+        --muted: #74647e;
+        --vermillion: #f04b1f;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Fraunces", Georgia, serif;
+      }
+      main {
+        width: min(760px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 48px 0 80px;
+      }
+      .wordmark {
+        display: inline-block;
+        margin-bottom: 72px;
+        color: var(--ink);
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: 32px;
+        text-decoration: none;
+      }
+      .wordmark span {
+        color: var(--vermillion);
+      }
+      h1 {
+        max-width: 700px;
+        margin: 0 0 20px;
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: clamp(58px, 11vw, 104px);
+        font-weight: 400;
+        letter-spacing: -0.045em;
+        line-height: 0.9;
+      }
+      .updated,
+      h2 {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .updated {
+        margin: 0 0 64px;
+        color: var(--vermillion);
+        font-size: 13px;
+        font-weight: 700;
+      }
+      section {
+        padding: 30px 0;
+        border-top: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+      }
+      h2 {
+        margin: 0 0 14px;
+        font-size: 15px;
+      }
+      p,
+      li {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.65;
+      }
+      p {
+        margin: 0 0 14px;
+      }
+      ul {
+        margin: 0;
+        padding-left: 24px;
+      }
+      a {
+        color: var(--ink);
+      }
+      strong {
+        color: var(--ink);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="wordmark" href="/">rapport<span>.</span></a>
+      <h1>Privacy, without the fine-print fog.</h1>
+      <p class="updated">Effective August 10, 2026</p>
+
+      <section>
+        <h2>The short version</h2>
+        <p>
+          Rapport’s Chrome extension sends the component you deliberately select
+          only to the Rapport app running on your Mac, over a loopback connection
+          at <strong>127.0.0.1</strong>. The extension does not send browsing data,
+          screenshots, or component text to Rapport servers, advertisers, or
+          analytics providers.
+        </p>
+      </section>
+
+      <section>
+        <h2>What the extension handles</h2>
+        <p>During an active interaction session, the extension may handle:</p>
+        <ul>
+          <li>the URL and title of eligible open HTTP or HTTPS tabs;</li>
+          <li>the visible text and screen bounds of the component you click;</li>
+          <li>a screenshot of the active tab, cropped by the desktop app to the selected component; and</li>
+          <li>a randomly generated local profile identifier used to keep browser sessions distinct.</li>
+        </ul>
+        <p>
+          Rapport does not use the extension to collect browsing history or to
+          observe components outside a session you start.
+        </p>
+      </section>
+
+      <section>
+        <h2>How the data is used</h2>
+        <p>
+          The selected component is combined locally with the expression you
+          confirm in Rapport. Rapport places the resulting text and cropped image
+          in its structured clipboard bundle so you can paste them into an agent
+          or another app. The extension uses no advertising, tracking, or sale of
+          personal data.
+        </p>
+      </section>
+
+      <section>
+        <h2>Storage and retention</h2>
+        <p>
+          The extension stores only its random local profile identifier in Chrome
+          extension storage. Selected component data is passed to the desktop app
+          for the current operation and is not retained by the extension as a
+          browsing archive. Rapport’s clipboard bundle remains available until
+          you copy something else or replace it.
+        </p>
+      </section>
+
+      <section>
+        <h2>Why permissions are requested</h2>
+        <ul>
+          <li><strong>Site access:</strong> to draw the picker and identify the component you choose on ordinary HTTP and HTTPS pages.</li>
+          <li><strong>Tabs:</strong> to identify eligible tabs and capture the active tab after a selection.</li>
+          <li><strong>Storage:</strong> to retain the random local browser-profile identifier.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Security and control</h2>
+        <p>
+          The extension accepts session state only from the local Rapport desktop
+          bridge and verifies the expected protocol and extension identity. You
+          choose when a session starts, which component is selected, whether an
+          expression is confirmed, and when the session ends. Removing the
+          extension or quitting Rapport stops the connection.
+        </p>
+      </section>
+
+      <section>
+        <h2>Changes and contact</h2>
+        <p>
+          Material changes to this policy will be posted here with a new effective
+          date. Questions can be sent to
+          <a href="mailto:prakki.rithvik@gmail.com">prakki.rithvik@gmail.com</a>.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

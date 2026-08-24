@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="104" viewBox="0 0 160 104" role="img" aria-labelledby="title description">
+  <title id="title">Surprise expression</title>
+  <desc id="description">A surprised face emoji representing Rapport's captured expression signal.</desc>
+  <rect width="160" height="104" rx="14" fill="#fdf6ef"/>
+  <rect x="1.5" y="1.5" width="157" height="101" rx="12.5" fill="none" stroke="#e8501f" stroke-width="3"/>
+  <text x="80" y="73" text-anchor="middle" font-family="Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif" font-size="62">😮</text>
+</svg>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapport — a thousand birds, your shape</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Instrument+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ===== THE LADDER — now a time of day, not a palette =====
+     100–300 = sky at the horizon.  600 = the sun's last light.
+     950 = the flock, and the ground.                            */
+  :root{
+    --r950:#291204;  --r900:#3A1B08;  --r800:#5C2B0E;  --r700:#8F3B06;
+    --r600:#BF4A00;  --r500:#D96A1E;  --r400:#E68C4A;  --r300:#EFB076;
+    --r200:#F4CFA6;  --r100:#F8E4C6;
+    --serif:'Fraunces',Georgia,serif;
+    --sans:'Instrument Sans',system-ui,sans-serif;
+    --mono:'IBM Plex Mono','SF Mono',ui-monospace,monospace;
+    --shell:min(1240px,calc(100% - clamp(2.4rem,8vw,9rem)));
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);background:var(--r950);color:var(--r100);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+  .shell{width:var(--shell);margin-inline:auto;}
+  .mono{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;}
+
+  /* ============ HERO — dusk ============ */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;
+    /* the sky: 950 overhead → the sun's light at the horizon */
+    background:
+      radial-gradient(90% 52% at 26% 104%, var(--r300) 0%, transparent 62%),
+      linear-gradient(180deg, #341806 0%, var(--r800) 26%, var(--r700) 48%, #C0500B 68%, var(--r500) 84%, var(--r400) 100%);
+  }
+  #sky{position:absolute;inset:0;width:100%;height:100%;display:block;}
+  .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:8vh;z-index:1;
+    background:linear-gradient(180deg,transparent 0%,color-mix(in srgb,var(--r950) 72%,transparent) 62%,var(--r950) 100%);}
+  .hero .shell{position:relative;z-index:2;padding:0 0 4vh;}
+  .brandbar{position:absolute;top:0;left:0;right:0;z-index:3;}
+  .brandbar .shell{display:flex;align-items:center;justify-content:space-between;padding:26px 0;}
+  .wordmark{font-family:var(--serif);font-weight:400;font-size:19px;letter-spacing:-.01em;color:var(--r100);}
+  .wordmark span{color:var(--r500);}
+  .brandbar nav{display:flex;gap:26px;}
+  .brandbar nav a{color:color-mix(in srgb,var(--r200) 74%,transparent);text-decoration:none;font-size:14px;}
+  .brandbar nav a:hover{color:var(--r100);}
+
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(46px,6.6vw,94px);line-height:1.02;
+     letter-spacing:-.025em;max-width:15ch;color:var(--r100);text-wrap:balance;}
+  h1 em{font-style:italic;color:var(--r500);}
+  .sub{margin-top:26px;max-width:44ch;font-size:18.5px;line-height:1.55;color:color-mix(in srgb,var(--r200) 88%,transparent);}
+  .cta-row{margin-top:40px;display:flex;align-items:center;gap:20px;}
+  .cta{position:relative;display:inline-block;background:var(--r600);color:var(--r950);font-weight:500;font-size:16px;
+       padding:15px 28px;border-radius:7px;text-decoration:none;transition:background .18s,transform .18s;}
+  .cta:hover{background:var(--r500);transform:translateY(-1px);}
+  .cap{color:color-mix(in srgb,var(--r300) 82%,transparent);}
+
+  /* the terminal — the machinery inside the poetry */
+  .brief{position:absolute;right:0;bottom:11vh;z-index:2;width:390px;
+    background:color-mix(in srgb,var(--r950) 88%,transparent);
+    border:1px solid color-mix(in srgb,var(--r500) 34%,transparent);
+    border-radius:11px;backdrop-filter:blur(7px);box-shadow:0 24px 60px -24px rgba(0,0,0,.7);
+    font-family:var(--mono);font-size:11.5px;line-height:1.85;overflow:hidden;}
+  .brief-head{display:flex;align-items:center;gap:8px;padding:9px 13px;
+    border-bottom:1px solid color-mix(in srgb,var(--r500) 20%,transparent);color:var(--r400);
+    letter-spacing:.07em;font-size:10px;text-transform:uppercase;}
+  .brief-head i{width:6px;height:6px;border-radius:50%;background:var(--r500);display:block;
+    box-shadow:0 0 0 0 var(--r500);animation:pulse 2.4s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--r500) 60%,transparent);}70%{box-shadow:0 0 0 7px transparent;}100%{box-shadow:0 0 0 0 transparent;}}
+  .brief-body{padding:12px 13px 14px;min-height:132px;color:var(--r300);}
+  .brief-body .ln{white-space:pre;}
+  .brief-body .ln .t{color:color-mix(in srgb,var(--r700) 90%,var(--r300));float:right;}
+  .brief-body .ln.out{color:var(--r500);}
+  .brief-body .cur{display:inline-block;width:6px;height:1em;background:var(--r500);vertical-align:-2px;animation:blink 1.05s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  /* ============ SECTION 2 — the churn settles ============ */
+  .band{position:relative;padding:14vh 0;}
+  .band.dark{background:var(--r950);}
+  .settle{min-height:190vh;background:linear-gradient(180deg,var(--r300) 0%,var(--r400) 26%,#DE7A22 56%,var(--r500) 74%,var(--r700) 90%,var(--r900) 100%);}
+  .settle .sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden;}
+  #resolve{position:absolute;inset:0;width:100%;height:100%;}
+  .settle .copy{position:relative;z-index:2;max-width:36ch;}
+  .kicker{display:flex;align-items:center;gap:9px;color:var(--r950);margin-bottom:20px;}
+  .kicker::before{content:"";width:7px;height:7px;background:var(--r950);display:block;}
+  .settle h2,.vig h2,.manifesto h2{font-family:var(--serif);font-weight:400;letter-spacing:-.02em;line-height:1.08;}
+  .settle h2{font-size:clamp(32px,3.9vw,54px);color:var(--r950);}
+  .settle p{margin-top:20px;font-size:17.5px;line-height:1.6;color:color-mix(in srgb,var(--r950) 78%,transparent);}
+  .counter{margin-top:30px;font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--r950);
+    border:1px solid color-mix(in srgb,var(--r950) 30%,transparent);border-radius:6px;padding:7px 12px;display:inline-block;}
+
+  /* ============ SECTION 3 — vignettes ============ */
+  .vig{background:var(--r950);padding:16vh 0;}
+  .vig h2{font-size:clamp(30px,3.4vw,46px);color:var(--r100);max-width:18ch;}
+  .vig .lede{margin-top:18px;max-width:52ch;color:color-mix(in srgb,var(--r300) 86%,transparent);font-size:17px;line-height:1.6;}
+  .vg{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:64px;}
+  .card{border:1px solid color-mix(in srgb,var(--r700) 55%,transparent);border-radius:14px;overflow:hidden;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--r900) 70%,transparent),transparent);}
+  .card .viz{height:186px;position:relative;background:
+     linear-gradient(180deg,var(--r950) 0%,var(--r900) 62%,var(--r800) 100%);}
+  .card .viz canvas,.card .viz svg{position:absolute;inset:0;width:100%;height:100%;}
+  .card .txt{padding:20px 22px 24px;}
+  .card .n{color:var(--r700);font-family:var(--mono);font-size:11px;letter-spacing:.12em;}
+  .card h3{font-family:var(--serif);font-weight:400;font-size:22px;margin-top:10px;color:var(--r200);letter-spacing:-.01em;}
+  .card p{margin-top:9px;font-size:14.5px;line-height:1.6;color:color-mix(in srgb,var(--r300) 74%,transparent);}
+
+  /* ============ MANIFESTO ============ */
+  .manifesto{background:#150902;padding:22vh 0;position:relative;}
+  .manifesto h2{font-size:clamp(34px,4.6vw,64px);max-width:19ch;color:var(--r200);}
+  .manifesto h2 em{font-style:italic;color:var(--r500);}
+  .manifesto .m-sub{margin-top:26px;max-width:46ch;color:color-mix(in srgb,var(--r300) 70%,transparent);font-size:17.5px;line-height:1.65;}
+  .three{position:absolute;right:6%;top:16%;width:min(30vw,360px);opacity:.9;}
+
+  /* ============ FOOTER — the horizon ============ */
+  footer{position:relative;padding:16vh 0 0;background:linear-gradient(180deg,#150902 0%,var(--r900) 62%,var(--r700) 100%);overflow:hidden;}
+  footer .end{text-align:center;padding-bottom:9vh;}
+  footer .end h3{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,44px);color:var(--r100);letter-spacing:-.02em;}
+  footer .end .cta{margin-top:28px;}
+  .horizon{position:relative;height:120px;border-top:1px solid color-mix(in srgb,var(--r950) 55%,transparent);}
+  .horizon svg{position:absolute;left:12%;bottom:0;width:74px;opacity:.85;}
+  .fine{display:flex;justify-content:space-between;padding:22px 0 30px;color:color-mix(in srgb,var(--r950) 62%,transparent);}
+
+  @media (prefers-reduced-motion:reduce){ .brief-head i{animation:none;} }
+</style>
+</head>
+<body>
+
+<!-- ==================== HERO ==================== -->
+<header class="brandbar">
+  <div class="shell">
+    <div class="wordmark">rapport<span>.</span></div>
+    <nav>
+      <a href="#settle">The flood</a>
+      <a href="#how">How it works</a>
+      <a href="#why">Why</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <canvas id="sky"></canvas>
+  <div class="shell">
+    <h1>A thousand birds, <em>your shape.</em></h1>
+    <p class="sub">One shortcut captures how you react — the words, the tone, the face you made. Rapport turns it into direction your agents actually follow.</p>
+    <div class="cta-row">
+      <a class="cta" id="cta" href="#">Download for macOS</a>
+      <div class="cap mono">free while in beta</div>
+    </div>
+  </div>
+
+  <div class="brief" aria-hidden="true">
+    <div class="brief-head"><i></i> rapport · watching</div>
+    <div class="brief-body" id="briefBody"></div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 2 — THE CHURN SETTLES ==================== -->
+<section class="settle" id="settle">
+  <div class="sticky">
+    <canvas id="resolve"></canvas>
+    <div class="shell">
+      <div class="copy">
+        <div class="kicker mono">the flood</div>
+        <h2>Possibility is beautiful and completely unresolved.</h2>
+        <p>Forty variations is not forty answers. It's motion without commitment — a shape that keeps refusing to land, because landing takes a decision, and the swarm can't make one. Only you can.</p>
+        <div class="counter" id="counter">40 in the air</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 3 — VIGNETTES ==================== -->
+<section class="vig" id="how">
+  <div class="shell">
+    <h2>One flock. Three moments of the evening.</h2>
+    <p class="lede">Rapport doesn't ask you to write a brief. It watches how you react to what's in front of you, turns that into something an agent can execute, and stops needing to be told.</p>
+    <div class="vg">
+      <div class="card">
+        <div class="viz"><canvas class="mini" data-mode="gather"></canvas></div>
+        <div class="txt">
+          <div class="n">01 / IT WATCHES</div>
+          <h3>It gathers before it moves.</h3>
+          <p>A shortcut, a glance, half a sentence. Reaction captured on the component you were actually looking at — not a prompt written after the fact.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="viz"><canvas class="mini" data-mode="wake"></canvas></div>
+        <div class="txt">
+          <div class="n">02 / IT ACTS</div>
+          <h3>It leaves a wake.</h3>
+          <p>The reaction becomes a structured brief — segment, intent, constraint — and the birds nearby fall in behind it. Sent straight to Claude Code, Codex, or Cursor.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="viz">
+          <svg viewBox="0 0 320 186" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- the one literal illustration on the site: a bird come to hand -->
+            <g stroke="#EFB076" stroke-linecap="round" fill="none" opacity=".95">
+              <path d="M18 152L104 126" stroke-width="26"/>            <!-- forearm -->
+              <path d="M116 116h2" stroke-width="42"/>                  <!-- fist -->
+              <path d="M129 104L146 78" stroke-width="14"/>             <!-- the perch finger -->
+            </g>
+            <path d="M104 139L112 100" stroke="#E68C4A" stroke-width="2" opacity=".55"/>
+            <!-- the bird that landed -->
+            <g transform="translate(6,-14)">
+              <ellipse cx="167" cy="82" rx="15" ry="10" transform="rotate(-16 167 82)" fill="#BF4A00"/>
+              <circle cx="180" cy="74" r="7" fill="#BF4A00"/>
+              <path d="M187 72l9 3-9 3z" fill="#D96A1E"/>
+              <path d="M160 76c8-2 15 1 19 6-7 4-15 4-22 0z" fill="#D96A1E"/>
+              <path d="M152 86l-16 6 15 3z" fill="#8F3B06"/>
+              <path d="M160 90l-4 10M167 90l-1 10" stroke="#8F3B06" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="182" cy="72" r="1.7" fill="#291204"/>
+            </g>
+            <path d="M24 176h272" stroke="#5C2B0E" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div class="txt">
+          <div class="n">03 / IT'S YOURS</div>
+          <h3>It comes back to your hand.</h3>
+          <p>Every reaction sharpens it. By the eleventh call it's pruning things you'd have rejected before you saw them — and you never gave the same note twice.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== MANIFESTO ==================== -->
+<section class="manifesto" id="why">
+  <svg class="three" viewBox="0 0 400 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g fill="#3A1B08">
+      <path d="M20 92c14-9 26-13 38-13-9 6-14 11-17 17 12-6 24-8 36-6-13 4-22 9-28 16-6-6-16-11-29-14z"/>
+    </g>
+    <g fill="#5C2B0E">
+      <path d="M150 52c18-11 33-16 48-16-11 8-18 14-22 22 15-8 30-10 45-8-16 5-28 12-35 21-8-8-20-14-36-19z"/>
+    </g>
+    <g fill="#BF4A00">
+      <path d="M268 122c12-8 23-11 33-11-7 5-12 9-14 15 10-5 21-7 31-5-11 3-19 8-24 14-5-5-14-9-26-13z"/>
+    </g>
+  </svg>
+  <div class="shell">
+    <h2>AI gave everyone the flock. Rapport makes it fly <em>in your shape.</em></h2>
+    <p class="m-sub">Generative capacity stopped being the scarce thing the moment everyone got it. What's scarce is the judgment that turns a churning mass of output into one finished object. Engineers got their leverage. This is yours.</p>
+    <p class="m-sub">Infinite output is a medium now — inert, like ink or clay, until a particular taste shapes it. Rapport is how yours reaches it: not in prompts written after the fact, but in the reactions you were having anyway.</p>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="shell">
+    <div class="end">
+      <h3>Give your taste gravity.</h3>
+      <a class="cta" href="#">Download for macOS</a>
+    </div>
+  </div>
+  <div class="horizon">
+    <svg viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M8 28c14-10 26-15 38-15-10 7-16 13-19 20 14-8 28-11 43-9-17 5-30 12-38 22-7-8-14-13-24-18z" fill="#291204"/>
+    </svg>
+  </div>
+  <div class="shell">
+    <div class="fine mono">
+      <span>rapport · made warmly</span>
+      <span>privacy · contact</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   BOIDS — one flock, several states.
+   Rendering: 2px oriented dashes. No sprites; specks read as distant
+   starlings and stay premium.
+   ===================================================================== */
+window.addEventListener('load', ()=>{
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+class Flock {
+  constructor(canvas, opts={}){
+    this.cv = canvas;
+    this.ctx = canvas.getContext('2d', {alpha:true});
+    this.o = Object.assign({
+      count: 1600,
+      sepR: 16, nbrR: 62,
+      sep: 1.9, ali: 1.05, coh: 0.7,
+      maxSpeed: 1.9, minSpeed: 0.85, maxForce: 0.05,
+      wander: 0.018,
+      cursor: false, cursorR: 130, cursorForce: 0.85, cursorMode: 'avoid',
+      ember: false,
+      dotSize: 1.5, dotLen: 2.6,
+      color: '#291204', emberColor: '#BF4A00',
+      bandY: 0.5, bandH: 0.7,     // vertical home band (fraction of height)
+      drift: 0.06                 // gentle rightward evening drift
+    }, opts);
+    this.boids = [];
+    this.cursor = {x:-9999, y:-9999, on:false};
+    this.resolve = 0;             // 0 = churn, 1 = fully resolved to targets
+    this.targets = null;
+    this.ember = null;
+    this.running = false;
+    this.tick = 0;
+    this.resize();
+    this.seed();
+    window.addEventListener('resize', ()=>{ this.resize(); this.onResize && this.onResize(); });
+  }
+
+  resize(){
+    const pw = this.w, ph = this.h;
+    const r = this.cv.getBoundingClientRect();
+    const pr = this.cv.parentElement ? this.cv.parentElement.getBoundingClientRect() : {width:0,height:0};
+    this.w = Math.max(1, r.width || pr.width || window.innerWidth);
+    this.h = Math.max(1, r.height || pr.height || window.innerHeight);
+    const dpr = Math.min(window.devicePixelRatio||1, 2);
+    this.cv.width = this.w*dpr; this.cv.height = this.h*dpr;
+    this.ctx.setTransform(dpr,0,0,dpr,0,0);
+    this.cell = this.o.nbrR;
+    this.cols = Math.ceil(this.w/this.cell)+1;
+    this.rows = Math.ceil(this.h/this.cell)+1;
+    if(this.boids && this.boids.length){
+      if(pw < 40 || ph < 40){ this.seed(); }
+      else { const kx=this.w/pw, ky=this.h/ph; for(const b of this.boids){ b.x*=kx; b.y*=ky; } }
+    }
+  }
+
+  seed(){
+    const {count, bandY, bandH} = this.o;
+    this.boids.length = 0;
+    const K = 6, cs = [];
+    for(let k=0;k<K;k++) cs.push({x:(0.08+0.84*Math.random())*this.w, y:this.h*(bandY-bandH/2)+Math.random()*this.h*bandH});
+    for(let i=0;i<count;i++){
+      const a = Math.random()*Math.PI*2, s = 0.9+Math.random();
+      const c = cs[i%K], sp = Math.min(this.w,this.h)*0.17;
+      this.boids.push({
+        x: Math.max(10, Math.min(this.w-10, c.x + (Math.random()-.5)*sp*2)),
+        y: c.y + (Math.random()-.5)*sp*1.4,
+        vx: Math.cos(a)*s, vy: Math.sin(a)*s,
+        d: 0.45+Math.random()*0.55,          // depth → alpha + size
+        hx: c.x/this.w, hy: c.y/this.h, hp: Math.random()*Math.PI*2,
+        ti: i
+      });
+    }
+    if(this.o.ember){
+      this.ember = {x:this.w*0.5, y:this.h*0.4, vx:1, vy:0, mode:'roam', perch:null, t:0};
+    }
+  }
+
+  /* ---- spatial hash so 2k agents stay cheap ---- */
+  hash(){
+    const g = this.grid || (this.grid = []);
+    const n = this.cols*this.rows;
+    if(g.length !== n){ g.length = n; for(let i=0;i<n;i++) g[i]=[]; }
+    else for(let i=0;i<n;i++) g[i].length = 0;
+    for(const b of this.boids){
+      const cx = Math.min(this.cols-1, Math.max(0, (b.x/this.cell)|0));
+      const cy = Math.min(this.rows-1, Math.max(0, (b.y/this.cell)|0));
+      g[cy*this.cols+cx].push(b);
+    }
+  }
+
+  step(){
+    const o = this.o;
+    this.hash();
+    const nbr2 = o.nbrR*o.nbrR, sep2 = o.sepR*o.sepR;
+    const res = this.resolve, flockW = 1-res*0.82;
+
+    for(const b of this.boids){
+      let sx=0,sy=0, ax=0,ay=0, cx=0,cy=0, n=0, ns=0;
+      const gx = Math.min(this.cols-1, Math.max(0,(b.x/this.cell)|0));
+      const gy = Math.min(this.rows-1, Math.max(0,(b.y/this.cell)|0));
+      for(let j=-1;j<=1;j++){
+        const ry = gy+j; if(ry<0||ry>=this.rows) continue;
+        for(let i=-1;i<=1;i++){
+          const rx = gx+i; if(rx<0||rx>=this.cols) continue;
+          const cellArr = this.grid[ry*this.cols+rx];
+          for(let k=0;k<cellArr.length;k++){
+            const p = cellArr[k]; if(p===b) continue;
+            const dx=p.x-b.x, dy=p.y-b.y, d2=dx*dx+dy*dy;
+            if(d2>nbr2||d2===0) continue;
+            ax+=p.vx; ay+=p.vy; cx+=p.x; cy+=p.y; n++;
+            if(d2<sep2){ const inv=1/d2; sx-=dx*inv*24; sy-=dy*inv*24; ns++; }
+          }
+        }
+      }
+      let fx=0, fy=0;
+      if(n){
+        ax/=n; ay/=n; cx=cx/n-b.x; cy=cy/n-b.y;
+        fx += (ax-b.vx)*o.ali*flockW + cx*0.012*o.coh*flockW;
+        fy += (ay-b.vy)*o.ali*flockW + cy*0.012*o.coh*flockW;
+      }
+      if(ns){ fx += sx*o.sep*0.03; fy += sy*o.sep*0.03; }
+
+      // evening wander + drift
+      const wob = o.wander*(1-res);
+      fx += (Math.random()-0.5)*wob + o.drift*0.02*(1-res);
+      fy += (Math.random()-0.5)*wob;
+
+      // a loose home in the sky — keeps the whole width alive instead of
+      // everything collapsing into one ball
+      if(res < 0.6){
+        b.hp += 0.0016;
+        const hx = (b.hx*this.w) + Math.cos(b.hp)*this.w*0.08;
+        const hy = (b.hy*this.h) + Math.sin(b.hp*1.3)*this.h*0.07;
+        fx += (hx-b.x)*0.00055*(1-res);
+        fy += (hy-b.y)*0.00055*(1-res);
+      }
+
+      // stay in the band of sky
+      const top = this.h*(o.bandY-o.bandH/2), bot = this.h*(o.bandY+o.bandH/2);
+      if(b.y < top) fy += (top-b.y)*0.0035;
+      if(b.y > bot) fy -= (b.y-bot)*0.0035;
+
+      // ---- the visitor's cursor is the hand ----
+      if(o.cursor && this.cursor.on){
+        const dx=b.x-this.cursor.x, dy=b.y-this.cursor.y, d2=dx*dx+dy*dy;
+        const R=o.cursorR;
+        if(d2 < R*R && d2>0.01){
+          const d=Math.sqrt(d2), f=(1-d/R);
+          if(o.cursorMode==='avoid'){ fx += (dx/d)*f*o.cursorForce*0.16; fy += (dy/d)*f*o.cursorForce*0.16; }
+          else { fx -= (dx/d)*f*o.cursorForce*0.10; fy -= (dy/d)*f*o.cursorForce*0.10; }
+        }
+      }
+
+      // ---- the ember bird raises alignment in its wake ----
+      if(this.ember && this.ember.mode !== 'perch'){
+        const dx=this.ember.x-b.x, dy=this.ember.y-b.y, d2=dx*dx+dy*dy, R=95;
+        if(d2 < R*R){
+          const f = 1 - Math.sqrt(d2)/R;          // wake: alignment only, never attraction
+          fx += (this.ember.vx-b.vx)*f*0.09;
+          fy += (this.ember.vy-b.vy)*f*0.09;
+        }
+      }
+
+      // ---- resolution: the flock takes a shape ----
+      if(res>0 && this.targets){
+        const t = this.targets[b.ti % this.targets.length];
+        const dx=t.x-b.x, dy=t.y-b.y;
+        const k = res*res*0.09;
+        fx += dx*k; fy += dy*k;
+        b.vx *= (1-res*0.16); b.vy *= (1-res*0.16);
+      }
+
+      // clamp force
+      const fm = Math.hypot(fx,fy), mf=o.maxForce*(1+res*3);
+      if(fm>mf){ fx=fx/fm*mf; fy=fy/fm*mf; }
+      b.vx+=fx; b.vy+=fy;
+
+      const sp = Math.hypot(b.vx,b.vy) || 0.0001;
+      const maxS = o.maxSpeed*(1-res*0.6), minS = o.minSpeed*(1-res);
+      if(sp>maxS){ b.vx=b.vx/sp*maxS; b.vy=b.vy/sp*maxS; }
+      else if(sp<minS){ b.vx=b.vx/sp*minS; b.vy=b.vy/sp*minS; }
+
+      b.x+=b.vx; b.y+=b.vy;
+      // bounded sky — steer back in rather than wrap (wrapping tears the flock apart)
+      const m = 70;
+      if(b.x < m)            b.vx += (m-b.x)*0.0022;
+      else if(b.x > this.w-m) b.vx -= (b.x-(this.w-m))*0.0022;
+      if(b.x < -10) b.x = -10; else if(b.x > this.w+10) b.x = this.w+10;
+      if(b.y < -10) b.y = -10; else if(b.y > this.h+10) b.y = this.h+10;
+    }
+
+    if(this.ember) this.stepEmber();
+  }
+
+  stepEmber(){
+    const e = this.ember;
+    let tx, ty, gain = 0.008, maxS = 2.6;
+    if(e.mode==='perch' && e.perch){
+      const pp = (typeof e.perch === 'function') ? e.perch() : e.perch;
+      tx=pp.x; ty=pp.y; gain=0.016; maxS=3.4;
+      const d = Math.hypot(tx-e.x, ty-e.y);
+      if(d < 4){ e.x=tx; e.y=ty; e.vx*=0.6; e.vy*=0.6; }
+      else if(d < 60){ e.vx*=0.90; e.vy*=0.90; }        // deceleration into the landing
+    } else if(this.cursor.on){
+      // shadow the cursor, loosely — an apprentice, not a laser pointer
+      tx = this.cursor.x - 46; ty = this.cursor.y - 30;
+    } else {
+      e.t += 0.006;
+      tx = this.w*(0.5+0.3*Math.cos(e.t)); ty = this.h*(0.4+0.16*Math.sin(e.t*1.6));
+    }
+    const dx=tx-e.x, dy=ty-e.y;
+    e.vx += dx*gain; e.vy += dy*gain;
+    e.vx *= 0.93; e.vy *= 0.93;
+    const sp = Math.hypot(e.vx,e.vy);
+    if(sp>maxS){ e.vx=e.vx/sp*maxS; e.vy=e.vy/sp*maxS; }
+    e.x+=e.vx; e.y+=e.vy;
+  }
+
+  draw(){
+    const c = this.ctx, o = this.o;
+    c.clearRect(0,0,this.w,this.h);
+    c.lineCap='round';
+    c.strokeStyle = o.color;
+    for(const b of this.boids){
+      const sp = Math.hypot(b.vx,b.vy) || 0.0001;
+      const len = (o.dotLen*(0.55+b.d*0.9)) * (0.5 + sp*0.4);
+      const ux=b.vx/sp, uy=b.vy/sp;
+      c.globalAlpha = 0.26 + b.d*0.6;
+      c.lineWidth = o.dotSize*(0.6+b.d*0.7);
+      c.beginPath();
+      c.moveTo(b.x-ux*len*0.5, b.y-uy*len*0.5);
+      c.lineTo(b.x+ux*len*0.5, b.y+uy*len*0.5);
+      c.stroke();
+    }
+    if(this.ember){
+      const e=this.ember, sp=Math.hypot(e.vx,e.vy)||0.0001;
+      const ux=e.vx/sp, uy=e.vy/sp, len=7;
+      c.globalAlpha=1; c.strokeStyle=o.emberColor; c.lineWidth=3;
+      c.shadowColor=o.emberColor; c.shadowBlur=14;
+      c.beginPath();
+      c.moveTo(e.x-ux*len*0.5, e.y-uy*len*0.5);
+      c.lineTo(e.x+ux*len*0.5, e.y+uy*len*0.5);
+      c.stroke();
+      // two swept wings
+      c.lineWidth=1.6; c.globalAlpha=.85;
+      const px=-uy, py=ux, wf = e.mode==='perch' && Math.hypot(e.vx,e.vy)<0.4 ? 0.25 : 1;
+      const flap = 2.4 + Math.sin(performance.now()*0.02)*1.6*wf;
+      c.beginPath();
+      c.moveTo(e.x, e.y); c.lineTo(e.x - ux*2 + px*flap, e.y - uy*2 + py*flap);
+      c.moveTo(e.x, e.y); c.lineTo(e.x - ux*2 - px*flap, e.y - uy*2 - py*flap);
+      c.stroke();
+      c.shadowBlur=0;
+    }
+    c.globalAlpha=1;
+  }
+
+  start(){
+    if(this.running) return; this.running = true;
+    let last = 0;
+    const loop = (t)=>{
+      if(!this.running) return;
+      requestAnimationFrame(loop);
+      if(t-last < 33) return;                 // cap ~30fps
+      last = t;
+      if(!this.visible) return;
+      // layout can settle late (fonts, hidden tabs) — re-measure cheaply
+      if(++this.tick % 30 === 0){
+        const rw = this.cv.getBoundingClientRect().width;
+        if(rw > 2 && Math.abs(rw - this.w) > 2){ this.resize(); this.onResize && this.onResize(); }
+      }
+      this.step(); this.draw();
+    };
+    requestAnimationFrame(loop);
+  }
+  stop(){ this.running=false; }
+}
+
+/* ---- only animate what's on screen ---- */
+function observe(flock, el){
+  flock.visible = true;
+  new IntersectionObserver(es=>{ flock.visible = es[0].isIntersecting; },{threshold:0.01}).observe(el);
+}
+
+/* =====================================================================
+   HERO — the sky
+   ===================================================================== */
+const heroEl = document.querySelector('.hero');
+const sky = window.sky = new Flock(document.getElementById('sky'), {
+  count: REDUCED ? 420 : 1500,
+  cursor: true, cursorR: 150, cursorForce: 1.0, cursorMode: 'avoid',
+  ember: true,
+  bandY: 0.46, bandH: 0.86,
+  maxSpeed: 2.0, dotLen: 3.0
+});
+observe(sky, heroEl);
+sky.start();
+
+let idleTimer = null;
+function markActive(){
+  clearTimeout(idleTimer);
+  if(sky.ember && sky.ember.mode==='perch'){ sky.ember.mode='roam'; sky.ember.perch=null; }
+  idleTimer = setTimeout(()=>{ perchOnCTA(); }, 4200);
+}
+function perchOnCTA(){
+  sky.ember.mode = 'perch';
+  sky.ember.perch = ()=>{
+    const cr = document.getElementById('cta').getBoundingClientRect();
+    const hr = heroEl.getBoundingClientRect();
+    return { x: cr.right - hr.left - 15, y: cr.top - hr.top - 5 };
+  };
+}
+heroEl.addEventListener('mousemove', (ev)=>{
+  const r = heroEl.getBoundingClientRect();
+  sky.cursor.x = ev.clientX - r.left;
+  sky.cursor.y = ev.clientY - r.top;
+  sky.cursor.on = true;
+  markActive();
+});
+heroEl.addEventListener('mouseleave', ()=>{ sky.cursor.on = false; markActive(); });
+markActive();
+
+/* =====================================================================
+   THE BRIEF PANEL — the machinery inside the poetry
+   ===================================================================== */
+const LINES = [
+  {t:'▸ reaction captured',            r:'0.4s'},
+  {t:'▸ segment: hero/type-block',     r:''},
+  {t:'▸ inferring: "too heavy"',       r:''},
+  {t:'  → structured brief',           r:'0.9s'},
+  {t:'▸ pruned 3 of 5',                r:''},
+  {t:'  matches your last 11 calls',   r:''},
+  {t:'→ sent to claude-code',          r:'1.2s', out:true}
+];
+const body = document.getElementById('briefBody');
+function typeBrief(){
+  body.innerHTML = '';
+  let li = 0;
+  const nextLine = ()=>{
+    if(li >= LINES.length){ setTimeout(typeBrief, 4200); return; }
+    const spec = LINES[li++];
+    const el = document.createElement('div');
+    el.className = 'ln' + (spec.out ? ' out' : '');
+    body.appendChild(el);
+    let ci = 0;
+    const tick = ()=>{
+      ci++;
+      el.innerHTML = spec.t.slice(0,ci).replace(/ /g,'&nbsp;') + (ci<spec.t.length ? '<span class="cur"></span>' : '');
+      if(ci < spec.t.length) setTimeout(tick, 16);
+      else {
+        if(spec.r){ const s=document.createElement('span'); s.className='t'; s.textContent=spec.r; el.appendChild(s); }
+        setTimeout(nextLine, spec.out ? 900 : 190);
+      }
+    };
+    tick();
+  };
+  nextLine();
+}
+typeBrief();
+
+/* =====================================================================
+   SECTION 2 — the churn condenses. 40 in the air → 3 on the ground.
+   Same sim, different parameters; scroll drives `resolve`.
+   ===================================================================== */
+const settleEl = document.getElementById('settle');
+const resolveCv = document.getElementById('resolve');
+const flock2 = window.flock2 = new Flock(resolveCv, {
+  count: REDUCED ? 300 : 1200,
+  bandY: 0.5, bandH: 0.9,
+  maxSpeed: 2.2, wander: 0.05,
+  color: '#291204', dotLen: 3.2
+});
+observe(flock2, settleEl);
+
+/* targets: three settled cards, right of the copy */
+function buildTargets(){
+  const w = flock2.w, h = flock2.h, pts = [];
+  const cw = Math.min(150, w*0.11), ch = cw*1.32, gap = cw*0.28;
+  const total = cw*3 + gap*2;
+  const x0 = w - total - Math.max(48, w*0.07);
+  const y0 = h/2 - ch/2;
+  for(let c=0;c<3;c++){
+    const bx = x0 + c*(cw+gap);
+    for(let i=0;i<420;i++){
+      // outline-weighted fill so the rectangles read as objects, not fog
+      const edge = Math.random() < 0.62;
+      let px, py;
+      if(edge){
+        const s = Math.random()*2*(cw+ch);
+        if(s < cw){ px=bx+s; py=y0; }
+        else if(s < cw+ch){ px=bx+cw; py=y0+(s-cw); }
+        else if(s < 2*cw+ch){ px=bx+cw-(s-cw-ch); py=y0+ch; }
+        else { px=bx; py=y0+ch-(s-2*cw-ch); }
+      } else { px = bx+Math.random()*cw; py = y0+Math.random()*ch; }
+      pts.push({x:px, y:py});
+    }
+  }
+  flock2.targets = pts;
+}
+flock2.onResize = buildTargets;
+buildTargets();
+flock2.start();
+
+const counter = document.getElementById('counter');
+function onScroll(){
+  const r = settleEl.getBoundingClientRect();
+  const span = settleEl.offsetHeight - window.innerHeight;
+  let p = span > 0 ? (-r.top)/span : 0;
+  p = Math.max(0, Math.min(1, p));
+  // hold the churn, then resolve over the back half
+  const res = Math.max(0, Math.min(1, (p-0.28)/0.52));
+  flock2.resolve = res*res*(3-2*res);        // smoothstep
+  const n = Math.round(40 - 37*flock2.resolve);
+  counter.textContent = flock2.resolve > 0.94 ? '3 worth your eyes' : n + ' in the air';
+}
+document.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+/* =====================================================================
+   SECTION 3 — vignettes: the flock, small
+   ===================================================================== */
+document.querySelectorAll('canvas.mini').forEach(cv=>{
+  const mode = cv.dataset.mode;
+  const f = new Flock(cv, {
+    count: mode==='gather' ? 90 : 70,
+    nbrR: 26, sepR: 8,
+    maxSpeed: mode==='gather' ? 0.7 : 1.5,
+    maxForce: 0.06, wander: mode==='gather' ? 0.012 : 0.03,
+    bandY: 0.45, bandH: 0.8,
+    color: '#F4CFA6', dotSize: 1.4, dotLen: 2.6,
+    ember: mode==='wake', emberColor:'#BF4A00'
+  });
+  observe(f, cv.closest('.card'));
+  if(mode==='gather'){
+    // gathered on a wire, watching
+    const mk = ()=>{
+      const pts=[], y=f.h*0.62;
+      for(let i=0;i<90;i++) pts.push({x: f.w*0.12 + (f.w*0.76)*(i/89) + (Math.random()-.5)*5, y: y + (Math.random()-.5)*4});
+      f.targets = pts; f.resolve = 0.86;
+    };
+    f.onResize = mk; mk();
+  }
+  f.start();
+});
+});
+</script>
+</body>
+</html>

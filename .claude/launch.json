@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "vibecheck-site",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["server.js"],
-      "port": 3000
+      "name": "bird-motion",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["start", "--prefix", "rapport-hero/bird-motion", "--", "--port", "9010", "--strictPort"],
+      "port": 9010
     }
   ]
 }

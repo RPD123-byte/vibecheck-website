@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One bird</title>
+<style>
+  html,body{height:100%;margin:0;background:#FBF6E7;overflow:hidden;}
+  body{display:grid;place-items:center;}
+  canvas{display:block;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* One starling, seen from behind — the view every murmuration photo is.
+   Wings spread left and right; the flap swings them up and down and
+   foreshortens their span as they leave the picture plane. */
+
+const BG    = '#FBF6E7';
+const RUST  = '#B84A15';   // body, wing roots
+const EMBER = '#D9701E';   // primaries, where the light gets through
+
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+let W, H, DPR;
+
+function resize(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = Math.min(window.innerWidth, 900);
+  H = Math.min(window.innerHeight, 700);
+  cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  cv.width = W * DPR; cv.height = H * DPR;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+resize();
+addEventListener('resize', resize);
+
+/* a = shoulder angle, b = tip angle (lags the shoulder — this lag is
+   the entire difference between a bird and a pair of scissors) */
+function wing(s, a, b, L){
+  const rootX = s * 15, rootY = -12;
+  const span  = L * (0.62 + 0.38 * Math.cos(b * 0.8));   // foreshortening
+  const tipX  = s * span;
+  const tipY  = -Math.sin(b) * L * 0.66 - 6;
+  const curl  = (a - b) * 0.35;                          // wing bends under load
+
+  ctx.beginPath();
+  ctx.moveTo(rootX, rootY);
+  // leading edge, root → tip
+  ctx.bezierCurveTo(
+    s * span * 0.36, rootY - Math.sin(a) * L * 0.24 - 20,
+    s * span * 0.76, tipY - 26 + curl * 40,
+    tipX, tipY
+  );
+  // trailing edge, tip → back to the body, sagging behind the leading edge
+  ctx.bezierCurveTo(
+    s * span * 0.60, tipY + 26 + curl * 46,
+    s * span * 0.28, rootY - Math.sin(a) * L * 0.10 + 36,
+    rootX - s * 5, rootY + 27
+  );
+  ctx.closePath();
+
+  const g = ctx.createLinearGradient(rootX, rootY, tipX, tipY);
+  g.addColorStop(0, RUST);
+  g.addColorStop(1, EMBER);
+  ctx.fillStyle = g;
+  ctx.fill();
+}
+
+function body(){
+  ctx.fillStyle = RUST;
+  // tail
+  ctx.beginPath();
+  ctx.moveTo(-13, 30); ctx.lineTo(-19, 122); ctx.lineTo(0, 112); ctx.lineTo(19, 122); ctx.lineTo(13, 30);
+  ctx.closePath(); ctx.fill();
+  // torso
+  ctx.beginPath();
+  ctx.ellipse(0, 6, 21, 50, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // head
+  ctx.beginPath();
+  ctx.arc(0, -50, 17, 0, Math.PI * 2);
+  ctx.fill();
+  // beak, just cresting the head
+  ctx.beginPath();
+  ctx.moveTo(-5, -62); ctx.lineTo(0, -80); ctx.lineTo(5, -62);
+  ctx.closePath(); ctx.fill();
+}
+
+const FLAP = 2.6;      // wingbeats per second
+const LAG  = 0.9;      // radians the tip trails the shoulder
+
+function draw(t){
+  const p = t * FLAP * Math.PI * 2;
+  const a = Math.sin(p);
+  const b = Math.sin(p - LAG);
+
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, W, H);
+
+  const S = Math.min(W / 660, H / 520);
+
+  ctx.save();
+  // the body lifts on the downstroke, sinks on the recovery, and rolls a little
+  ctx.translate(W / 2, H / 2 - Math.sin(p - 1.6) * 16 * S);
+  ctx.scale(S, S);
+  ctx.rotate(Math.sin(p * 0.5) * 0.03);
+
+  wing(-1, a, b, 250);
+  wing( 1, a, b, 250);
+  body();
+
+  ctx.restore();
+}
+window.draw = draw;
+
+function frame(now){ requestAnimationFrame(frame); draw(now / 1000); }
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

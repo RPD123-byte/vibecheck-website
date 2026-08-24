@@ -1,0 +1,2661 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Rapport is the design apprentice for people staring down a thousand variations.">
+  <title>Rapport — Balto scattered hero study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Instrument+Serif:ital@0;1&family=Libre+Franklin:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* Hallmark · macrostructure: Narrative Workflow · tone: confident American gothic
+     * theme: studied-DNA (source: https://rivet.design/) · observed fonts: Satoshi + system sans
+     * fingerprint: Balto display study + viewport-wide scattered variations + dither field
+     * pre-emit critique: P5 H5 E5 S5 R5 V5 */
+    :root {
+      --paper: #f4ead9;
+      --paper-light: #f9f1e5;
+      --panel: #efe3d6;
+      --ink: #241a2e;
+      --quiet: #6d5f7a;
+      --muted: #9c8e96;
+      --orange: #e8501f;
+      --orange-dark: #c84017;
+      --cream: #fdf6ef;
+      --line: rgba(36, 26, 46, .14);
+      --display: "Instrument Serif", Georgia, serif;
+      --serif: "Fraunces", Georgia, serif;
+      --mono: "SF Mono", ui-monospace, "Fira Code", monospace;
+      --weight-normal: 400;
+      --weight-semibold: 600;
+      --weight-bold: 700;
+      --weight-black: 900;
+      --nav-h: 60px;
+      --rail: min(87.8vw, 1264px);
+      --rapport-light-gradient: url("demo-assets/rapport-light-gradient.png");
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper-light);
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: var(--weight-normal);
+      line-height: 28px;
+      letter-spacing: .01em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, p { margin: 0; }
+    h1, h2 { text-wrap: balance; }
+    p { text-wrap: pretty; }
+
+    .skip-link {
+      position: fixed;
+      z-index: 100;
+      top: 8px;
+      left: 8px;
+      padding: 8px 12px;
+      color: var(--cream);
+      background: var(--ink);
+      transform: translateY(-160%);
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .site-header {
+      position: fixed;
+      z-index: 50;
+      inset: 0 0 auto;
+      height: var(--nav-h);
+      background: rgba(249, 241, 229, .94);
+      backdrop-filter: blur(12px);
+    }
+    .nav {
+      width: var(--rail);
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      width: max-content;
+      font-family: var(--display);
+      font-size: 23px;
+      line-height: 1;
+      letter-spacing: -.025em;
+    }
+    .brand::after { content: "."; color: var(--orange); }
+    .nav-cta {
+      position: relative;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      color: var(--cream);
+      background: var(--orange);
+      border: 2px solid var(--ink);
+      border-radius: 9px;
+      box-shadow: 3px 3px 0 var(--ink);
+      font-family: var(--display);
+      font-size: 18px;
+      font-style: italic;
+      line-height: 1;
+      transition-property: transform, box-shadow;
+      transition-duration: 150ms;
+    }
+    .nav-cta::after { content: ""; position: absolute; inset: -3px; }
+    .nav-cta:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--ink); }
+    .nav-cta:active { transform: translate(3px, 3px) scale(.96); box-shadow: none; }
+
+    .cta {
+      display: inline-flex;
+      align-items: baseline;
+      gap: .7rem;
+      padding: .9rem 1.9rem 1rem;
+      color: var(--cream);
+      background: var(--orange);
+      border: 2px solid var(--ink);
+      border-radius: 14px;
+      box-shadow: 6px 6px 0 var(--ink);
+      font-family: var(--display);
+      font-size: 1.35rem;
+      font-style: italic;
+      font-weight: var(--weight-normal);
+      line-height: normal;
+      letter-spacing: normal;
+      transition-property: transform, box-shadow;
+      transition-duration: .15s;
+    }
+    .cta .os {
+      font-family: var(--mono);
+      font-size: .68rem;
+      font-style: normal;
+      letter-spacing: .06em;
+      opacity: .85;
+    }
+    .cta:hover { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--ink); }
+    .cta:active { transform: translate(6px, 6px) scale(.96); box-shadow: 0 0 0 var(--ink); }
+    .cta:focus-visible, .nav-cta:focus-visible, .brand:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; }
+
+    .hero {
+      min-height: 1220px;
+      padding-top: var(--nav-h);
+      overflow: hidden;
+      background: var(--paper-light);
+    }
+    .hero-lead {
+      width: var(--rail);
+      min-height: 520px;
+      margin: 0 auto;
+      padding-top: 82px;
+      position: relative;
+    }
+    .hero-copy { position: relative; z-index: 3; max-width: 760px; }
+    .hero h1 {
+      max-width: 760px;
+      font-family: var(--display);
+      font-size: 56px;
+      font-weight: var(--weight-normal);
+      line-height: 56px;
+      letter-spacing: -.02em;
+    }
+    .hero-copy > p {
+      max-width: 720px;
+      margin-top: 21px;
+      color: var(--quiet);
+    }
+    .hero-actions { margin-top: 29px; }
+
+    .demo-hook {
+      position: relative;
+      z-index: 1;
+      width: var(--rail);
+      height: 640px;
+      margin: 0 auto;
+      isolation: isolate;
+    }
+    .hook-stack {
+      position: absolute;
+      z-index: 1;
+      right: 0;
+      bottom: calc(100% - 1px);
+      width: 38%;
+      height: 438px;
+      overflow: visible;
+      pointer-events: none;
+      transition-property: opacity, transform;
+      transition-duration: 520ms;
+      transition-timing-function: cubic-bezier(.2,0,0,1);
+    }
+    .hook-card {
+      --rotation: 0deg;
+      position: absolute;
+      right: var(--offset, 0px);
+      bottom: var(--step, 0px);
+      width: min(100%, 390px);
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 0 1px rgba(0,0,0,.09), 0 14px 38px rgba(29,29,31,.16);
+      transform: translateY(76px) rotate(var(--rotation)) scale(.94);
+      transition-property: opacity, transform, filter;
+      transition-duration: 420ms;
+      transition-timing-function: cubic-bezier(.2,0,0,1);
+    }
+    .hook-card::before {
+      content: "";
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      aspect-ratio: 3456 / 188;
+      display: block;
+      flex: 0 0 auto;
+      background: url("demo-assets/chrome-reference-strip.png") center / 100% 100% no-repeat;
+      box-shadow: 0 1px 0 rgba(0,0,0,.32);
+    }
+    .hook-card img {
+      width: 100%;
+      min-height: 0;
+      display: block;
+      flex: 1 1 auto;
+      object-fit: cover;
+      object-position: center bottom;
+    }
+    .hook-card.is-visible { opacity: 1; transform: translateY(0) rotate(var(--rotation)) scale(1); }
+    .demo-hook.is-workflow .hook-stack { opacity: 0; transform: translateX(28px) scale(.96); }
+
+    .demo-window {
+      position: absolute;
+      z-index: 3;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 640px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 14px 14px 0 0;
+      box-shadow: 0 0 0 1px rgba(0,0,0,.09), 0 18px 50px rgba(29,29,31,.10);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 11px;
+      line-height: 15px;
+      transition-property: width, border-radius, box-shadow;
+      transition-duration: 680ms;
+      transition-timing-function: cubic-bezier(.2,0,0,1);
+    }
+    .demo-window::before {
+      content: "";
+      position: relative;
+      z-index: 4;
+      width: 100%;
+      aspect-ratio: 3456 / 188;
+      display: block;
+      flex: 0 0 auto;
+      background: url("demo-assets/chrome-reference-strip.png") center / 100% 100% no-repeat;
+      box-shadow: 0 1px 0 rgba(0,0,0,.32);
+    }
+    .demo-hook.is-workflow .demo-window { width: 60.5%; border-radius: 14px 14px 0 0; }
+
+    .chrome-tabs {
+      position: relative;
+      height: 44px;
+      display: none;
+      align-items: end;
+      gap: 0;
+      padding: 8px 7px 0 82px;
+      background: #dfe3ea;
+    }
+    .traffic { position: absolute; left: 13px; top: 16px; width: 55px; display: flex; gap: 8px; }
+    .traffic i { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.12); }
+    .traffic i:nth-child(1) { background: #ff5f57; }
+    .traffic i:nth-child(2) { background: #febc2e; }
+    .traffic i:nth-child(3) { background: #28c840; }
+    .demo-tabs { min-width: 0; flex: 1; display: flex; align-items: end; overflow: hidden; }
+    .demo-tab {
+      position: relative;
+      min-width: 0;
+      height: 36px;
+      flex: 1 1 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 9px;
+      opacity: 0;
+      color: #44474c;
+      background: transparent;
+      border: 0;
+      border-radius: 10px 10px 0 0;
+      box-shadow: inset -1px 0 rgba(89,92,97,.22);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 10px;
+      line-height: 36px;
+      text-align: left;
+      white-space: nowrap;
+      cursor: pointer;
+      transform: translateY(7px);
+      transition-property: opacity, transform, color, background-color, filter;
+      transition-duration: 180ms;
+    }
+    .tab-favicon { width: 13px; height: 13px; display: grid; place-items: center; flex: 0 0 auto; color: #fff; background: var(--dot, var(--orange)); border-radius: 3px; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.12); font-size: 7px; line-height: 1; }
+    .tab-title { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; }
+    .tab-close { width: 16px; height: 16px; display: grid; place-items: center; flex: 0 0 auto; opacity: 0; border-radius: 50%; color: #5f6368; font-size: 13px; line-height: 16px; }
+    .demo-tab[aria-selected="true"] .tab-close { opacity: 1; }
+    .tab-close:hover { background: rgba(60,64,67,.12); }
+    .demo-tab.is-visible { opacity: 1; transform: translateY(0); }
+    .demo-tab[aria-selected="true"] { z-index: 2; color: #202124; background: #f8f9fa; box-shadow: none; }
+    .demo-tab[aria-selected="true"]::before,
+    .demo-tab[aria-selected="true"]::after { content: ""; position: absolute; bottom: 0; width: 11px; height: 11px; pointer-events: none; }
+    .demo-tab[aria-selected="true"]::before { left: -11px; border-bottom-right-radius: 11px; box-shadow: 5px 5px 0 5px #f8f9fa; }
+    .demo-tab[aria-selected="true"]::after { right: -11px; border-bottom-left-radius: 11px; box-shadow: -5px 5px 0 5px #f8f9fa; }
+    .demo-tab.is-rejected { opacity: .28; filter: grayscale(1); }
+    .chrome-new-tab { width: 30px; height: 30px; margin: 0 1px 3px 6px; padding: 0; color: #42454a; background: transparent; border: 0; border-radius: 50%; font-size: 21px; font-weight: 300; line-height: 29px; }
+    .chrome-new-tab:hover { background: rgba(60,64,67,.10); }
+    .chrome-toolbar {
+      height: 46px;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      color: #5f6368;
+      background: #f8f9fa;
+      box-shadow: 0 1px 0 #dfe1e5;
+    }
+    .chrome-controls, .chrome-actions { display: flex; align-items: center; gap: 2px; }
+    .chrome-tool { width: 30px; height: 30px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; }
+    .chrome-tool svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .chrome-tool:hover { background: rgba(60,64,67,.09); }
+    .chrome-tool.is-disabled { opacity: .38; }
+    .chrome-address {
+      height: 34px;
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 12px;
+      color: #3c4043;
+      background: #e9eef6;
+      border-radius: 18px;
+      font-size: 10px;
+    }
+    .chrome-site-controls { width: 17px; height: 17px; display: grid; place-items: center; flex: 0 0 auto; color: #4f5358; }
+    .chrome-site-controls svg, .chrome-star svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .chrome-url { min-width: 0; flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .chrome-star { width: 17px; height: 17px; display: grid; place-items: center; flex: 0 0 auto; }
+    .chrome-profile { width: 27px; height: 27px; display: grid; place-items: center; margin: 0 2px; color: #fff; background: #7a5af8; border: 2px solid #f8f9fa; border-radius: 50%; box-shadow: 0 0 0 1px #c9cdd3; font-size: 9px; font-weight: var(--weight-bold); }
+    .demo-body { position: relative; min-height: 0; height: auto; flex: 1 1 auto; padding: 8px; overflow: hidden; background: #ebe7e1; }
+    .variation-field { height: 100%; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); gap: 7px; transition-property: grid-template-columns; transition-duration: 680ms; }
+    .demo-hook.is-workflow .variation-field { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(4, 1fr); }
+    .variation-tile {
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      padding: 0;
+      overflow: hidden;
+      opacity: 0;
+      background: #fff;
+      border: 0;
+      border-radius: 7px;
+      box-shadow: 0 0 0 1px rgba(0,0,0,.08), 0 4px 12px rgba(29,29,31,.08);
+      cursor: pointer;
+      transform: translateY(14px) scale(.97);
+      transition-property: opacity, transform, filter, box-shadow;
+      transition-duration: 340ms;
+      transition-timing-function: cubic-bezier(.2,0,0,1);
+    }
+    .variation-tile img { width: 100%; height: 100%; display: block; object-fit: cover; }
+    .variation-tile.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+    .variation-tile.is-selected { box-shadow: 0 0 0 2px #1a73e8, 0 8px 18px rgba(29,29,31,.12); }
+    .variation-tile.is-rejected { opacity: .20; filter: grayscale(1); transform: scale(.97); }
+    .variation-tile.is-kept { box-shadow: 0 0 0 2px #1a73e8, 0 8px 18px rgba(29,29,31,.12); }
+
+    .codex-pane {
+      position: absolute;
+      z-index: 6;
+      right: 0;
+      bottom: 0;
+      width: 38%;
+      height: 1076px;
+      overflow: hidden;
+      opacity: 0;
+      color: #e8e8e6;
+      background: #121312;
+      border-radius: 18px 18px 0 18px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 22px 60px rgba(0,0,0,.26);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transform: translateX(34px) scale(.985);
+      pointer-events: none;
+      transition-property: opacity, transform;
+      transition-duration: 680ms;
+      transition-timing-function: cubic-bezier(.2,0,0,1);
+    }
+    .demo-hook.is-workflow .codex-pane { opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; }
+    .codex-header { height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 14px; background: #171817; border-bottom: 1px solid #2a2b2a; }
+    .codex-folder { width: 19px; height: 19px; display: grid; place-items: center; color: #c8c8c5; flex: 0 0 auto; }
+    .codex-folder svg, .codex-action svg, .composer-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+    .codex-title { min-width: 0; flex: 1; }
+    .codex-title strong { display: block; overflow: hidden; font-size: 13px; line-height: 17px; font-weight: var(--weight-semibold); white-space: nowrap; text-overflow: ellipsis; letter-spacing: -.01em; }
+    .codex-ellipsis { color: #8e8e8b; font-size: 13px; letter-spacing: 2px; }
+    .codex-header-actions { display: flex; align-items: center; gap: 8px; color: #90908d; }
+    .codex-action { width: 19px; height: 19px; display: grid; place-items: center; }
+    .codex-mode { height: 34px; min-width: 51px; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 0 9px; color: #a4a4a1; background: #1d1e1d; border: 1px solid #343534; border-radius: 12px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.02); }
+    .codex-mode-mark { width: 17px; height: 17px; display: grid; place-items: center; color: #e9e9e6; background: #242524; border-radius: 5px; font-size: 9px; }
+    .codex-mode-chevron { width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); }
+    .codex-chat { height: calc(100% - 204px); overflow: hidden; padding: 17px 14px 24px; background: #121312; }
+    .chat-message, .codex-event, .worked-row, .codex-user-meta {
+      opacity: 0;
+      transform: translateY(8px);
+      transition-property: opacity, transform;
+      transition-duration: 320ms;
+      transition-timing-function: cubic-bezier(.2,0,0,1);
+    }
+    .chat-message.is-visible, .codex-event.is-visible, .worked-row.is-visible, .codex-user-meta.is-visible { opacity: 1; transform: translateY(0); }
+    .chat-message { margin-bottom: 15px; color: #dededb; font-size: 11px; line-height: 16px; }
+    .chat-message.user { width: 88%; margin-left: auto; padding: 13px 14px 12px; color: #e4e4e1; background: #242524; border: 1px solid rgba(255,255,255,.025); border-radius: 17px; }
+    .chat-message.assistant { width: 92%; margin-right: auto; padding: 0 2px; }
+    .chat-message.rapport-reply { width: 88%; margin-left: auto; margin-right: 0; padding: 13px 14px; color: var(--ink); background: var(--rapport-light-gradient) center / cover no-repeat; border-radius: 17px; box-shadow: inset 0 0 0 1px rgba(36,26,46,.12); }
+    .message-role { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; color: #a3a3a0; font-size: 9px; line-height: 12px; font-weight: var(--weight-semibold); }
+    .message-role.rapport { color: rgba(36,26,46,.72); }
+    .chat-message p { margin: 0; text-wrap: pretty; }
+    .chat-message code { font-family: var(--mono); font-size: 9px; }
+    .assistant-file { color: #88c9f8; font-weight: var(--weight-semibold); }
+    .assistant-list { margin: 9px 0 0 16px; padding: 0; }
+    .assistant-list li { margin: 0 0 5px; padding-left: 2px; }
+    .show-more { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; color: #999996; background: transparent; border: 0; font: inherit; padding: 0; }
+    .show-more::after { content: ""; width: 5px; height: 5px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(45deg) translateY(-2px); }
+    .codex-user-meta { display: flex; align-items: center; justify-content: flex-end; gap: 9px; margin: -8px 6px 18px 0; color: #8f8f8c; font-size: 8px; }
+    .meta-icon { width: 13px; height: 13px; display: grid; place-items: center; }
+    .meta-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .worked-row { margin: 0 1px 15px; padding: 0 0 12px; color: #92928f; border-bottom: 1px solid #2c2d2c; font-size: 10px; line-height: 13px; }
+    .worked-row span { margin-left: 3px; color: #777875; font-size: 15px; vertical-align: -1px; }
+    .feedback-lines { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.08); font-family: var(--mono); font-size: 8px; line-height: 12px; }
+    .feedback-lines b { color: #fa8653; font-weight: var(--weight-semibold); }
+    .codex-event { display: flex; align-items: center; gap: 8px; margin: 0 2px 14px; padding-bottom: 10px; color: #969693; border-bottom: 1px solid rgba(255,255,255,.055); font-size: 9px; line-height: 12px; }
+    .event-spinner { width: 12px; height: 12px; border: 1.5px solid #50514f; border-top-color: #dadad7; border-radius: 50%; animation: codex-spin .9s linear infinite; }
+    .codex-event.is-complete .event-spinner { display: grid; place-items: center; border: 0; animation: none; }
+    .codex-event.is-complete .event-spinner::before { content: "✓"; color: #71c898; font-size: 10px; }
+    @keyframes codex-spin { to { transform: rotate(360deg); } }
+    .typing-dots { display: inline-flex; gap: 3px; margin-left: 5px; vertical-align: 2px; }
+    .typing-dots i { width: 4px; height: 4px; background: #a3a3a0; border-radius: 50%; animation: typing-dot 1.1s ease-in-out infinite; }
+    .typing-dots i:nth-child(2) { animation-delay: 120ms; }
+    .typing-dots i:nth-child(3) { animation-delay: 240ms; }
+    @keyframes typing-dot { 50% { opacity: .28; transform: translateY(-2px); } }
+    .codex-composer { position: absolute; left: 12px; right: 12px; bottom: 12px; height: 124px; padding: 14px 14px 12px; color: #b5b5b2; background: #242524; border: 1px solid #3a3b3a; border-radius: 22px; box-shadow: 0 8px 24px rgba(0,0,0,.16); font-size: 11px; line-height: 15px; }
+    .composer-text { height: 62px; max-height: 62px; overflow: hidden; color: #d0d0cd; }
+    .composer-bottom { height: 32px; display: flex; align-items: center; gap: 9px; }
+    .composer-plus { width: 18px; color: #d9d9d6; font-size: 21px; font-weight: 200; line-height: 18px; }
+    .composer-access { display: flex; align-items: center; gap: 6px; color: #ff7c43; white-space: nowrap; }
+    .composer-access .composer-icon { width: 16px; height: 16px; }
+    .composer-spacer { flex: 1; min-width: 5px; }
+    .composer-model { display: flex; align-items: center; gap: 5px; color: #c8c8c5; white-space: nowrap; font-size: 9px; }
+    .composer-model::before { content: "◆"; color: #f0f0ed; font-size: 9px; }
+    .composer-model::after { content: ""; width: 4px; height: 4px; border-right: 1px solid #8e8e8b; border-bottom: 1px solid #8e8e8b; transform: rotate(45deg) translateY(-1px); }
+    .composer-mic { width: 17px; height: 17px; display: grid; place-items: center; color: #d6d6d3; }
+    .composer-send { width: 32px; height: 32px; display: grid; place-items: center; flex: 0 0 auto; color: #181918; background: #e9e9e6; border-radius: 50%; }
+    .composer-send svg { width: 15px; height: 15px; stroke-width: 1.8; }
+
+    .hook-card.is-rejected { opacity: .16; filter: grayscale(1); transform: translateY(0) rotate(var(--rotation)) scale(.975); }
+    .hook-card.is-anchor { z-index: 8; opacity: 1; filter: none; transform: translateY(0) rotate(var(--rotation)) scale(1.02); }
+
+    .scroll-story {
+      position: relative;
+      padding: 150px 0;
+      overflow: clip;
+      background: var(--paper-light);
+    }
+    .story-inner {
+      width: var(--rail);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(260px,.72fr) minmax(0,1.45fr);
+      align-items: center;
+      gap: clamp(48px,6vw,96px);
+    }
+    .story-copy { position: relative; z-index: 3; }
+    .story-kicker {
+      display: block;
+      margin-bottom: 18px;
+      color: var(--orange-dark);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: var(--weight-black);
+      line-height: 16px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .story-copy h2 {
+      max-width: 460px;
+      font-family: var(--display);
+      font-size: clamp(44px,4.2vw,62px);
+      font-weight: var(--weight-normal);
+      line-height: .98;
+      letter-spacing: -.025em;
+    }
+    .story-copy p { max-width: 440px; margin-top: 24px; color: var(--quiet); font-size: 17px; line-height: 27px; }
+    .story-detail { display: flex; align-items: center; gap: 9px; margin-top: 22px; color: var(--ink); font-family: var(--mono); font-size: 10px; line-height: 15px; }
+    .story-detail::before { content: ""; width: 7px; height: 7px; background: var(--orange); border-radius: 50%; box-shadow: 0 0 0 4px rgba(232,80,31,.12); }
+
+    .feedback-stage {
+      position: relative;
+      min-width: 0;
+      height: 700px;
+      border-radius: 16px;
+      box-shadow: 0 0 0 1px rgba(36,26,46,.11), 0 24px 65px rgba(36,26,46,.13);
+    }
+    .feedback-browser-slot, .feedback-browser-slot .demo-window { width: 100%; height: 100%; }
+    .feedback-browser-slot .demo-window {
+      position: relative;
+      inset: auto;
+      border-radius: 16px;
+      box-shadow: none;
+      transition: none;
+    }
+    .feedback-browser-slot .variation-field { grid-template-columns: repeat(3,1fr); grid-template-rows: repeat(4,1fr); }
+    .feedback-browser-slot .variation-tile.is-selected { z-index: 2; box-shadow: 0 0 0 3px var(--orange), 0 12px 26px rgba(36,26,46,.20); }
+    .feedback-browser-slot .demo-tab, .feedback-browser-slot .variation-tile { opacity: 1; transform: none; }
+
+    .demo-cursor {
+      position: absolute;
+      z-index: 20;
+      left: 87%;
+      top: 68%;
+      width: 28px;
+      height: 35px;
+      opacity: 0;
+      color: #fff;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,.34));
+      transform: translate3d(0,0,0) rotate(-8deg) scale(.88);
+      transition-property: left, top, opacity, transform;
+      transition-duration: 760ms, 760ms, 180ms, 180ms;
+      transition-timing-function: cubic-bezier(.2,0,0,1);
+    }
+    .demo-cursor svg { width: 100%; height: 100%; fill: currentColor; stroke: #161616; stroke-width: 1.2; stroke-linejoin: round; }
+    .feedback-stage.is-entered .demo-cursor { opacity: 1; }
+    .feedback-stage.is-selecting .demo-cursor { left: var(--feedback-cursor-left, 82%); top: var(--feedback-cursor-top, 27%); transform: rotate(-8deg) scale(.96); }
+    .feedback-stage.is-clicked .demo-cursor { transform: rotate(-8deg) scale(.82); }
+
+    /* The production extension's active corner label, preserved at its native 306 x 53 geometry. */
+    .rapport-corner-bar {
+      --rapport-corner-scale: .88;
+      --rapport-corner-cream: #fdf6ef;
+      --rapport-corner-ink: #241a2e;
+      --rapport-corner-vermilion: #e8501f;
+      position: absolute;
+      z-index: 24;
+      display: block;
+      box-sizing: border-box;
+      width: 306px;
+      height: 53px;
+      visibility: hidden;
+      color: var(--rapport-corner-ink);
+      font-family: "Fraunces", Georgia, serif;
+      pointer-events: none;
+      isolation: isolate;
+      opacity: 0;
+      transform: scale(calc(var(--rapport-corner-scale) * .3));
+      transform-origin: left bottom;
+    }
+    .rapport-corner-bar[data-placement$="left"] { transform-origin: right bottom; }
+    .feedback-stage.is-labeled .rapport-corner-bar {
+      visibility: visible;
+      animation: rapport-corner-pop 320ms 70ms both cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes rapport-corner-pop {
+      from { opacity: 0; transform: scale(calc(var(--rapport-corner-scale) * .3)); }
+      60% { opacity: 1; }
+      to { opacity: 1; transform: scale(var(--rapport-corner-scale)); }
+    }
+    .rapport-corner-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      width: 306px;
+      height: 53px;
+      box-sizing: border-box;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      isolation: isolate;
+    }
+    .rapport-corner-silhouette { position: absolute; inset: 0; pointer-events: none; }
+    .rapport-corner-silhouette[data-layer="shadow"] { z-index: -3; }
+    .rapport-corner-silhouette[data-layer="outline"] { z-index: -2; }
+    .rapport-corner-silhouette[data-layer="fill"] { z-index: -1; }
+    .rapport-corner-shell,
+    .rapport-corner-tail { position: absolute; box-sizing: border-box; border-radius: 999px; pointer-events: none; }
+    .rapport-corner-silhouette[data-layer="shadow"] .rapport-corner-shell,
+    .rapport-corner-silhouette[data-layer="shadow"] .rapport-corner-tail,
+    .rapport-corner-silhouette[data-layer="outline"] .rapport-corner-shell,
+    .rapport-corner-silhouette[data-layer="outline"] .rapport-corner-tail { background: var(--rapport-corner-ink); }
+    .rapport-corner-silhouette[data-layer="fill"] .rapport-corner-shell,
+    .rapport-corner-silhouette[data-layer="fill"] .rapport-corner-tail { background: var(--rapport-corner-cream); }
+    .rapport-corner-silhouette[data-layer="fill"] .rapport-corner-shell { left: 0; top: 0; width: 306px; height: 53px; }
+    .rapport-corner-silhouette[data-layer="outline"] .rapport-corner-shell { left: -2px; top: -2px; width: 310px; height: 57px; }
+    .rapport-corner-silhouette[data-layer="shadow"] .rapport-corner-shell { left: 2px; top: 2px; width: 310px; height: 57px; }
+    .rapport-corner-bar[data-placement$="right"] { --tail-large-x: -8.2px; --tail-small-x: -14.1px; }
+    .rapport-corner-bar[data-placement$="left"] { --tail-large-x: 296.2px; --tail-small-x: 309.1px; }
+    .rapport-corner-silhouette[data-layer="fill"] .rapport-corner-tail[data-tail="large"] { left: var(--tail-large-x); top: 32.9px; width: 18px; height: 18px; }
+    .rapport-corner-silhouette[data-layer="fill"] .rapport-corner-tail[data-tail="small"] { left: var(--tail-small-x); top: 42.1px; width: 11px; height: 11px; }
+    .rapport-corner-silhouette[data-layer="outline"] .rapport-corner-tail[data-tail="large"] { left: calc(var(--tail-large-x) - 2px); top: 30.9px; width: 22px; height: 22px; }
+    .rapport-corner-silhouette[data-layer="outline"] .rapport-corner-tail[data-tail="small"] { left: calc(var(--tail-small-x) - 2px); top: 40.1px; width: 15px; height: 15px; }
+    .rapport-corner-silhouette[data-layer="shadow"] .rapport-corner-tail[data-tail="large"] { left: calc(var(--tail-large-x) + 2px); top: 34.9px; width: 22px; height: 22px; }
+    .rapport-corner-silhouette[data-layer="shadow"] .rapport-corner-tail[data-tail="small"] { left: calc(var(--tail-small-x) + 2px); top: 44.1px; width: 15px; height: 15px; }
+    .rapport-corner-signal {
+      all: unset;
+      position: relative;
+      display: grid;
+      box-sizing: border-box;
+      width: 36px;
+      height: 40px;
+      margin-right: 8px;
+      place-items: center;
+      pointer-events: none;
+    }
+    .rapport-corner-signal > [aria-hidden="true"] {
+      display: block;
+      font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+      font-size: 36px;
+      line-height: 40px;
+      transform: translateY(1.5px);
+    }
+    .rapport-corner-divider { width: 1.5px; height: 28px; margin-right: 18px; flex: 0 0 auto; border-radius: 1px; background: rgb(36 26 46 / 22%); }
+    .rapport-corner-transport {
+      all: unset;
+      display: grid;
+      box-sizing: border-box;
+      width: 34px;
+      height: 34px;
+      margin-right: 14px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 2px solid var(--rapport-corner-vermilion);
+      border-radius: 999px;
+      background: var(--rapport-corner-vermilion);
+    }
+    .rapport-corner-transport-glyph { display: block; width: 13px; height: 13px; border-radius: 3px; background: var(--rapport-corner-cream); }
+    .rapport-corner-record-light { width: 7px; height: 7px; margin-right: 8px; flex: 0 0 auto; border-radius: 999px; background: var(--rapport-corner-vermilion); animation: record-pulse 1.1s ease-in-out infinite; }
+    .rapport-corner-timer { min-width: 37px; margin-right: 14px; color: var(--rapport-corner-vermilion); font: 500 18px/22px "Fraunces", Georgia, serif; letter-spacing: .01em; text-align: center; white-space: nowrap; transform: translateY(-1.25px); }
+    .rapport-corner-icon-action { all: unset; display: grid; width: 22px; height: 22px; flex: 0 0 auto; place-items: center; color: var(--rapport-corner-ink); pointer-events: none; }
+    .rapport-corner-icon-action svg { display: block; width: 20px; height: 20px; }
+    .rapport-corner-face-trash { margin-right: 18px; }
+    .rapport-corner-retry { margin-right: 8px; opacity: .3; }
+    @keyframes record-pulse { 50% { opacity: .35; } }
+
+    .rapport-typed-note {
+      --rapport-note-gap: 24px;
+      --rapport-note-rise: 42px;
+      position: absolute;
+      z-index: 25;
+      width: clamp(128px, 9.5vw, 144px);
+      min-height: 172px;
+      padding: 14px 16px 16px;
+      color: var(--ink);
+      isolation: isolate;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: var(--weight-semibold);
+      line-height: 16px;
+      text-wrap: pretty;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(-8px) scale(.98);
+      transform-origin: left top;
+      transition-property: opacity, transform;
+      transition-duration: 220ms;
+      transition-timing-function: cubic-bezier(.2,0,0,1);
+    }
+    .rapport-note-silhouette {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .rapport-note-silhouette[data-layer="shadow"] { z-index: -3; }
+    .rapport-note-silhouette[data-layer="outline"] { z-index: -2; }
+    .rapport-note-silhouette[data-layer="fill"] { z-index: -1; }
+    .rapport-note-shell,
+    .rapport-note-lobe {
+      position: absolute;
+      pointer-events: none;
+    }
+    .rapport-note-shell { border-radius: 16px; }
+    .rapport-note-lobe { border-radius: 999px; }
+    .rapport-note-silhouette[data-layer="shadow"] .rapport-note-shell,
+    .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe,
+    .rapport-note-silhouette[data-layer="outline"] .rapport-note-shell,
+    .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe { background: var(--ink); }
+    .rapport-note-silhouette[data-layer="fill"] .rapport-note-shell,
+    .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe { background: var(--cream); }
+    .rapport-note-silhouette[data-layer="shadow"] .rapport-note-shell { left: 4px; top: 4px; width: 100%; height: 100%; }
+    .rapport-note-silhouette[data-layer="outline"] .rapport-note-shell { inset: 0; }
+    .rapport-note-silhouette[data-layer="fill"] .rapport-note-shell { left: 2px; top: 2px; width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 13px; }
+    .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="large"] { left: -20px; top: 48px; width: 32px; height: 32px; }
+    .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="small"] { left: -32px; top: 58px; width: 18px; height: 18px; }
+    .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="large"] { left: -24px; top: 44px; width: 32px; height: 32px; }
+    .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="small"] { left: -36px; top: 54px; width: 18px; height: 18px; }
+    .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="large"] { left: -22px; top: 46px; width: 28px; height: 28px; }
+    .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="small"] { left: -34px; top: 56px; width: 14px; height: 14px; }
+    .rapport-note-bubble-bridge {
+      position: absolute;
+      z-index: 2;
+      left: -40px;
+      top: 59px;
+      width: 20px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--cream);
+      pointer-events: none;
+    }
+    .rapport-typed-note > [data-typed-note] { position: relative; z-index: 3; display: block; }
+    .feedback-stage.is-labeled .rapport-typed-note { opacity: 1; transform: none; }
+
+    .chat-story .story-inner { grid-template-columns: minmax(260px,.72fr) minmax(0,1.2fr); }
+    .handoff-story .story-copy { grid-column: 2; grid-row: 1; }
+    .handoff-story .codex-pane { grid-column: 1; grid-row: 1; }
+    .scroll-story .codex-pane {
+      position: relative;
+      inset: auto;
+      width: 100%;
+      height: 760px;
+      opacity: 1;
+      border-radius: 18px;
+      transform: none;
+      pointer-events: auto;
+    }
+    .scroll-story .codex-chat { height: calc(100% - 190px); padding: 20px 18px 24px; overflow: hidden; }
+    .scroll-story .codex-composer { height: 112px; }
+    .scroll-story .composer-text { height: 50px; }
+    .chat-story [data-story-item] { opacity: 0; transform: translateY(10px); transition-property: opacity, transform; transition-duration: 330ms; transition-timing-function: cubic-bezier(.2,0,0,1); }
+    .chat-story [data-story-item].is-visible { opacity: 1; transform: translateY(0); }
+    .pasted-feedback { font-family: var(--mono); font-size: 8px; line-height: 13px; }
+    .pasted-feedback strong { display: block; margin-bottom: 6px; color: #ff9a72; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size: 10px; }
+    .pasted-feedback span { display: block; color: #cfcfcb; }
+    .affect-attachment {
+      display: grid;
+      grid-template-columns: 72px minmax(0,1fr);
+      align-items: center;
+      gap: 10px;
+      width: min(100%, 248px);
+      margin: 11px 0 0;
+      padding: 7px;
+      color: var(--cream);
+      background: rgba(255,255,255,.055);
+      border-radius: 10px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.1);
+    }
+    .affect-attachment img {
+      width: 72px;
+      height: 47px;
+      display: block;
+      object-fit: cover;
+      border-radius: 7px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.12);
+    }
+    .affect-attachment figcaption { min-width: 0; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size: 8px; line-height: 11px; }
+    .affect-attachment strong { display: block; color: var(--cream); font-size: 9px; font-weight: var(--weight-semibold); }
+    .affect-attachment span { display: block; margin-top: 2px; color: #aaa9a6; }
+    .chat-note { margin-top: 8px !important; color: #a5a5a2; font-size: 9px; }
+    .prune-attachment { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; margin-top: 12px; }
+    .prune-shot { position: relative; aspect-ratio: 1.35; overflow: hidden; border-radius: 8px; box-shadow: 0 0 0 1px rgba(255,255,255,.10); }
+    .prune-shot img { width: 100%; height: 100%; display: block; object-fit: cover; filter: grayscale(1); opacity: .38; }
+    .prune-shot::after { content: "PRUNED"; position: absolute; inset: 0; display: grid; place-items: center; color: #f1f1ee; background: rgba(18,19,18,.38); font-family: var(--mono); font-size: 8px; font-weight: var(--weight-bold); letter-spacing: .08em; }
+    .prune-reason { margin-top: 10px; padding-top: 9px; color: #a8a8a5; border-top: 1px solid rgba(255,255,255,.07); font-size: 9px; line-height: 14px; }
+
+    .media-credit { display: block; margin-top: 12px; color: var(--muted); font-family: var(--mono); font-size: 8px; line-height: 12px; }
+    .media-credit:hover { color: var(--orange-dark); }
+
+    .closing {
+      padding: 220px 0 180px;
+      text-align: center;
+      background: var(--paper-light);
+    }
+    .closing h2 {
+      max-width: 770px;
+      margin: 0 auto;
+      font-family: var(--display);
+      font-size: 56px;
+      font-weight: var(--weight-normal);
+      line-height: 56px;
+      letter-spacing: -.02em;
+    }
+    .closing p { max-width: 570px; margin: 29px auto 0; color: var(--quiet); }
+    .closing-actions { margin-top: 29px; display: flex; align-items: center; justify-content: center; gap: 30px; }
+
+    .footer { background: var(--paper-light); }
+    .footer-inner { width: var(--rail); min-height: 220px; margin: 0 auto; padding: 54px 0; display: flex; align-items: flex-start; justify-content: space-between; }
+    .footer-links { min-width: 100px; text-align: right; }
+    .footer-links h3 { margin-bottom: 13px; font-family: var(--mono); font-size: 12px; line-height: 22px; font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: .08em; }
+    .footer-links a { display: block; color: var(--quiet); font-size: 14px; line-height: 28px; }
+    .footer-links a:hover { color: var(--ink); }
+
+    @media (max-width: 980px) {
+      :root { --rail: calc(100vw - 48px); }
+      .hook-stack { width: 38%; height: 394px; }
+      .hook-card { width: min(300px, 100%); }
+      .variation-field { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(4, 1fr); }
+      .demo-tab:nth-child(n+10) { display: none; }
+      .codex-pane { width: 38%; height: 1034px; }
+      .story-inner, .chat-story .story-inner { grid-template-columns: minmax(220px,.62fr) minmax(0,1.3fr); gap: 42px; }
+      .feedback-story .story-inner { grid-template-columns: minmax(0,400px) minmax(220px,1fr); gap: 24px; }
+      .feedback-story .story-copy { grid-column: 2; grid-row: 1; }
+      .feedback-story .rivet-media-stage { grid-column: 1; grid-row: 1; overflow: visible; }
+      .feedback-stage { height: 620px; }
+      .scroll-story .codex-pane { width: 100%; height: 720px; }
+      .rapport-corner-bar { --rapport-corner-scale: .62; }
+      .rapport-typed-note { --rapport-note-gap: 24px; --rapport-note-rise: 30px; width: 112px; min-height: 158px; padding: 10px 11px 12px; font-size: 10px; line-height: 14px; }
+    }
+    @media (max-width: 680px) {
+      :root { --rail: calc(100vw - 32px); }
+      body { font-size: 17px; line-height: 27px; }
+      .hero { min-height: 1168px; }
+      .hero-lead { min-height: 568px; padding-top: 60px; }
+      .hero-copy { max-width: 100%; }
+      .hero h1, .closing h2 { font-size: 42px; line-height: 43px; }
+      .demo-hook { width: calc(100vw - 16px); height: 540px; }
+      .hook-stack { display: none; }
+      .demo-window, .demo-hook.is-workflow .demo-window { width: 100%; height: 540px; }
+      .codex-pane { display: none; }
+      .traffic { width: 48px; }
+      .demo-tab:nth-child(n+7) { display: none; }
+      .demo-body { padding: 7px; }
+      .variation-field, .demo-hook.is-workflow .variation-field { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 6px; }
+      .variation-tile:nth-child(n+7) { display: none; }
+      .scroll-story { padding: 92px 0; }
+      .story-inner, .chat-story .story-inner { grid-template-columns: 1fr; gap: 46px; }
+      .feedback-story .story-inner { grid-template-columns: 1fr; }
+      .feedback-story .story-copy, .feedback-story .rivet-media-stage { grid-column: 1; grid-row: auto; }
+      .handoff-story .story-copy, .handoff-story .codex-pane { grid-column: 1; grid-row: auto; }
+      .story-copy h2 { font-size: 43px; }
+      .feedback-stage { height: 520px; }
+      .feedback-browser-slot .variation-field { grid-template-columns: repeat(2,1fr); grid-template-rows: repeat(3,1fr); }
+      .feedback-browser-slot .variation-tile:nth-child(n+7) { display: none; }
+      .feedback-stage.is-selecting .demo-cursor { left: var(--feedback-cursor-left, 74%); top: var(--feedback-cursor-top, 30%); }
+      .rapport-corner-bar { --rapport-corner-scale: .62; }
+      .scroll-story .codex-pane { display: block; width: 100%; height: 690px; }
+      .scroll-story .codex-chat { padding: 17px 14px 20px; }
+      .prune-attachment { gap: 5px; }
+      .closing { padding: 145px 16px 120px; }
+      .closing-actions { flex-direction: column; gap: 24px; }
+      .footer-inner { align-items: flex-start; justify-content: space-between; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+      .demo-tab, .variation-tile, .hook-card { opacity: 1; transform: none; }
+      .event-spinner, .typing-dots i { animation: none !important; }
+    }
+
+    @font-face {
+      font-family: "Satoshi";
+      src: url("demo-assets/Satoshi-Variable.woff2") format("woff2-variations");
+      font-style: normal;
+      font-weight: 300 900;
+      font-display: swap;
+    }
+
+    :root {
+      --rv-rail: min(calc(100vw - 365px), 1363px);
+      --rv-line: rgba(0, 0, 0, .11);
+      --rv-main: var(--display);
+      --rv-body: var(--serif);
+      --rv-stage-yellow: #f3e542;
+      --rv-stage-cyan: #27c3c9;
+      --rv-stage-orange: #f03d19;
+      --rv-stage-green: #2ba923;
+      --rv-stage-ink: #1d1d1f;
+    }
+
+    html,
+    body {
+      overflow-x: clip;
+      overscroll-behavior-y: none;
+    }
+
+    body {
+      color: #000;
+      background: #fff;
+      font-family: var(--rv-body);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.65;
+      letter-spacing: 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      font-family: var(--rv-main);
+      font-style: normal;
+      font-weight: 400;
+      letter-spacing: -.01em;
+    }
+
+    .cta,
+    .nav-cta { white-space: nowrap; }
+
+    @media (min-width: 981px) {
+      .site-header {
+        position: sticky;
+        top: 0;
+        height: 60px;
+        background: rgba(255, 255, 255, .96);
+        backdrop-filter: blur(10px);
+      }
+      .nav {
+        width: var(--rv-rail);
+        height: 60px;
+        padding: 0 32px;
+      }
+
+      .hero {
+        min-height: 0;
+        padding: 32px 0 0;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        background: transparent;
+      }
+      .hero-lead {
+        width: var(--rv-rail);
+        min-height: 210px;
+        height: 210px;
+        margin: 0 auto;
+        padding: 32px 96px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .hero-copy {
+        width: 100%;
+        max-width: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .hero h1 {
+        width: min(100%, 1005px);
+        max-width: none;
+        font-family: var(--rv-main);
+        font-size: 65.058px;
+        font-weight: 400;
+        line-height: 1.12;
+        letter-spacing: -.01em;
+        text-align: center;
+      }
+      .hero-copy > p,
+      .hero-actions { display: none; }
+
+      .demo-hook {
+        width: var(--rv-rail);
+        height: 701px;
+        margin: 0 auto;
+        padding: 32px;
+        overflow: visible;
+        background:
+          radial-gradient(circle at 13% 26%, rgba(0,0,0,.24) 0 1.5px, transparent 1.7px) 0 0 / 7px 7px,
+          linear-gradient(108deg, var(--rv-stage-yellow) 0 27%, var(--rv-stage-cyan) 27% 50%, #f1f1ef 50% 72%, var(--rv-stage-orange) 72% 100%);
+        box-shadow: 0 10px 40px rgba(0,0,0,.08);
+      }
+      .demo-window {
+        left: 32px;
+        bottom: 32px;
+        width: calc(100% - 64px);
+        height: 637px;
+        border-radius: 8px;
+        box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 18px 40px -12px rgba(0,0,0,.25);
+      }
+      .demo-window::before,
+      .hook-card::before {
+        aspect-ratio: 3456 / 164;
+        background-image: url("demo-assets/chrome-window-reference-no-bookmarks.png");
+      }
+      .hook-stack {
+        z-index: 5;
+        right: 32px;
+        bottom: calc(100% - 240px);
+        transform: scale(.62);
+        transform-origin: right bottom;
+      }
+      .demo-hook.is-workflow .hook-stack {
+        opacity: 0;
+        transform: translateX(28px) scale(.58);
+      }
+      .demo-hook.is-workflow .demo-window {
+        width: calc(60.5% - 32px);
+        border-radius: 8px;
+      }
+
+      .scroll-story {
+        min-height: 0;
+        padding: 64px 0;
+        border-top: 0;
+        background: transparent;
+      }
+      .story-inner,
+      .chat-story .story-inner {
+        width: var(--rv-rail);
+        min-height: 637.922px;
+        height: 637.922px;
+        margin: 0 auto;
+        gap: 64px;
+        align-items: center;
+      }
+      .feedback-story .story-inner,
+      .pruning-story .story-inner {
+        grid-template-columns: minmax(0, 2.5fr) minmax(0, 1fr);
+      }
+      .handoff-story .story-inner {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr);
+      }
+      .feedback-story .story-copy,
+      .pruning-story .story-copy {
+        grid-column: 2;
+        grid-row: 1;
+        padding: 12px 32px 12px 0;
+      }
+      .feedback-story .rivet-media-stage,
+      .pruning-story .rivet-media-stage {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .handoff-story .story-copy {
+        grid-column: 1;
+        grid-row: 1;
+        padding: 12px 32px 12px 0;
+      }
+      .handoff-story .rivet-media-stage {
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+      .story-copy {
+        width: 100%;
+        max-width: 371px;
+      }
+      .story-kicker,
+      .story-detail,
+      .media-credit { display: none; }
+      .story-copy h2 {
+        max-width: 18ch;
+        font-family: var(--rv-main);
+        font-size: 38.016px;
+        font-weight: 400;
+        line-height: 1.15;
+        letter-spacing: -.01em;
+      }
+      .story-copy > p {
+        max-width: 339px;
+        margin-top: 16px;
+        color: rgba(0,0,0,.7);
+        font-family: var(--rv-body);
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 29.7px;
+      }
+
+      .rivet-media-stage {
+        width: 100%;
+        height: 637.922px;
+        padding: 32px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 50%, rgba(0,0,0,.19) 0 1.4px, transparent 1.7px) 0 0 / 8px 8px,
+          linear-gradient(112deg, var(--rv-stage-orange) 0 20%, #f1f1ef 20% 54%, var(--rv-stage-cyan) 54% 80%, var(--rv-stage-yellow) 80% 100%);
+        box-shadow: 0 10px 40px rgba(0,0,0,.08);
+      }
+      .feedback-story .rivet-media-stage { overflow: visible; }
+      .handoff-story .rivet-media-stage {
+        background:
+          radial-gradient(circle at 50% 50%, rgba(0,0,0,.19) 0 1.4px, transparent 1.7px) 0 0 / 8px 8px,
+          linear-gradient(108deg, var(--rv-stage-yellow) 0 24%, var(--rv-stage-ink) 24% 51%, var(--rv-stage-cyan) 51% 77%, var(--rv-stage-green) 77% 100%);
+      }
+      .pruning-story .rivet-media-stage {
+        background:
+          radial-gradient(circle at 50% 50%, rgba(0,0,0,.2) 0 1.4px, transparent 1.7px) 0 0 / 8px 8px,
+          linear-gradient(115deg, var(--rv-stage-cyan) 0 24%, #f1f1ef 24% 52%, var(--rv-stage-orange) 52% 77%, var(--rv-stage-yellow) 77% 100%);
+      }
+      .rivet-media-stage > .feedback-stage,
+      .rivet-media-stage > .codex-pane {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        border-radius: 8px;
+        box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 18px 40px -12px rgba(0,0,0,.25);
+      }
+
+      .closing {
+        width: var(--rv-rail);
+        min-height: 375px;
+        margin: 0 auto;
+        padding: 64px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+      }
+      .closing h2 {
+        width: min(100%, 752px);
+        max-width: none;
+        font-family: var(--rv-main);
+        font-size: 52.369px;
+        font-weight: 400;
+        line-height: 1.12;
+        letter-spacing: -.01em;
+      }
+      .closing p {
+        margin-top: 24px;
+        color: rgba(0,0,0,.7);
+        font-family: var(--rv-body);
+        font-size: 18px;
+        line-height: 29.7px;
+      }
+      .closing-actions { margin-top: 24px; }
+      .footer {
+        background: #f5f5f5;
+      }
+      .footer-inner { width: var(--rv-rail); }
+    }
+
+    @media (max-width: 980px) {
+      .demo-window::before,
+      .hook-card::before {
+        aspect-ratio: 3456 / 164;
+        background-image: url("demo-assets/chrome-window-reference-no-bookmarks.png");
+      }
+      .rivet-media-stage { min-width: 0; }
+    }
+
+    @media (min-width: 981px) {
+      .demo-hook,
+      .rivet-media-stage,
+      .handoff-story .rivet-media-stage,
+      .pruning-story .rivet-media-stage {
+        background: url("demo-assets/image-dithering-2x-exact.jpg") center / cover no-repeat;
+      }
+    }
+
+    /* Left-rise composition: preserve every component, change only hero geometry and timing. */
+    :root {
+      --hero-lead-height: 280px;
+      --hero-stack-scale: .8;
+      --hero-stack-rise: -280px;
+      --hero-enter-duration: 460ms;
+      --hero-enter-ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    @media (min-width: 981px) {
+      .hero-lead {
+        height: var(--hero-lead-height);
+        min-height: var(--hero-lead-height);
+        padding: 32px;
+        align-items: center;
+        justify-content: flex-start;
+      }
+
+      .hero-copy {
+        width: min(65%, 720px);
+        justify-content: flex-start;
+      }
+
+      .hero h1 {
+        width: 100%;
+        max-width: 720px;
+        font-size: clamp(54px, 4.1vw, 65.058px);
+        line-height: 1.04;
+        text-align: left;
+        text-wrap: balance;
+      }
+
+      .hook-stack {
+        top: var(--hero-stack-rise);
+        right: 32px;
+        bottom: auto;
+        width: 41%;
+        height: 438px;
+        transform: scale(var(--hero-stack-scale));
+        transform-origin: right top;
+      }
+
+      .hook-card {
+        width: min(100%, 430px);
+        transition-duration: var(--hero-enter-duration);
+        transition-timing-function: var(--hero-enter-ease);
+      }
+
+      .demo-hook.is-workflow .hook-stack {
+        transform: translateX(28px) scale(.76);
+      }
+    }
+
+    @media (min-width: 981px) and (max-width: 1180px) {
+      :root {
+        --hero-stack-scale: .7;
+        --hero-stack-rise: -254px;
+      }
+
+      .hero-copy { width: 62%; }
+      .hero h1 { font-size: 52px; }
+    }
+
+    @media (max-width: 980px) {
+      .hero-lead {
+        min-height: 470px;
+        padding-top: 56px;
+      }
+
+      .hero h1 {
+        max-width: 760px;
+        text-align: left;
+      }
+
+      .hook-stack {
+        right: 0;
+        bottom: calc(100% - 20px);
+        width: 44%;
+        transform: scale(.78);
+        transform-origin: right bottom;
+      }
+    }
+
+    @media (min-width: 681px) and (max-width: 980px) {
+      .hero-lead {
+        min-height: 300px;
+        height: 300px;
+        padding: 44px 0 32px;
+        display: flex;
+        align-items: center;
+      }
+
+      .hero-copy {
+        width: 64%;
+        max-width: 520px;
+      }
+
+      .hero-copy > p,
+      .hero-actions { display: none; }
+
+      .hero h1 {
+        max-width: 520px;
+        font-size: clamp(48px, 7vw, 58px);
+        line-height: 1.04;
+      }
+
+      .hook-stack {
+        top: -240px;
+        right: 0;
+        bottom: auto;
+        width: 44%;
+        transform: scale(.7);
+        transform-origin: right top;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .hero {
+        min-height: 980px;
+      }
+
+      .hero-lead {
+        min-height: 380px;
+        padding: 72px 0 40px;
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .hero h1 {
+        max-width: 100%;
+        font-size: clamp(42px, 12vw, 58px);
+        line-height: 1.02;
+        text-wrap: balance;
+      }
+    }
+
+    /* Scatter study: the hero alone escapes the Rivet rail. */
+    .nav-cta,
+    .cta {
+      background: url("demo-assets/image-dithering-2x-exact.jpg") center / cover no-repeat;
+    }
+
+    .nav-cta {
+      color: var(--ink);
+      background-image: url("demo-assets/image-dithering-2x-exact.jpg");
+      background-position: center;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+
+    .dither-underline {
+      position: relative;
+      z-index: 0;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .dither-underline::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      right: -.08em;
+      bottom: .02em;
+      left: -.08em;
+      height: .2em;
+      background: url("demo-assets/image-dithering-2x-exact.jpg") center / 100% 100% no-repeat;
+      transform: rotate(-1.4deg) skewX(-12deg);
+      transform-origin: left center;
+    }
+
+    .word-whole { white-space: nowrap; }
+
+    @media (min-width: 981px) {
+      .hero {
+        position: relative;
+        z-index: 46;
+        overflow: visible;
+        clip-path: inset(0 -100vw -100vh -100vw);
+        background: #fff;
+      }
+
+      .hero-lead {
+        position: relative;
+        z-index: 9;
+      }
+
+      .demo-hook { overflow: visible; }
+
+      .hook-stack {
+        top: -320px;
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        width: min(1540px, calc(100vw - 24px));
+        height: 520px;
+        transform: translateX(-50%);
+        transform-origin: center top;
+      }
+
+      .hook-card {
+        right: auto;
+        bottom: auto;
+        width: clamp(200px, 18vw, 280px);
+      }
+
+      /* An edge ring keeps the browser's working surface legible. */
+      .hook-card:nth-child(1) { z-index: 10; left: -10%; top: 72px; width: clamp(190px, 15.5vw, 230px); }
+      .hook-card:nth-child(2) { z-index: 9; left: -7%; top: 222px; width: clamp(176px, 14vw, 210px); }
+      .hook-card:nth-child(3) { z-index: 12; left: 87%; top: 72px; width: clamp(210px, 17vw, 250px); }
+      .hook-card:nth-child(4) { z-index: 9; left: 91%; top: 224px; width: clamp(190px, 15vw, 224px); }
+      .hook-card:nth-child(5) { z-index: 11; left: -6%; top: -70px; width: clamp(220px, 18vw, 264px); }
+      .hook-card:nth-child(6) { z-index: 10; left: 76%; top: -76px; width: clamp(200px, 16vw, 236px); }
+      .hook-card:nth-child(7) { z-index: 12; left: -13%; top: 414px; width: clamp(215px, 18vw, 266px); }
+      .hook-card:nth-child(8) { z-index: 10; left: -9%; top: 560px; width: clamp(185px, 15vw, 220px); }
+      .hook-card:nth-child(9) { z-index: 13; left: 89%; top: 414px; width: clamp(230px, 19vw, 278px); }
+      .hook-card:nth-child(10) { z-index: 11; left: 95%; top: 568px; width: clamp(190px, 16vw, 236px); }
+      .hook-card:nth-child(11) { z-index: 12; left: -15%; top: 704px; width: clamp(220px, 18vw, 264px); }
+      .hook-card:nth-child(12) { z-index: 15; left: 91%; top: 718px; width: clamp(238px, 20vw, 296px); }
+
+      .hook-card.is-extra-scatter {
+        z-index: var(--scatter-z, 1);
+        left: var(--scatter-left);
+        top: var(--scatter-top);
+        width: var(--scatter-width);
+        box-shadow: 0 0 0 1px rgba(0,0,0,.08), 0 10px 28px rgba(29,29,31,.13);
+      }
+
+      .hook-card.is-extra-scatter.is-visible { opacity: .82; }
+
+      .hook-card.is-extra-scatter.is-weak-concept {
+        filter: saturate(.72) contrast(.92);
+        box-shadow: 0 0 0 1px rgba(0,0,0,.06), 0 7px 18px rgba(29,29,31,.09);
+      }
+
+      .hook-card.is-extra-scatter.is-weak-concept.is-visible { opacity: .48; }
+
+      .hook-card.is-contrast-overlay {
+        z-index: var(--scatter-z, 18);
+        opacity: 0;
+        filter: saturate(1.16) contrast(1.08);
+        box-shadow: 0 0 0 3px #fff, 0 0 0 5px #1d1d1f, 0 18px 36px rgba(29,29,31,.28);
+      }
+
+      .hook-card.is-contrast-overlay.is-visible { opacity: 1; }
+
+      .hook-card.is-tagline-neighbor {
+        z-index: var(--scatter-z, 14);
+        opacity: 0;
+        filter: saturate(1.04) contrast(1.03);
+        box-shadow: 0 0 0 1px rgba(29,29,31,.14), 0 14px 28px rgba(29,29,31,.18);
+      }
+
+      .hook-card.is-tagline-neighbor.is-visible { opacity: .94; }
+
+      .demo-hook.is-workflow .hook-stack {
+        opacity: 0;
+        transform: translateX(calc(-50% + 28px)) scale(.96);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hook-stack { display: none; }
+    }
+
+    /* Balto is requested from the user's licensed local/Adobe activation first.
+       Libre Franklin keeps this study honest and viewable when Balto is unavailable. */
+    :root {
+      --rv-main: "Balto", "Libre Franklin", "Arial Narrow", sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    .brand,
+    .cta,
+    .nav-cta {
+      font-family: var(--rv-main);
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      max-width: 760px;
+      font-family: var(--rv-main);
+      font-size: clamp(50px, 3.85vw, 61px);
+      font-weight: 900;
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+
+    .story-copy h2,
+    .closing h2 {
+      font-family: var(--rv-main);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -.04em;
+    }
+
+    @media (max-width: 680px) {
+      .hero h1 {
+        font-size: clamp(38px, 10.8vw, 48px);
+        line-height: 1;
+      }
+    }
+
+    /* Responsive continuity pass: one component set, fluid geometry. */
+    .site-header {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, .96);
+    }
+
+    .hero,
+    .scroll-story,
+    .closing { background: #fff; }
+
+    .footer { background: #f5f5f5; }
+
+    .hero-copy > p,
+    .hero-actions,
+    .story-kicker,
+    .story-detail,
+    .media-credit { display: none; }
+
+    @media (min-width: 981px) and (max-width: 1439px) {
+      :root { --rv-rail: min(calc(27.5vw + 678px), 1075px); }
+    }
+
+    @media (min-width: 981px) {
+      .hero {
+        padding-top: clamp(20px, 3dvh, 32px);
+        gap: clamp(20px, 3dvh, 32px);
+      }
+
+      .hero-lead {
+        min-height: clamp(210px, 22dvh, 280px);
+        height: clamp(210px, 22dvh, 280px);
+        padding-block: 24px;
+      }
+
+      .demo-hook { height: clamp(480px, calc(100dvh - 320px), 701px); }
+      .demo-window { height: calc(100% - 64px); }
+    }
+
+    @media (min-width: 681px) {
+      .handoff-story .story-inner,
+      .pruning-story .story-inner {
+        grid-template-columns: minmax(0, 2.5fr) minmax(220px, 1fr);
+      }
+
+      .handoff-story .rivet-media-stage,
+      .pruning-story .rivet-media-stage {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .handoff-story .story-copy,
+      .pruning-story .story-copy {
+        grid-column: 2;
+        grid-row: 1;
+      }
+    }
+
+    @media (max-width: 980px) {
+      :root { --rail: calc(100vw - 32px); }
+
+      body { font-size: clamp(16px, 1.9vw, 18px); }
+
+      .site-header { height: 60px; }
+
+      .nav {
+        padding: 0 clamp(16px, 3.25vw, 32px);
+      }
+
+      .hero {
+        min-height: 0;
+        padding: clamp(20px, 3dvh, 32px) 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: clamp(20px, 4vw, 32px);
+        overflow: clip;
+      }
+
+      .hero-lead {
+        position: relative;
+        z-index: 9;
+        width: var(--rail);
+        min-height: clamp(210px, 22dvh, 280px);
+        height: clamp(210px, 22dvh, 280px);
+        padding: 24px clamp(16px, 3.25vw, 32px);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+
+      .hero-copy {
+        width: min(62%, 720px);
+        max-width: 720px;
+      }
+
+      .hero h1 {
+        width: 100%;
+        max-width: 720px;
+        font-family: var(--rv-main);
+        text-align: left;
+        text-wrap: balance;
+      }
+
+      .demo-hook {
+        --stage-pad: clamp(24px, 3.25vw, 32px);
+        width: var(--rail);
+        height: clamp(480px, calc(100dvh - 320px), 701px);
+        margin: 0 auto;
+        padding: var(--stage-pad);
+        overflow: visible;
+        background: url("demo-assets/image-dithering-2x-exact.jpg") center / cover no-repeat;
+        box-shadow: 0 10px 40px rgba(0,0,0,.08);
+      }
+
+      .demo-window,
+      .demo-hook.is-workflow .demo-window {
+        left: var(--stage-pad);
+        bottom: var(--stage-pad);
+        width: calc(100% - var(--stage-pad) - var(--stage-pad));
+        height: calc(100% - var(--stage-pad) - var(--stage-pad));
+        border-radius: 8px;
+      }
+
+      .variation-field,
+      .demo-hook.is-workflow .variation-field,
+      .feedback-browser-slot .variation-field {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-rows: repeat(4, minmax(0, 1fr));
+      }
+
+      .variation-tile:nth-child(n),
+      .feedback-browser-slot .variation-tile:nth-child(n) { display: block; }
+
+      .hook-stack {
+        display: block;
+        z-index: 2;
+        top: -132px;
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        width: calc(100vw - 8px);
+        height: 230px;
+        transform: translateX(-50%);
+        transform-origin: center top;
+      }
+
+      .hook-card {
+        right: auto;
+        bottom: auto;
+        width: clamp(132px, 24vw, 184px);
+      }
+
+      .hook-card:nth-child(n+7),
+      .hook-card.is-extra-scatter { display: none; }
+      .hook-card:nth-child(1) { left: -28px; top: 12px; }
+      .hook-card:nth-child(2) { left: 13%; top: 76px; }
+      .hook-card:nth-child(3) { right: -24px; left: auto; top: 8px; }
+      .hook-card:nth-child(4) { right: 12%; left: auto; top: 82px; }
+      .hook-card:nth-child(5) { left: 37%; top: 24px; }
+      .hook-card:nth-child(6) { right: 34%; left: auto; top: 110px; }
+
+      .demo-hook.is-workflow .hook-stack {
+        transform: translateX(calc(-50% + 20px)) scale(.96);
+      }
+
+      .scroll-story {
+        padding: 64px 0;
+      }
+
+      .story-inner,
+      .chat-story .story-inner {
+        gap: clamp(32px, 6vw, 64px);
+        align-items: center;
+      }
+
+      .story-copy h2 {
+        font-size: clamp(32px, 5vw, 38px);
+        line-height: 1;
+      }
+
+      .story-copy {
+        padding-right: clamp(12px, 3vw, 32px);
+      }
+
+      .story-copy p {
+        margin-top: 16px;
+        font-size: clamp(16px, 1.9vw, 18px);
+        line-height: clamp(25px, 3vw, 29.7px);
+      }
+
+      .prune-attachment { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+      .rivet-media-stage {
+        --stage-pad: clamp(12px, 2.2vw, 20px);
+        min-width: 0;
+        height: clamp(560px, 65vw, 637.922px);
+        padding: var(--stage-pad);
+        background: url("demo-assets/image-dithering-2x-exact.jpg") center / cover no-repeat;
+        box-shadow: 0 10px 40px rgba(0,0,0,.08);
+      }
+
+      .handoff-story .rivet-media-stage,
+      .pruning-story .rivet-media-stage {
+        overflow: hidden;
+      }
+
+      .rivet-media-stage > .feedback-stage,
+      .rivet-media-stage > .codex-pane {
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 18px 40px -12px rgba(0,0,0,.25);
+      }
+
+      .feedback-stage { height: 100%; }
+      .scroll-story .codex-pane { height: 100%; }
+
+      .closing {
+        min-height: 375px;
+        padding: 64px 16px;
+      }
+
+      .closing h2 {
+        font-size: clamp(42px, 5.3vw, 52.369px);
+        line-height: 1;
+      }
+
+      .footer-inner { min-height: 220px; }
+    }
+
+    @media (max-width: 680px) {
+      .hero-lead {
+        min-height: 230px;
+        height: auto;
+        padding: clamp(48px, 14vw, 64px) 0 24px;
+      }
+
+      .hero h1 {
+        max-width: 11ch;
+        overflow-wrap: anywhere;
+      }
+
+      .demo-hook {
+        --stage-pad: 12px;
+        width: var(--rail);
+        height: clamp(330px, 94vw, 400px);
+      }
+
+      .hook-stack {
+        top: -96px;
+        height: 176px;
+      }
+
+      .hook-card { width: clamp(104px, 32vw, 138px); }
+      .hook-card:nth-child(1) { left: -42px; top: 18px; }
+      .hook-card:nth-child(2) { left: 4%; top: 88px; }
+      .hook-card:nth-child(3) { right: -40px; top: 12px; }
+      .hook-card:nth-child(4) { right: 4%; top: 92px; }
+      .hook-card:nth-child(5) { left: 34%; top: 48px; }
+      .hook-card:nth-child(6) { display: none; }
+
+      .story-inner,
+      .chat-story .story-inner,
+      .feedback-story .story-inner {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 30px;
+      }
+
+      .feedback-story .story-copy,
+      .feedback-story .rivet-media-stage,
+      .handoff-story .story-copy,
+      .handoff-story .rivet-media-stage,
+      .pruning-story .story-copy,
+      .pruning-story .rivet-media-stage {
+        grid-column: 1;
+        grid-row: auto;
+      }
+
+      .story-copy h2 { font-size: clamp(32px, 8.6vw, 36px); }
+      .story-copy p { margin-top: 16px; font-size: 16px; line-height: 25px; }
+
+      .feedback-stage { height: clamp(430px, 125vw, 520px); }
+      .scroll-story .codex-pane { height: clamp(540px, 150vw, 640px); }
+
+      .rapport-corner-bar { --rapport-corner-scale: .42; }
+      .rapport-typed-note {
+        --rapport-note-gap: 14px;
+        --rapport-note-rise: 24px;
+        width: 92px;
+        min-height: 144px;
+        padding: 9px 9px 10px;
+        font-size: 9px;
+        line-height: 13px;
+      }
+      .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="large"] { top: 32px; }
+      .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="small"] { top: 42px; }
+      .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="large"] { top: 28px; }
+      .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="small"] { top: 38px; }
+      .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="large"] { top: 30px; }
+      .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="small"] { top: 40px; }
+      .rapport-note-bubble-bridge { top: 43px; }
+
+      .closing { padding-block: 96px; }
+      .closing h2 { font-size: clamp(36px, 10vw, 42px); }
+      .closing p { margin-top: 20px; font-size: 16px; line-height: 25px; }
+      .closing-actions { margin-top: 24px; }
+
+      .footer-inner {
+        min-height: 160px;
+        padding: 40px 0;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .codex-composer {
+        right: 8px;
+        left: 8px;
+        padding-inline: 10px;
+      }
+
+      .composer-bottom { gap: 7px; }
+      .composer-model {
+        width: 10px;
+        gap: 0;
+        overflow: hidden;
+        color: transparent;
+        font-size: 0;
+      }
+      .composer-model::before {
+        color: #f0f0ed;
+        font-size: 9px;
+      }
+      .composer-model::after { display: none; }
+    }
+
+    /* Keep the desktop scatter composition intact as the viewport narrows. */
+    @media (max-width: 980px) {
+      .hero-lead {
+        min-height: clamp(210px, 22dvh, 280px);
+        height: clamp(210px, 22dvh, 280px);
+        padding: 24px clamp(16px, 3.25vw, 32px);
+      }
+
+      .hero h1 {
+        max-width: 720px;
+        font-size: clamp(44px, 5.9vw, 60px);
+        font-weight: 900;
+        line-height: 1.02;
+        overflow-wrap: normal;
+      }
+
+      .demo-hook {
+        height: clamp(330px, 59.2vw, 580px);
+      }
+
+      .hook-stack {
+        display: block;
+        top: clamp(-320px, -32.6vw, -170px);
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        width: calc(100vw - 8px);
+        height: 94vw;
+        transform: translateX(-50%);
+        transform-origin: center top;
+      }
+
+      .hook-card,
+      .hook-card:nth-child(6),
+      .hook-card:nth-child(n+7),
+      .hook-card.is-extra-scatter {
+        display: flex;
+        right: auto;
+        bottom: auto;
+      }
+
+      .hook-card:nth-child(1)  { z-index: 10; left: -10%; top: 7.2vw; width: clamp(64px, 19vw, 230px); }
+      .hook-card:nth-child(2)  { z-index: 9;  left: -7%;  top: 22.2vw; width: clamp(60px, 17.6vw, 210px); }
+      .hook-card:nth-child(3)  { z-index: 12; left: 87%;  top: 7.2vw; width: clamp(68px, 21vw, 250px); }
+      .hook-card:nth-child(4)  { z-index: 9;  left: 91%;  top: 22.4vw; width: clamp(64px, 19vw, 224px); }
+      .hook-card:nth-child(5)  { z-index: 11; left: -6%;  top: -7vw; width: clamp(72px, 22vw, 264px); }
+      .hook-card:nth-child(6)  { z-index: 10; left: 76%;  top: -7.6vw; width: clamp(68px, 20vw, 236px); }
+      .hook-card:nth-child(7)  { z-index: 12; left: -13%; top: 41.4vw; width: clamp(72px, 21.5vw, 266px); }
+      .hook-card:nth-child(8)  { z-index: 10; left: -9%;  top: 56vw; width: clamp(64px, 18.5vw, 220px); }
+      .hook-card:nth-child(9)  { z-index: 13; left: 89%;  top: 41.4vw; width: clamp(76px, 23vw, 278px); }
+      .hook-card:nth-child(10) { z-index: 11; left: 95%;  top: 56.8vw; width: clamp(68px, 19vw, 236px); }
+      .hook-card:nth-child(11) { z-index: 12; left: -15%; top: 70.4vw; width: clamp(72px, 22vw, 264px); }
+      .hook-card:nth-child(12) { z-index: 15; left: 91%;  top: 71.8vw; width: clamp(78px, 23.8vw, 296px); }
+
+      .hook-card.is-extra-scatter {
+        z-index: var(--scatter-z, 1);
+        left: var(--scatter-left);
+        top: var(--scatter-top-fluid);
+        width: clamp(52px, var(--scatter-width-fluid), var(--scatter-width));
+        box-shadow: 0 0 0 1px rgba(0,0,0,.08), 0 8px 22px rgba(29,29,31,.13);
+      }
+
+      .hook-card.is-extra-scatter.is-visible { opacity: .82; }
+      .hook-card.is-extra-scatter.is-weak-concept.is-visible { opacity: .42; }
+      .hook-card.is-contrast-overlay.is-visible { opacity: 1; }
+      .hook-card.is-tagline-neighbor.is-visible { opacity: .94; }
+
+      .demo-hook.is-workflow .hook-stack {
+        transform: translateX(calc(-50% + 20px)) scale(.96);
+      }
+
+      .rapport-corner-bar { --rapport-corner-scale: .42; }
+      .rapport-typed-note {
+        --rapport-note-gap: 14px;
+        --rapport-note-rise: 24px;
+        width: 92px;
+        min-height: 144px;
+        padding: 9px 9px 10px;
+        font-size: 9px;
+        line-height: 13px;
+      }
+    }
+
+    @media (min-width: 521px) and (max-width: 980px) {
+      .feedback-story .story-inner,
+      .handoff-story .story-inner,
+      .pruning-story .story-inner {
+        grid-template-columns: minmax(0, 2.5fr) minmax(220px, 1fr);
+        gap: clamp(32px, 6.53vw, 64px);
+      }
+
+      .feedback-story .rivet-media-stage,
+      .handoff-story .rivet-media-stage,
+      .pruning-story .rivet-media-stage {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .feedback-story .story-copy,
+      .handoff-story .story-copy,
+      .pruning-story .story-copy {
+        grid-column: 2;
+        grid-row: 1;
+        padding: 12px clamp(20px, 3.27vw, 32px) 12px 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .rapport-corner-bar { --rapport-corner-scale: .32; }
+      .rapport-typed-note {
+        --rapport-note-gap: 10px;
+        --rapport-note-rise: 20px;
+        width: 80px;
+        min-height: 132px;
+        padding: 8px 8px 9px;
+        font-size: 8px;
+        line-height: 12px;
+      }
+    }
+
+    @media (max-width: 535px) {
+      .hero h1 {
+        font-size: clamp(26px, calc(10px + 5vw), 34px);
+        font-weight: 900;
+        line-height: 1.02;
+      }
+
+      .story-copy h2 {
+        font-size: clamp(24px, 7.5vw, 36px);
+        font-weight: 900;
+        line-height: 1.02;
+      }
+
+      .closing h2 {
+        font-size: clamp(28px, 8.75vw, 42px);
+        font-weight: 900;
+        line-height: 1.02;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .handoff-story .rivet-media-stage,
+      .pruning-story .rivet-media-stage {
+        overflow: hidden;
+      }
+
+      .handoff-story .rivet-media-stage > .codex-pane,
+      .pruning-story .rivet-media-stage > .codex-pane {
+        height: 100%;
+        max-height: 100%;
+      }
+    }
+
+    /* Mirror the typed-note connector when the bubble flips to the tile's left edge. */
+    .rapport-typed-note[data-note-side="left"] {
+      transform-origin: right top;
+    }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="large"] { left: auto; right: -20px; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="small"] { left: auto; right: -32px; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="large"] { left: auto; right: -24px; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="small"] { left: auto; right: -36px; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="large"] { left: auto; right: -22px; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="small"] { left: auto; right: -34px; }
+    .rapport-typed-note[data-note-side="left"] .rapport-note-bubble-bridge { left: auto; right: -40px; }
+
+    /* The note and control share one top edge; their connector follows the rendered control scale. */
+    .rapport-typed-note { --rapport-note-connector-y: 26.5px; }
+    .rapport-typed-note .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="large"] { top: calc(var(--rapport-note-connector-y) - 12px); }
+    .rapport-typed-note .rapport-note-silhouette[data-layer="shadow"] .rapport-note-lobe[data-lobe="small"] { top: calc(var(--rapport-note-connector-y) - 5px); }
+    .rapport-typed-note .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="large"] { top: calc(var(--rapport-note-connector-y) - 16px); }
+    .rapport-typed-note .rapport-note-silhouette[data-layer="outline"] .rapport-note-lobe[data-lobe="small"] { top: calc(var(--rapport-note-connector-y) - 9px); }
+    .rapport-typed-note .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="large"] { top: calc(var(--rapport-note-connector-y) - 14px); }
+    .rapport-typed-note .rapport-note-silhouette[data-layer="fill"] .rapport-note-lobe[data-lobe="small"] { top: calc(var(--rapport-note-connector-y) - 7px); }
+    .rapport-typed-note .rapport-note-bubble-bridge { top: calc(var(--rapport-note-connector-y) - 5px); }
+
+    /* Scattered studies should dissolve into the page instead of forming a shadow seam. */
+    .hook-stack .hook-card { box-shadow: none; }
+
+    .feedback-story {
+      padding-top: clamp(112px, 10vw, 160px);
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="#top">rapport</a>
+      <a class="nav-cta" href="#download">Try Rapport</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-lead">
+        <div class="hero-copy">
+          <h1>An <span class="dither-underline">apprentice</span> to help filter through <span class="word-whole">endless</span> design <span class="word-whole"><span class="dither-underline">variations.</span></span></h1>
+          <p>Rapport learns your taste from how you actually react, whether that’s what you say, what you type, or even the face you make. Then it puts that to work. It tosses what you'd reject, fills in what you didn't say, and only shows you what's worth your time. The longer it works with you, the less you have to say.</p>
+          <div class="hero-actions">
+            <a class="cta" href="/download">Try Rapport <span class="os">FREE&nbsp;·&nbsp;MACOS</span></a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="demo-hook">
+        <div class="hook-stack" aria-hidden="true">
+          <div class="hook-card" data-index="0" style="--rotation:-2.4deg"><img src="demo-assets/site-variations/portrait-faithful.jpg" alt=""></div>
+          <div class="hook-card" data-index="1" style="--rotation:1.8deg"><img src="demo-assets/site-variations/portrait-rivet-exact.jpg" alt=""></div>
+          <div class="hook-card" data-index="2" style="--rotation:-1.2deg"><img src="demo-assets/site-variations/portrait-rivet-exact-rapport-fonts.jpg" alt=""></div>
+          <div class="hook-card" data-index="3" style="--rotation:2.2deg"><img src="demo-assets/site-variations/portrait-rivet-exact-rapport-fonts-dither.jpg" alt=""></div>
+          <div class="hook-card" data-index="4" style="--rotation:-1.7deg"><img src="demo-assets/site-variations/portrait-rivet-literal.jpg" alt=""></div>
+          <div class="hook-card" data-index="5" style="--rotation:1deg"><img src="demo-assets/site-variations/portrait-rivet-left-rise.jpg" alt=""></div>
+          <div class="hook-card" data-index="6" style="--rotation:-2deg"><img src="demo-assets/site-variations/portrait-rivet-left-rise-balto.jpg" alt=""></div>
+          <div class="hook-card" data-index="7" style="--rotation:1.5deg"><img src="demo-assets/site-variations/portrait-rivet-spacing-1.jpg" alt=""></div>
+          <div class="hook-card" data-index="8" style="--rotation:-1deg"><img src="demo-assets/site-variations/portrait-rivet-spacing-3.jpg" alt=""></div>
+          <div class="hook-card" data-index="9" style="--rotation:2deg"><img src="demo-assets/site-variations/portrait-rivet-spacing-5.jpg" alt=""></div>
+          <div class="hook-card" data-index="10" style="--rotation:-1.5deg"><img src="demo-assets/site-variations/portrait-rivet-left-rise-sun-noodle.jpg" alt=""></div>
+          <div class="hook-card" data-index="11" data-current-design style="--rotation:1deg"><img src="demo-assets/site-variations/portrait-rivet-left-rise-balto-clean.jpg" alt="Current Rapport landing-page direction"></div>
+        </div>
+        <div class="demo-window" aria-label="Rapport product demo interface">
+          <div class="chrome-tabs">
+            <span class="traffic" aria-hidden="true"><i></i><i></i><i></i></span>
+            <div class="demo-tabs" role="tablist" aria-label="Rapport landing-page design variations">
+              <button class="demo-tab" role="tab" type="button" data-index="0" style="--dot:#d58a42"><span class="tab-favicon">R</span><span class="tab-title">01 Faithful</span><span class="tab-close">×</span></button>
+              <button class="demo-tab" role="tab" type="button" data-index="1" style="--dot:#ff2ad1"><span class="tab-favicon">R</span><span class="tab-title">02 Rivet</span><span class="tab-close">×</span></button>
+              <button class="demo-tab" role="tab" type="button" data-index="2" data-keep style="--dot:#49a8d5"><span class="tab-favicon">R</span><span class="tab-title">03 Type</span><span class="tab-close">×</span></button>
+              <button class="demo-tab" role="tab" type="button" data-index="3" style="--dot:#ef4d1f"><span class="tab-favicon">R</span><span class="tab-title">04 Dither</span><span class="tab-close">×</span></button>
+              <button class="demo-tab" role="tab" type="button" data-index="4" style="--dot:#9abf34"><span class="tab-favicon">R</span><span class="tab-title">05 Literal</span><span class="tab-close">×</span></button>
+              <button class="demo-tab" role="tab" type="button" data-index="5" style="--dot:#8b3b7a"><span class="tab-favicon">R</span><span class="tab-title">06 Left rise</span><span class="tab-close">×</span></button>
+              <button class="demo-tab" role="tab" type="button" data-index="6" style="--dot:#22a9c7"><span class="tab-favicon">R</span><span class="tab-title">07 Balto</span><span class="tab-close">×</span></button>
+              <button class="demo-tab" role="tab" type="button" data-index="7" data-keep style="--dot:#e8501f"><span class="tab-favicon">R</span><span class="tab-title">08 Spacing A</span><span class="tab-close">×</span></button>
+              <button class="demo-tab" role="tab" type="button" data-index="8" style="--dot:#7c3aed"><span class="tab-favicon">R</span><span class="tab-title">09 Spacing C</span><span class="tab-close">×</span></button>
+              <button class="demo-tab" role="tab" type="button" data-index="9" style="--dot:#bf4a00"><span class="tab-favicon">R</span><span class="tab-title">10 Spacing E</span><span class="tab-close">×</span></button>
+              <button class="demo-tab" role="tab" type="button" data-index="10" data-keep style="--dot:#241a2e"><span class="tab-favicon">R</span><span class="tab-title">11 Packaging</span><span class="tab-close">×</span></button>
+              <button class="demo-tab" role="tab" type="button" data-index="11" style="--dot:#8dbd20"><span class="tab-favicon">R</span><span class="tab-title">12 Balto clean</span><span class="tab-close">×</span></button>
+            </div>
+            <button class="chrome-new-tab" type="button" aria-label="New tab">+</button>
+          </div>
+          <div class="chrome-toolbar" aria-hidden="true">
+            <span class="chrome-controls">
+              <span class="chrome-tool"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></span>
+              <span class="chrome-tool is-disabled"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></span>
+              <span class="chrome-tool"><svg viewBox="0 0 24 24"><path d="M19 8a8 8 0 1 0 1 7"/><path d="M19 3v5h-5"/></svg></span>
+            </span>
+            <span class="chrome-address">
+              <span class="chrome-site-controls"><svg viewBox="0 0 24 24"><path d="M4 7h10m4 0h2M4 17h2m4 0h10M14 4v6M10 14v6"/><circle cx="14" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span>
+              <span class="chrome-url">localhost:4001/design-review/rapport-site</span>
+              <span class="chrome-star"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg></span>
+            </span>
+            <span class="chrome-actions">
+              <span class="chrome-profile">R</span>
+              <span class="chrome-tool"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg></span>
+            </span>
+          </div>
+          <div class="demo-body">
+            <div class="variation-field">
+              <button class="variation-tile" type="button" data-index="0"><img src="demo-assets/site-variations/portrait-faithful.jpg" alt="Faithful Rapport landing-page direction"></button>
+              <button class="variation-tile" type="button" data-index="1"><img src="demo-assets/site-variations/portrait-rivet-exact.jpg" alt="Rivet-exact Rapport landing-page direction"></button>
+              <button class="variation-tile" type="button" data-index="2" data-keep><img src="demo-assets/site-variations/portrait-rivet-exact-rapport-fonts.jpg" alt="Rapport typography direction"></button>
+              <button class="variation-tile" type="button" data-index="3"><img src="demo-assets/site-variations/portrait-rivet-exact-rapport-fonts-dither.jpg" alt="Dithered Rapport landing-page direction"></button>
+              <button class="variation-tile" type="button" data-index="4"><img src="demo-assets/site-variations/portrait-rivet-literal.jpg" alt="Literal Rivet layout direction"></button>
+              <button class="variation-tile" type="button" data-index="5"><img src="demo-assets/site-variations/portrait-rivet-left-rise.jpg" alt="Left-rise Rapport landing-page direction"></button>
+              <button class="variation-tile" type="button" data-index="6"><img src="demo-assets/site-variations/portrait-rivet-left-rise-balto.jpg" alt="Balto Rapport landing-page direction"></button>
+              <button class="variation-tile" type="button" data-index="7" data-keep><img src="demo-assets/site-variations/portrait-rivet-spacing-1.jpg" alt="First Rivet spacing direction"></button>
+              <button class="variation-tile" type="button" data-index="8"><img src="demo-assets/site-variations/portrait-rivet-spacing-3.jpg" alt="Third Rivet spacing direction"></button>
+              <button class="variation-tile" type="button" data-index="9"><img src="demo-assets/site-variations/portrait-rivet-spacing-5.jpg" alt="Fifth Rivet spacing direction"></button>
+              <button class="variation-tile" type="button" data-index="10" data-keep><img src="demo-assets/site-variations/portrait-rivet-left-rise-sun-noodle.jpg" alt="Packaging-inspired Rapport direction"></button>
+              <button class="variation-tile" type="button" data-index="11"><img src="demo-assets/site-variations/portrait-rivet-left-rise-balto-clean.jpg" alt="Balto clean-field Rapport direction"></button>
+            </div>
+          </div>
+        </div>
+        <aside class="codex-pane" hidden aria-label="Codex design conversation">
+          <header class="codex-header">
+            <span class="codex-folder" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="1.6"><path d="M3.5 7.5h6l1.8 2h9.2v8.7a2.3 2.3 0 0 1-2.3 2.3H5.8a2.3 2.3 0 0 1-2.3-2.3V7.5Z"/><path d="M3.5 9.5V6.2a2 2 0 0 1 2-2h3.8l2 2h7.2a2 2 0 0 1 2 2v1.3"/></svg></span>
+            <span class="codex-title"><strong>Create faithful Rapport hero HTML</strong></span>
+            <span class="codex-ellipsis" aria-hidden="true">•••</span>
+            <span class="codex-header-actions" aria-hidden="true">
+              <span class="codex-action"><svg viewBox="0 0 24 24" stroke-width="1.6"><path d="M12 15V3m0 0L8 7m4-4 4 4"/><path d="M5 12v6.5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V12"/></svg></span>
+              <span class="codex-mode"><span class="codex-mode-mark">◆</span><span class="codex-mode-chevron"></span></span>
+              <span class="codex-action"><svg viewBox="0 0 24 24" stroke-width="1.6"><path d="M8 6h12M4 6h.01M12 12h8M4 12h4m0 6h12M4 18h.01"/><circle cx="10" cy="12" r="2"/></svg></span>
+            </span>
+          </header>
+          <div class="codex-chat">
+            <article class="chat-message user" data-chat="initial-user">
+              Generate a broad set of Rapport landing-page directions. Push hierarchy, spacing, hero composition, typography, and demo framing so I can compare the edges of the space.
+              <button class="show-more" type="button">Show more</button>
+            </article>
+            <div class="codex-user-meta" data-chat="initial-meta"><span>3:10 PM</span><span class="meta-icon"><svg viewBox="0 0 16 16"><rect x="5" y="2.5" width="8" height="9" rx="1.5"/><path d="M3 5.5H2.5A1.5 1.5 0 0 0 1 7v6.5A1.5 1.5 0 0 0 2.5 15H9a1.5 1.5 0 0 0 1.5-1.5V13"/></svg></span><span class="meta-icon"><svg viewBox="0 0 16 16"><path d="m3 13 1-3L11.5 2.5a1.4 1.4 0 0 1 2 2L6 12l-3 1Z"/><path d="m10.5 3.5 2 2"/></svg></span></div>
+            <div class="worked-row" data-chat="worked">Worked for 8m 54s <span>›</span></div>
+            <article class="chat-message assistant" data-chat="initial-agent">
+              <p>Updated <span class="assistant-file">〈/〉 rapport-site-variations.html</span>.</p>
+              <ul class="assistant-list">
+                <li>Created 12 landing-page directions as Chrome tabs.</li>
+                <li>Varied hierarchy, spacing, type, color, and demo framing.</li>
+                <li>Kept every direction ready for Rapport review.</li>
+              </ul>
+            </article>
+            <article class="chat-message user" data-chat="feedback">
+              <strong>Rapport feedback · 12 reviewed</strong>
+              <div class="feedback-lines"><b>03 Rapport type</b> — surprised +0.61 · the hierarchy feels decisive<br><b>08 spacing A</b> — at ease +0.55 · keep the breathing room<br><b>11 packaging</b> — focused +0.70 · the warmth carries through</div>
+            </article>
+            <div class="codex-event" data-chat="reading"><span class="event-spinner"></span><span>Reading reaction context and taste history</span></div>
+            <article class="chat-message rapport-reply" data-chat="apprentice">
+              <div class="message-role rapport">Apprentice</div>
+              <p>The surprise in 03 is about <strong>hierarchy, not color</strong>. In landing-page reviews you consistently prefer a decisive headline, an immediately legible product demo, and browser chrome that recedes. The split attention in 01, 04, 05, and 09 is likely to read as noise.</p>
+            </article>
+            <article class="chat-message assistant" data-chat="agent-prune">
+              <p>I wouldn’t iterate on those four or the timid hero studies. I’m pruning nine directions and continuing with 03, 08, and 11—preserving their stronger hierarchy, breathing room, and warmer framing.</p>
+            </article>
+            <div class="codex-event" data-chat="pruned"><span class="event-spinner"></span><span>Pruned 9 directions · iterating 3</span></div>
+            <article class="chat-message assistant" data-chat="next-pass">
+              <p>Next pass: one typographic, one warm, and one product-led—same message, only the meaningful layout variables changed.</p>
+            </article>
+          </div>
+          <div class="codex-composer">
+            <div class="composer-text">Ask Codex to work on your design…</div>
+            <div class="composer-bottom" aria-hidden="true">
+              <span class="composer-plus">＋</span>
+              <span class="composer-access"><span class="composer-icon"><svg viewBox="0 0 24 24" stroke-width="1.7"><path d="M12 3 19 6v5c0 4.7-2.8 8.2-7 10-4.2-1.8-7-5.3-7-10V6l7-3Z"/><path d="M12 8v4m0 3h.01"/></svg></span>Full access</span>
+              <span class="composer-spacer"></span>
+              <span class="composer-model">5.6 Sol High</span>
+              <span class="composer-mic composer-icon"><svg viewBox="0 0 24 24" stroke-width="1.7"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg></span>
+              <span class="composer-send composer-icon"><svg viewBox="0 0 24 24"><path d="M12 18V6m0 0-5 5m5-5 5 5"/></svg></span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="scroll-story feedback-story" id="feedback">
+      <div class="story-inner">
+        <div class="story-copy">
+          <span class="story-kicker">01 · React in place</span>
+          <h2>Give feedback while the work is still in front of you.</h2>
+          <p>Pick the component. Rapport keeps the selection, your face, and anything you say attached to that exact piece of the design.</p>
+          <div class="story-detail">One click keeps the context intact</div>
+        </div>
+        <div class="rivet-media-stage">
+          <div class="feedback-stage" aria-label="Live Rapport feedback capture demo">
+            <div class="feedback-browser-slot" data-browser-clone></div>
+            <span class="demo-cursor" aria-hidden="true"><svg viewBox="0 0 30 38"><path d="M3 2 25 24l-10 .8-5 9.2L3 2Z"/></svg></span>
+            <div class="rapport-corner-bar" data-placement="outside-top-right" data-recording="true" aria-label="Rapport expression and voice feedback controls">
+              <div class="rapport-corner-content">
+                <span class="rapport-corner-silhouette" data-layer="shadow"><span class="rapport-corner-shell"></span><span class="rapport-corner-tail" data-tail="large"></span><span class="rapport-corner-tail" data-tail="small"></span></span>
+                <span class="rapport-corner-silhouette" data-layer="outline"><span class="rapport-corner-shell"></span><span class="rapport-corner-tail" data-tail="large"></span><span class="rapport-corner-tail" data-tail="small"></span></span>
+                <span class="rapport-corner-silhouette" data-layer="fill"><span class="rapport-corner-shell"></span><span class="rapport-corner-tail" data-tail="large"></span><span class="rapport-corner-tail" data-tail="small"></span></span>
+                <button class="rapport-corner-signal" type="button" tabindex="-1" aria-label="surprise, valence +0.61, arousal +0.74"><span aria-hidden="true">😮</span></button>
+                <button class="rapport-corner-icon-action rapport-corner-face-trash" type="button" tabindex="-1" aria-label="Discard facial expression"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M3.4 5.6H16.6M8.1 5.6V4.1a.9.9 0 0 1 .9-.9h2a.9.9 0 0 1 .9.9v1.5M5.4 5.6l.85 10.3a1.2 1.2 0 0 0 1.2 1.1h5.1a1.2 1.2 0 0 0 1.2-1.1l.85-10.3M8.6 8.8v5.1M11.4 8.8v5.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <span class="rapport-corner-divider"></span>
+                <button class="rapport-corner-transport" type="button" tabindex="-1" aria-label="Stop recording"><span class="rapport-corner-transport-glyph"></span></button>
+                <span class="rapport-corner-record-light"></span>
+                <span class="rapport-corner-timer" aria-label="Recording duration 0:03">0:03</span>
+                <button class="rapport-corner-icon-action rapport-corner-retry" type="button" tabindex="-1" aria-label="Start voice recording over" disabled><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M15.8 7.2A6.4 6.4 0 1 0 16 12M15.8 7.2V3.8M15.8 7.2h-3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+            <div class="rapport-typed-note" role="textbox" aria-readonly="true" aria-label="Typed feedback">
+              <span class="rapport-note-silhouette" data-layer="shadow" aria-hidden="true"><span class="rapport-note-shell"></span><span class="rapport-note-lobe" data-lobe="large"></span><span class="rapport-note-lobe" data-lobe="small"></span></span>
+              <span class="rapport-note-silhouette" data-layer="outline" aria-hidden="true"><span class="rapport-note-shell"></span><span class="rapport-note-lobe" data-lobe="large"></span><span class="rapport-note-lobe" data-lobe="small"></span></span>
+              <span class="rapport-note-silhouette" data-layer="fill" aria-hidden="true"><span class="rapport-note-shell"></span><span class="rapport-note-lobe" data-lobe="large"></span><span class="rapport-note-lobe" data-lobe="small"></span></span>
+              <span class="rapport-note-bubble-bridge" aria-hidden="true"></span>
+              <span data-typed-note data-copy="decrease the font size of the tagline and left justify with the graphic underneath"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scroll-story chat-story handoff-story" id="handoff">
+      <div class="story-inner">
+        <div class="story-copy">
+          <span class="story-kicker">02 · Hand it to the agent</span>
+          <h2>The feedback arrives with the missing context filled in.</h2>
+          <p>Rapport pastes the selected component, the literal note, and the reaction signal into the Codex task. Then the design apprentice explains what the reaction was really about.</p>
+          <div class="story-detail">Selection + words + reaction + taste history</div>
+        </div>
+        <div class="rivet-media-stage">
+        <aside class="codex-pane" aria-label="Codex feedback handoff conversation">
+          <header class="codex-header">
+            <span class="codex-folder" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="1.6"><path d="M3.5 7.5h6l1.8 2h9.2v8.7a2.3 2.3 0 0 1-2.3 2.3H5.8a2.3 2.3 0 0 1-2.3-2.3V7.5Z"/><path d="M3.5 9.5V6.2a2 2 0 0 1 2-2h3.8l2 2h7.2a2 2 0 0 1 2 2v1.3"/></svg></span>
+            <span class="codex-title"><strong>Apply Rapport feedback</strong></span>
+            <span class="codex-ellipsis" aria-hidden="true">•••</span>
+            <span class="codex-header-actions" aria-hidden="true"><span class="codex-mode"><span class="codex-mode-mark">◆</span><span class="codex-mode-chevron"></span></span></span>
+          </header>
+          <div class="codex-chat">
+            <article class="chat-message user" data-story-item>
+              <div class="pasted-feedback"><strong>Rapport feedback · pasted from selection</strong><span>component: landing-hero / rapport-type-03</span><span>selection: headline hierarchy + demo frame</span><span>voice: “The type feels decisive and the product is still obvious.”</span><span>expression: surprise · valence +0.61 · arousal 0.74</span></div>
+              <figure class="affect-attachment">
+                <img src="demo-assets/surprise-expression-attachment.svg" alt="Surprised face expression captured by Rapport">
+                <figcaption><strong>Surprise · image attachment</strong><span>Expression signal attached to the selected hero.</span></figcaption>
+              </figure>
+            </article>
+            <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Reading selected component and local design context</span></div>
+            <article class="chat-message assistant" data-story-item>
+              <p>I’ll preserve the headline-to-demo hierarchy and compare it independently from palette. The next pass will hold the framing constant so we only test the variable that triggered the reaction.</p>
+              <p class="chat-note">Opened landing-hero.html and isolated the hierarchy tokens.</p>
+            </article>
+            <article class="chat-message rapport-reply" data-story-item>
+              <div class="message-role rapport">Apprentice</div>
+              <p>The surprise is about <strong>clarity through hierarchy</strong>, not the typeface alone. Across prior site reviews, a decisive headline works when the product stays immediately visible; competing frames make the composition feel unresolved.</p>
+            </article>
+            <article class="chat-message assistant" data-story-item>
+              <p>Understood. I’m generating three controlled variations: typographic, warm, and product-led—each using the same hierarchy and demo frame.</p>
+            </article>
+          </div>
+          <div class="codex-composer">
+            <div class="composer-text">Ask Codex to work on your design…</div>
+            <div class="composer-bottom" aria-hidden="true"><span class="composer-plus">＋</span><span class="composer-access"><span class="composer-icon"><svg viewBox="0 0 24 24" stroke-width="1.7"><path d="M12 3 19 6v5c0 4.7-2.8 8.2-7 10-4.2-1.8-7-5.3-7-10V6l7-3Z"/><path d="M12 8v4m0 3h.01"/></svg></span>Full access</span><span class="composer-spacer"></span><span class="composer-model">5.6 Sol High</span><span class="composer-send composer-icon"><svg viewBox="0 0 24 24"><path d="M12 18V6m0 0-5 5m5-5 5 5"/></svg></span></div>
+          </div>
+        </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="scroll-story chat-story pruning-story" id="learning">
+      <div class="story-inner">
+        <div class="story-copy">
+          <span class="story-kicker">03 · Less to review next time</span>
+          <h2>Your agent learns which branches are dead before they reach you.</h2>
+          <p>Over time, Rapport turns repeated reactions into scoped design taste. The agent can prune predictable misses and spend its iterations where your attention is actually useful.</p>
+          <div class="story-detail">Fewer variations, better reasons</div>
+        </div>
+        <div class="rivet-media-stage">
+        <aside class="codex-pane" aria-label="Codex learned taste pruning conversation">
+          <header class="codex-header">
+            <span class="codex-folder" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="1.6"><path d="M3.5 7.5h6l1.8 2h9.2v8.7a2.3 2.3 0 0 1-2.3 2.3H5.8a2.3 2.3 0 0 1-2.3-2.3V7.5Z"/><path d="M3.5 9.5V6.2a2 2 0 0 1 2-2h3.8l2 2h7.2a2 2 0 0 1 2 2v1.3"/></svg></span>
+            <span class="codex-title"><strong>Iterate Rapport site directions</strong></span>
+            <span class="codex-ellipsis" aria-hidden="true">•••</span>
+            <span class="codex-header-actions" aria-hidden="true"><span class="codex-mode"><span class="codex-mode-mark">◆</span><span class="codex-mode-chevron"></span></span></span>
+          </header>
+          <div class="codex-chat">
+            <article class="chat-message user" data-story-item>
+              Make another pass on the Rapport site. Explore new directions, but don’t make me review work we already know is wrong.
+            </article>
+            <article class="chat-message rapport-reply" data-story-item>
+              <div class="message-role rapport">Apprentice</div>
+              <p>In prior site studies, this user repeatedly rejects <strong>timid headline hierarchy</strong>, <strong>demo frames that arrive too late</strong>, and <strong>decorative treatments that compete with the product</strong>. These signals are stable across earlier reviews.</p>
+            </article>
+            <article class="chat-message assistant" data-story-item>
+              <p>I’m pruning 01, 05, and 09 before the next iteration. They repeat those known failure modes and don’t test a meaningfully new hypothesis.</p>
+              <div class="prune-attachment" aria-label="Designs pruned from the iteration">
+                <span class="prune-shot"><img src="demo-assets/site-variations/rapport-concept-08-mono.jpg" alt="Rapport manifesto direction pruned"></span>
+                <span class="prune-shot"><img src="demo-assets/site-variations/portrait-rivet-spacing-2.jpg" alt="Crowded spacing direction pruned"></span>
+                <span class="prune-shot"><img src="demo-assets/site-variations/portrait-rivet-left-rise-blowbrush.jpg" alt="Over-styled typography direction pruned"></span>
+              </div>
+              <div class="prune-reason">01 · product arrives too late &nbsp;·&nbsp; 05 · cramped hierarchy &nbsp;·&nbsp; 09 · display type overpowers the demo</div>
+            </article>
+            <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Pruned 3 known misses · generating 4 novel branches</span></div>
+            <article class="chat-message assistant" data-story-item>
+              <p>The remaining directions all keep decisive hierarchy and an obvious product frame, while testing genuinely new palette and composition choices.</p>
+            </article>
+          </div>
+          <div class="codex-composer">
+            <div class="composer-text">Ask Codex to work on your design…</div>
+            <div class="composer-bottom" aria-hidden="true"><span class="composer-plus">＋</span><span class="composer-access"><span class="composer-icon"><svg viewBox="0 0 24 24" stroke-width="1.7"><path d="M12 3 19 6v5c0 4.7-2.8 8.2-7 10-4.2-1.8-7-5.3-7-10V6l7-3Z"/><path d="M12 8v4m0 3h.01"/></svg></span>Full access</span><span class="composer-spacer"></span><span class="composer-model">5.6 Sol High</span><span class="composer-send composer-icon"><svg viewBox="0 0 24 24"><path d="M12 18V6m0 0-5 5m5-5 5 5"/></svg></span></div>
+          </div>
+        </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing" id="download">
+      <h2>Give your agent the part of the feedback you never had words for.</h2>
+      <p>Start with one shortcut. Let Rapport keep the signal attached to the work.</p>
+      <div class="closing-actions">
+        <a class="cta" href="/download">Try Rapport <span class="os">FREE&nbsp;·&nbsp;MACOS</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#top">rapport</a>
+      </div>
+      <div class="footer-links">
+        <div><h3>Product</h3><a href="#download">Download</a><a href="#footer">Privacy</a></div>
+      </div>
+    </div>
+  </footer>
+  <script>
+    (() => {
+      document.body.classList.add("has-js");
+      const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const later = (fn, delay) => setTimeout(fn, delay);
+      const selectIn = (root, index) => {
+        const tabs = [...root.querySelectorAll(".demo-tab")];
+        const tiles = [...root.querySelectorAll(".variation-tile")];
+        tabs.forEach((tab, i) => tab.setAttribute("aria-selected", String(i === index)));
+        tiles.forEach((tile, i) => tile.classList.toggle("is-selected", i === index));
+      };
+
+      const hero = document.querySelector(".demo-hook");
+      const heroWindow = hero?.querySelector(".demo-window");
+      if (hero && heroWindow) {
+        const tabs = [...heroWindow.querySelectorAll(".demo-tab")];
+        const tiles = [...heroWindow.querySelectorAll(".variation-tile")];
+        const stackRoot = hero.querySelector(".hook-stack");
+        const scatterSources = [...stackRoot.querySelectorAll(".hook-card")];
+        const generatedRapportAssets = [
+          ["rapport-concept-01-editorial", false], ["rapport-concept-02-midnight", false],
+          ["rapport-concept-03-cobalt", false], ["rapport-concept-04-moss", false],
+          ["rapport-concept-05-brutal", false], ["rapport-concept-06-pink", false],
+          ["rapport-concept-07-orange", false], ["rapport-concept-08-mono", false],
+          ["rapport-concept-09-plum", false], ["rapport-concept-10-teal", false],
+          ["rapport-concept-11-clay", false], ["rapport-concept-12-black", false],
+          ["rapport-concept-13-docs", false], ["rapport-concept-14-audio", false],
+          ["rapport-concept-15-poster", false], ["rapport-concept-16-ice", false],
+          ["rapport-concept-17-cream", false], ["rapport-concept-18-green", false]
+        ];
+        const historicalRapportAssets = [
+          ["portrait-faithful", false], ["portrait-rivet-exact", false],
+          ["portrait-rivet-exact-rapport-fonts", false], ["portrait-rivet-exact-rapport-fonts-dither", false],
+          ["portrait-rivet-left-rise", false], ["portrait-rivet-left-rise-archivo-black", true],
+          ["portrait-rivet-left-rise-balto", false], ["portrait-rivet-left-rise-balto-clean", false],
+          ["portrait-rivet-left-rise-blowbrush", true], ["portrait-rivet-left-rise-sun-noodle", false],
+          ["portrait-rivet-literal", false], ["portrait-rivet-spacing-1", false],
+          ["portrait-rivet-spacing-2", true], ["portrait-rivet-spacing-3", false],
+          ["portrait-rivet-spacing-4", true], ["portrait-rivet-spacing-5", false]
+        ];
+        const extraScatter = Array.from({ length: 72 }, (_, index) => {
+          const source = index % 5 === 4 ? historicalRapportAssets : generatedRapportAssets;
+          const [asset, weak] = source[index % source.length];
+          const lane = index % 5;
+          let left;
+          let top;
+          if (lane === 0) {
+            left = -24 + ((index * 11) % 20);
+            top = -12 + ((index * 37) % 300);
+          } else if (lane === 1) {
+            left = 96 + ((index * 13) % 27);
+            top = -12 + ((index * 41) % 300);
+          } else if (lane === 2) {
+            left = -22 + ((index * 17) % 19);
+            top = 326 + ((index * 43) % 430);
+          } else if (lane === 3) {
+            left = 96 + ((index * 19) % 27);
+            top = 326 + ((index * 47) % 430);
+          } else {
+            const dockLeft = index % 2 === 0;
+            left = dockLeft ? -4 + ((index * 7) % 14) : 90 + ((index * 11) % 14);
+            top = 250 + ((index * 17) % 72);
+          }
+          const width = weak ? 124 + ((index * 17) % 54) : 160 + ((index * 19) % 75);
+          const rotation = -4.8 + ((index * 23) % 96) / 10;
+          const z = weak ? 1 + (index % 2) : 3 + (index % 4);
+          return { asset, weak, left, top, width, rotation, z };
+        }).concat([
+          { asset: "rapport-concept-05-brutal", left: 7, top: 468, width: 202, rotation: -1.4, z: 20, overlay: true },
+          { asset: "rapport-concept-14-audio", left: 79, top: 494, width: 214, rotation: 1.8, z: 21, overlay: true },
+          { asset: "rapport-concept-02-midnight", left: 8, top: 646, width: 220, rotation: 1.2, z: 19, overlay: true },
+          { asset: "rapport-concept-15-poster", left: 80, top: 680, width: 196, rotation: -1.7, z: 22, overlay: true },
+          { asset: "rapport-concept-13-docs", left: 63, top: -58, width: 180, rotation: -1.1, z: 14, neighbor: true },
+          { asset: "rapport-concept-02-midnight", left: 76, top: -50, width: 166, rotation: 1.4, z: 16, neighbor: true },
+          { asset: "rapport-concept-10-teal", left: 87, top: -32, width: 152, rotation: -2, z: 13, neighbor: true },
+          { asset: "rapport-concept-04-moss", left: 63, top: 74, width: 166, rotation: 1.1, z: 15, neighbor: true },
+          { asset: "rapport-concept-15-poster", left: 75, top: 82, width: 184, rotation: -1.6, z: 17, neighbor: true },
+          { asset: "rapport-concept-17-cream", left: 89, top: 92, width: 154, rotation: 1.8, z: 14, neighbor: true }
+        ]);
+        extraScatter.forEach(({ asset, weak, left, top, width, rotation, z, overlay, neighbor }, index) => {
+          const clone = scatterSources[0].cloneNode(true);
+          clone.classList.remove("is-visible", "is-rejected", "is-anchor");
+          clone.classList.add("is-extra-scatter");
+          if (weak) clone.classList.add("is-weak-concept");
+          if (overlay) clone.classList.add("is-contrast-overlay");
+          if (neighbor) clone.classList.add("is-tagline-neighbor");
+          clone.removeAttribute("data-current-design");
+          clone.dataset.variantSource = asset;
+          clone.style.setProperty("--scatter-left", `${left}%`);
+          clone.style.setProperty("--scatter-top", `${top}px`);
+          clone.style.setProperty("--scatter-width", `${width}px`);
+          clone.style.setProperty("--scatter-top-fluid", `${top / 10}vw`);
+          clone.style.setProperty("--scatter-width-fluid", `${width / 10}vw`);
+          clone.style.setProperty("--scatter-z", z);
+          clone.style.setProperty("--rotation", `${rotation}deg`);
+          const image = clone.querySelector("img");
+          image.src = `demo-assets/site-variations/${asset}.jpg`;
+          image.alt = "";
+          image.decoding = "async";
+          stackRoot.append(clone);
+        });
+        const stack = [...hero.querySelectorAll(".hook-card")];
+        const extraCards = stack.filter(card => card.classList.contains("is-extra-scatter"));
+        const rejectedTiles = new Set([0, 7, 10]);
+        const rejectedStackIndex = 7;
+        const finishHero = () => {
+          tabs.forEach((tab, index) => tab.classList.toggle("is-rejected", rejectedTiles.has(index)));
+          tiles.forEach((tile, index) => {
+            tile.classList.toggle("is-rejected", rejectedTiles.has(index));
+            tile.classList.remove("is-kept");
+          });
+          stack.forEach((card, index) => {
+            card.classList.toggle("is-rejected", index === rejectedStackIndex);
+            card.classList.toggle("is-anchor", card.hasAttribute("data-current-design"));
+          });
+          selectIn(heroWindow, 11);
+        };
+        const showHeroFinal = () => {
+          [...tabs, ...tiles, ...stack].forEach(item => item.classList.add("is-visible"));
+          finishHero();
+        };
+        const playHero = () => {
+          tabs.forEach((tab, index) => later(() => {
+            tab.classList.add("is-visible");
+            tiles[index].classList.add("is-visible");
+            selectIn(heroWindow, index);
+            stack[index]?.classList.add("is-visible");
+          }, 160 + index * 150));
+          extraCards.forEach((card, index) => later(() => {
+            card.classList.add("is-visible");
+          }, 220 + index * 28));
+          later(finishHero, 2450);
+        };
+        tabs.forEach((tab, index) => tab.addEventListener("click", () => selectIn(heroWindow, index)));
+        tiles.forEach((tile, index) => tile.addEventListener("click", () => selectIn(heroWindow, index)));
+        if (reduceMotion) showHeroFinal();
+        else {
+          const heroObserver = new IntersectionObserver(entries => {
+            if (!entries.some(entry => entry.isIntersecting)) return;
+            heroObserver.disconnect();
+            playHero();
+          }, { threshold: .18 });
+          heroObserver.observe(hero);
+        }
+
+        const feedbackSlot = document.querySelector("[data-browser-clone]");
+        if (feedbackSlot) {
+          const browserClone = heroWindow.cloneNode(true);
+          browserClone.classList.add("feedback-browser");
+          browserClone.querySelectorAll(".demo-tab,.variation-tile").forEach(item => item.classList.add("is-visible"));
+          browserClone.querySelectorAll(".is-rejected,.is-kept,.is-selected").forEach(item => item.classList.remove("is-rejected", "is-kept", "is-selected"));
+          feedbackSlot.append(browserClone);
+          const feedbackStage = feedbackSlot.closest(".feedback-stage");
+          const feedbackTabs = [...browserClone.querySelectorAll(".demo-tab")];
+          const feedbackTiles = [...browserClone.querySelectorAll(".variation-tile")];
+          const cornerBubble = feedbackStage.querySelector(".rapport-corner-bar");
+          const typedNote = feedbackStage.querySelector(".rapport-typed-note");
+          const typedNoteCopy = typedNote?.querySelector("[data-typed-note]");
+          const typedNoteText = typedNoteCopy?.dataset.copy || "";
+          const feedbackTimers = new Set();
+          let feedbackLooping = false;
+          const scheduleFeedback = (fn, delay) => {
+            const timer = later(() => {
+              feedbackTimers.delete(timer);
+              fn();
+            }, delay);
+            feedbackTimers.add(timer);
+            return timer;
+          };
+          const clearFeedbackTimers = () => {
+            feedbackTimers.forEach(timer => clearTimeout(timer));
+            feedbackTimers.clear();
+          };
+          const getFeedbackTargetIndex = () => {
+            const visibleTiles = feedbackTiles.filter(tile => getComputedStyle(tile).display !== "none" && tile.getClientRects().length);
+            if (!visibleTiles.length) return 0;
+            const topEdge = Math.min(...visibleTiles.map(tile => tile.getBoundingClientRect().top));
+            const topRow = visibleTiles.filter(tile => Math.abs(tile.getBoundingClientRect().top - topEdge) < 3);
+            const rightmostTile = topRow.reduce((rightmost, tile) => (
+              tile.getBoundingClientRect().right > rightmost.getBoundingClientRect().right ? tile : rightmost
+            ));
+            return feedbackTiles.indexOf(rightmostTile);
+          };
+          const positionFeedbackCursor = () => {
+            const targetTile = feedbackTiles[getFeedbackTargetIndex()];
+            if (!targetTile) return;
+            const tileRect = targetTile.getBoundingClientRect();
+            const stageRect = feedbackStage.getBoundingClientRect();
+            feedbackStage.style.setProperty("--feedback-cursor-left", `${((tileRect.left + tileRect.width * .72 - stageRect.left) / stageRect.width) * 100}%`);
+            feedbackStage.style.setProperty("--feedback-cursor-top", `${((tileRect.top + tileRect.height * .34 - stageRect.top) / stageRect.height) * 100}%`);
+          };
+          const selectFeedbackTarget = () => selectIn(browserClone, getFeedbackTargetIndex());
+          const positionCornerBubble = () => {
+            const selectedTile = browserClone.querySelector(".variation-tile.is-selected");
+            if (!selectedTile || !cornerBubble) return;
+            const tileRect = selectedTile.getBoundingClientRect();
+            const stageRect = feedbackStage.getBoundingClientRect();
+            const scale = Number.parseFloat(getComputedStyle(cornerBubble).getPropertyValue("--rapport-corner-scale")) || 1;
+            const noteStyle = getComputedStyle(typedNote);
+            const noteGap = Number.parseFloat(noteStyle.getPropertyValue("--rapport-note-gap")) || 24;
+            const desiredBubbleLeft = tileRect.right + 14 * scale;
+            const feedbackWidth = 306 * scale + noteGap + (typedNote?.offsetWidth || 0);
+            const shouldFlipLeft = desiredBubbleLeft + feedbackWidth > innerWidth - 8;
+            const baseBubbleTop = tileRect.top - 53;
+            let bubbleStyleLeft;
+            let noteLeft;
+            if (shouldFlipLeft) {
+              let visualBubbleRight = tileRect.left - 14 * scale;
+              let visualBubbleLeft = visualBubbleRight - 306 * scale;
+              noteLeft = visualBubbleLeft - noteGap - (typedNote?.offsetWidth || 0);
+              const fitShift = Math.max(0, 8 - noteLeft);
+              visualBubbleRight += fitShift;
+              visualBubbleLeft += fitShift;
+              noteLeft += fitShift;
+              bubbleStyleLeft = visualBubbleRight - 306;
+              cornerBubble.dataset.placement = "outside-top-left";
+              if (typedNote) typedNote.dataset.noteSide = "left";
+            } else {
+              bubbleStyleLeft = desiredBubbleLeft;
+              noteLeft = bubbleStyleLeft + 306 * scale + noteGap;
+              cornerBubble.dataset.placement = "outside-top-right";
+              if (typedNote) typedNote.dataset.noteSide = "right";
+            }
+            const noteTop = baseBubbleTop + 53 * (1 - scale);
+            const copyHeading = feedbackStage.closest(".story-inner")?.querySelector(".story-copy h2");
+            const headingRect = copyHeading?.getBoundingClientRect();
+            const noteWidth = typedNote?.offsetWidth || 0;
+            const noteHeight = typedNote?.offsetHeight || 0;
+            const crossesHeadingColumn = headingRect
+              && noteLeft < headingRect.right
+              && noteLeft + noteWidth > headingRect.left;
+            const verticalShift = crossesHeadingColumn
+              ? Math.max(0, noteTop + noteHeight - (headingRect.top - 16))
+              : 0;
+            const bubbleTop = baseBubbleTop - verticalShift;
+            cornerBubble.style.left = `${bubbleStyleLeft - stageRect.left}px`;
+            cornerBubble.style.top = `${bubbleTop - stageRect.top}px`;
+            if (typedNote) {
+              typedNote.style.setProperty("--rapport-note-connector-y", `${53 * scale / 2}px`);
+              typedNote.style.left = `${noteLeft - stageRect.left}px`;
+              typedNote.style.top = `${bubbleTop - stageRect.top + 53 * (1 - scale)}px`;
+            }
+          };
+          const typeFeedbackNote = (onComplete = () => {}) => {
+            if (!typedNoteCopy) return;
+            if (reduceMotion) {
+              typedNoteCopy.textContent = typedNoteText;
+              onComplete();
+              return;
+            }
+            typedNoteCopy.textContent = "";
+            let index = 0;
+            const typeNext = () => {
+              if (!feedbackLooping) return;
+              typedNoteCopy.textContent = typedNoteText.slice(0, ++index);
+              if (index < typedNoteText.length) scheduleFeedback(typeNext, 24);
+              else onComplete();
+            };
+            scheduleFeedback(typeNext, 180);
+          };
+          feedbackTabs.forEach((tab, index) => tab.addEventListener("click", () => selectIn(browserClone, index)));
+          feedbackTiles.forEach((tile, index) => tile.addEventListener("click", () => selectIn(browserClone, index)));
+          const finishFeedback = () => {
+            selectFeedbackTarget();
+            positionFeedbackCursor();
+            positionCornerBubble();
+            feedbackStage.classList.add("is-entered", "is-selecting", "is-clicked", "is-labeled");
+            typeFeedbackNote();
+          };
+          const resetFeedback = () => {
+            feedbackStage.classList.remove("is-entered", "is-selecting", "is-clicked", "is-labeled");
+            selectIn(browserClone, -1);
+            if (typedNoteCopy) typedNoteCopy.textContent = "";
+          };
+          const playFeedback = () => {
+            if (!feedbackLooping) return;
+            clearFeedbackTimers();
+            resetFeedback();
+            positionFeedbackCursor();
+            scheduleFeedback(() => feedbackStage.classList.add("is-entered"), 320);
+            scheduleFeedback(() => feedbackStage.classList.add("is-selecting"), 770);
+            scheduleFeedback(() => {
+              feedbackStage.classList.add("is-clicked");
+              selectFeedbackTarget();
+            }, 1570);
+            scheduleFeedback(() => {
+              positionCornerBubble();
+              feedbackStage.classList.add("is-labeled");
+              typeFeedbackNote(() => scheduleFeedback(playFeedback, 5000));
+            }, 1870);
+          };
+          const stopFeedback = () => {
+            feedbackLooping = false;
+            clearFeedbackTimers();
+            resetFeedback();
+          };
+          addEventListener("resize", () => {
+            positionFeedbackCursor();
+            if (feedbackStage.classList.contains("is-clicked")) selectFeedbackTarget();
+            positionCornerBubble();
+          }, { passive: true });
+          if (reduceMotion) finishFeedback();
+          else {
+            const feedbackObserver = new IntersectionObserver(entries => {
+              const isVisible = entries.some(entry => entry.isIntersecting);
+              if (isVisible && !feedbackLooping) {
+                feedbackLooping = true;
+                playFeedback();
+              } else if (!isVisible && feedbackLooping) {
+                stopFeedback();
+              }
+            }, { threshold: .35 });
+            feedbackObserver.observe(feedbackStage);
+          }
+        }
+      }
+
+      document.querySelectorAll(".chat-story").forEach(story => {
+        const items = [...story.querySelectorAll("[data-story-item]")];
+        const chat = story.querySelector(".codex-chat");
+        const timers = new Set();
+        let looping = false;
+        const schedule = (fn, delay) => {
+          const timer = later(() => {
+            timers.delete(timer);
+            fn();
+          }, delay);
+          timers.add(timer);
+          return timer;
+        };
+        const keepItemVisible = (item, behavior = "smooth") => {
+          if (!chat) return;
+          const chatRect = chat.getBoundingClientRect();
+          const itemRect = item.getBoundingClientRect();
+          const overflow = itemRect.bottom - chatRect.bottom + 12;
+          if (overflow > 0) chat.scrollTo({ top: chat.scrollTop + overflow, behavior });
+        };
+        const resetStory = () => {
+          items.forEach(item => item.classList.remove("is-visible", "is-complete"));
+          chat?.scrollTo({ top: 0, behavior: "auto" });
+        };
+        const revealAll = () => {
+          items.forEach(item => {
+            item.classList.add("is-visible");
+            if (item.classList.contains("codex-event")) item.classList.add("is-complete");
+          });
+          if (items.length) keepItemVisible(items.at(-1), "auto");
+        };
+        const playStory = () => {
+          if (!looping) return;
+          resetStory();
+          schedule(() => {
+            items.forEach((item, index) => schedule(() => {
+              if (!looping) return;
+              item.classList.add("is-visible");
+              schedule(() => keepItemVisible(item), 40);
+              if (item.classList.contains("codex-event")) schedule(() => item.classList.add("is-complete"), 650);
+            }, index * 620));
+            const finalRevealAt = Math.max(0, items.length - 1) * 620;
+            const finalCompletionDelay = items.at(-1)?.classList.contains("codex-event") ? 650 : 0;
+            const finalFrameAt = finalRevealAt + finalCompletionDelay;
+            schedule(resetStory, finalFrameAt + 10000);
+            schedule(playStory, finalFrameAt + 10320);
+          }, 320);
+        };
+        const stopStory = () => {
+          looping = false;
+          timers.forEach(timer => clearTimeout(timer));
+          timers.clear();
+          resetStory();
+        };
+        if (reduceMotion) revealAll();
+        else {
+          const storyObserver = new IntersectionObserver(entries => {
+            const isVisible = entries.some(entry => entry.isIntersecting);
+            if (isVisible && !looping) {
+              looping = true;
+              playStory();
+            } else if (!isVisible && looping) {
+              stopStory();
+            }
+          }, { threshold: .22 });
+          storyObserver.observe(story);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
