@@ -19,6 +19,7 @@ jobs:
       - name: Test production server
         run: |
           npm ci
+          npm run build
           npm test
       - name: Install Vercel CLI
         run: npm install -g vercel
