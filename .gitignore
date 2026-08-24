@@ -7,3 +7,5 @@ remotion-animation/node_modules/
 public/*.dmg
 .vercel
 .env*
+.rivet/
+dist/

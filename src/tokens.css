@@ -1,0 +1,63 @@
+/* Rapport website priors · local to vibecheck-website/src */
+:root {
+  --paper: #f4ead9;
+  --paper-light: #f9f1e5;
+  --panel: #efe3d6;
+  --ink: #241a2e;
+  --quiet: #6d5f7a;
+  --muted: #9c8e96;
+  --orange: #e8501f;
+  --orange-dark: #c84017;
+  --cream: #fdf6ef;
+  --policy-surface: #ffffff;
+  --line: rgba(36, 26, 46, 0.14);
+  --display: "Instrument Serif", Georgia, serif;
+  --serif: "Fraunces", Georgia, serif;
+  --mono: "SF Mono", ui-monospace, "Fira Code", monospace;
+  --weight-normal: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 900;
+  --nav-h: 60px;
+  --rail: min(87.8vw, 1264px);
+  --rapport-light-gradient: url("/demo-assets/rapport-light-gradient.png");
+  --rapport-dither: url("/demo-assets/image-dithering-2x-exact.jpg");
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-4xl: 9rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --duration-micro: 120ms;
+  --duration-short: 180ms;
+  --z-base: 1;
+  --z-raised: 10;
+  --z-sticky: 200;
+  --z-sticky-nav: 300;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-light: var(--paper-light);
+  --color-panel: var(--panel);
+  --color-ink: var(--ink);
+  --color-quiet: var(--quiet);
+  --color-muted: var(--muted);
+  --color-signal: var(--orange);
+  --color-signal-dark: var(--orange-dark);
+  --color-cream: var(--cream);
+  --color-line: var(--line);
+  --font-display: var(--display);
+  --font-serif: var(--serif);
+  --font-mono: var(--mono);
+  --font-weight-normal: var(--weight-normal);
+  --font-weight-semibold: var(--weight-semibold);
+  --font-weight-bold: var(--weight-bold);
+  --font-weight-black: var(--weight-black);
+}

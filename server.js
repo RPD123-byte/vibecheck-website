@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const {
   DEFAULT_BLOB_ORIGIN,
@@ -38,7 +39,16 @@ function createApp({
     }
   });
 
-  app.use(express.static(path.join(__dirname, 'public')));
+  const builtSite = path.join(__dirname, 'dist');
+  const staticRoot = fs.existsSync(path.join(builtSite, 'index.html'))
+    ? builtSite
+    : path.join(__dirname, 'public');
+
+  app.get(['/privacy', '/privacy/'], (_request, response) => {
+    response.sendFile(path.join(staticRoot, 'index.html'));
+  });
+
+  app.use(express.static(staticRoot));
   return app;
 }
 

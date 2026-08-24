@@ -94,3 +94,16 @@ test('non-GET methods do not resolve a download', async () => {
     assert.equal(called, false);
   });
 });
+
+test('GET /privacy serves the canonical site shell', async () => {
+  const app = createApp();
+  await serve(app, async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/privacy`);
+    const html = await response.text();
+
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get('content-type'), /text\/html/);
+    assert.match(html, /<!doctype html>/i);
+    assert.doesNotMatch(html, /<title>Rapport Privacy Policy<\/title>/);
+  });
+});
