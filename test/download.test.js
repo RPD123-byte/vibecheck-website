@@ -111,6 +111,25 @@ test('GET /privacy serves the canonical site shell', async () => {
   });
 });
 
+test('GET / exposes the public Rapport title and description', async () => {
+  const app = createApp();
+  await serve(app, async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/`);
+    const html = await response.text();
+
+    assert.equal(response.status, 200);
+    assert.match(
+      html,
+      /<title>Rapport — An apprentice to help filter through endless design variations\.<\/title>/,
+    );
+    assert.match(
+      html,
+      /name="description"\s+content="An apprentice to help filter through endless design variations\."/,
+    );
+    assert.doesNotMatch(html, /Balto scattered hero study/i);
+  });
+});
+
 test('HTML shells are never stored by the browser', async () => {
   const app = createApp();
   await serve(app, async (baseUrl) => {
