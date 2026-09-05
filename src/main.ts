@@ -30,3 +30,9 @@ if (isPrivacyRoute) {
 }
 
 setupHeaderScroll();
+
+if (import.meta.env.DEV) {
+  void import("./agentation").then(({ mountAgentation }) => {
+    mountAgentation();
+  });
+}

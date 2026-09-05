@@ -19,7 +19,12 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.3.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "agentation": "^3.0.2",
     "concurrently": "9.2.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "tailwindcss": "4.3.3",
     "typescript": "7.0.2",
     "vite": "8.1.5"
