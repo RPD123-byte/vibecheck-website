@@ -12,8 +12,8 @@ export const pageMarkup = String.raw`
     <section class="hero" id="top">
       <div class="hero-lead">
         <div class="hero-copy">
-          <h1>An <span class="dither-underline">apprentice</span> to help filter through <span class="word-whole">endless</span> design <span class="word-whole"><span class="dither-underline">variations.</span></span></h1>
-          <p>Rapport learns your taste from how you actually react, whether that’s what you say, what you type, or even the face you make. Then it puts that to work. It tosses what you'd reject, fills in what you didn't say, and only shows you what's worth your time. The longer it works with you, the less you have to say.</p>
+          <h1>Give your <span class="dither-underline">agent</span> the context to filter through <span class="word-whole">endless</span> design <span class="word-whole"><span class="dither-underline">variations.</span></span></h1>
+          <p>Rapport captures what you say, what you type, and even the face you make. Its skill guides your agent through your past sessions, connecting those reactions to designs you’ve discussed before. Your agent uses that context to make the next pass, with less for you to explain.</p>
           <div class="hero-actions">
             <a class="cta" href="/download">Try Rapport <span class="os">FREE&nbsp;·&nbsp;MACOS</span></a>
           </div>
@@ -118,13 +118,13 @@ export const pageMarkup = String.raw`
               <strong>Rapport feedback · 12 reviewed</strong>
               <div class="feedback-lines"><b>03 Rapport type</b> — surprised +0.61 · the hierarchy feels decisive<br><b>08 spacing A</b> — at ease +0.55 · keep the breathing room<br><b>11 packaging</b> — focused +0.70 · the warmth carries through</div>
             </article>
-            <div class="codex-event" data-chat="reading"><span class="event-spinner"></span><span>Reading reaction context and taste history</span></div>
-            <article class="chat-message rapport-reply" data-chat="apprentice">
-              <div class="message-role rapport">Apprentice</div>
-              <p>The surprise in 03 is about <strong>hierarchy, not color</strong>. In landing-page reviews you consistently prefer a decisive headline, an immediately legible product demo, and browser chrome that recedes. The split attention in 01, 04, 05, and 09 is likely to read as noise.</p>
+            <div class="codex-event" data-chat="reading"><span class="event-spinner"></span><span>Search sessions · headline, spacing, demo framing</span></div>
+            <article class="chat-message assistant" data-chat="context">
+              <div class="message-role">Codex</div>
+              <p>I found your earlier note: <strong>“Keep the product visible under the headline.”</strong> Alongside today’s feedback, that suggests 03’s hierarchy is what landed. I’ll keep that, 08’s breathing room, and 11’s warmth in the next pass.</p>
             </article>
             <article class="chat-message assistant" data-chat="agent-prune">
-              <p>I wouldn’t iterate on those four or the timid hero studies. I’m pruning nine directions and continuing with 03, 08, and 11—preserving their stronger hierarchy, breathing room, and warmer framing.</p>
+              <p>I’m keeping 03, 08, and 11 for their hierarchy, breathing room, and warmth. I’ll prune the other nine and carry those choices into the next pass.</p>
             </article>
             <div class="codex-event" data-chat="pruned"><span class="event-spinner"></span><span>Pruned 9 directions · iterating 3</span></div>
             <article class="chat-message assistant" data-chat="next-pass">
@@ -154,7 +154,7 @@ export const pageMarkup = String.raw`
           <p>Pick the component. Rapport keeps the selection, your face, and anything you say attached to that exact piece of the design.</p>
           <div class="story-detail">One click keeps the context intact</div>
         </div>
-        <div class="rivet-media-stage">
+        <div class="brand-gradient">
           <div class="feedback-stage" aria-label="Live Rapport feedback capture demo">
             <div class="feedback-browser-slot" data-browser-clone></div>
             <span class="demo-cursor" aria-hidden="true"><svg viewBox="0 0 30 38"><path d="M3 2 25 24l-10 .8-5 9.2L3 2Z"/></svg></span>
@@ -188,11 +188,11 @@ export const pageMarkup = String.raw`
       <div class="story-inner">
         <div class="story-copy">
           <span class="story-kicker">02 · Hand it to the agent</span>
-          <h2>The feedback arrives with the missing context filled in.</h2>
-          <p>Rapport pastes the selected component, the literal note, and the reaction signal into the Codex task. Then the design apprentice explains what the reaction was really about.</p>
-          <div class="story-detail">Selection + words + reaction + taste history</div>
+          <h2>Your agent puts the reaction in context.</h2>
+          <p>Rapport brings the selected component, your note, and your facial expression into the task. The skill then guides your agent to search past sessions for relevant feedback and design decisions, so it can interpret the reaction in context.</p>
+          <div class="story-detail">Your reaction, connected to your past sessions</div>
         </div>
-        <div class="rivet-media-stage">
+        <div class="brand-gradient">
         <aside class="codex-pane" aria-label="Codex feedback handoff conversation">
           <header class="codex-header">
             <span class="codex-folder" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="1.6"><path d="M3.5 7.5h6l1.8 2h9.2v8.7a2.3 2.3 0 0 1-2.3 2.3H5.8a2.3 2.3 0 0 1-2.3-2.3V7.5Z"/><path d="M3.5 9.5V6.2a2 2 0 0 1 2-2h3.8l2 2h7.2a2 2 0 0 1 2 2v1.3"/></svg></span>
@@ -208,17 +208,14 @@ export const pageMarkup = String.raw`
                 <figcaption><strong>Surprise · image attachment</strong><span>Expression signal attached to the selected hero.</span></figcaption>
               </figure>
             </article>
-            <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Reading selected component and local design context</span></div>
+            <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Read skill · rapport-feedback</span></div>
+            <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Search sessions · hero hierarchy + product visibility</span></div>
             <article class="chat-message assistant" data-story-item>
-              <p>I’ll preserve the headline-to-demo hierarchy and compare it independently from palette. The next pass will hold the framing constant so we only test the variable that triggered the reaction.</p>
-              <p class="chat-note">Opened landing-hero.html and isolated the hierarchy tokens.</p>
-            </article>
-            <article class="chat-message rapport-reply" data-story-item>
-              <div class="message-role rapport">Apprentice</div>
-              <p>The surprise is about <strong>clarity through hierarchy</strong>, not the typeface alone. Across prior site reviews, a decisive headline works when the product stays immediately visible; competing frames make the composition feel unresolved.</p>
+              <p class="chat-note">Found in earlier site reviews</p>
+              <p>“Keep the product visible under the headline.”<br>“The extra frame makes everything compete.”</p>
             </article>
             <article class="chat-message assistant" data-story-item>
-              <p>Understood. I’m generating three controlled variations: typographic, warm, and product-led—each using the same hierarchy and demo frame.</p>
+              <p>Your note and those earlier reviews suggest the surprise is about <strong>bold type that still leaves the product clear</strong>. I’ll keep that hierarchy and the demo in view as I vary the palette.</p>
             </article>
           </div>
           <div class="codex-composer">
@@ -230,16 +227,16 @@ export const pageMarkup = String.raw`
       </div>
     </section>
 
-    <section class="scroll-story chat-story pruning-story" id="learning">
+    <section class="scroll-story chat-story pruning-story" id="pruning">
       <div class="story-inner">
         <div class="story-copy">
           <span class="story-kicker">03 · Less to review next time</span>
-          <h2>Your agent learns which branches are dead before they reach you.</h2>
-          <p>Over time, Rapport turns repeated reactions into scoped design taste. The agent can prune predictable misses and spend its iterations where your attention is actually useful.</p>
+          <h2>Skip the directions you’ve already ruled out.</h2>
+          <p>Ask for another pass. Your agent uses the skill to find what you kept, rejected, and why in earlier sessions. It can cut directions that repeat those problems and explore the rest, without making you repeat the brief.</p>
           <div class="story-detail">Fewer variations, better reasons</div>
         </div>
-        <div class="rivet-media-stage">
-        <aside class="codex-pane" aria-label="Codex learned taste pruning conversation">
+        <div class="brand-gradient">
+        <aside class="codex-pane" aria-label="Codex session-informed pruning conversation">
           <header class="codex-header">
             <span class="codex-folder" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="1.6"><path d="M3.5 7.5h6l1.8 2h9.2v8.7a2.3 2.3 0 0 1-2.3 2.3H5.8a2.3 2.3 0 0 1-2.3-2.3V7.5Z"/><path d="M3.5 9.5V6.2a2 2 0 0 1 2-2h3.8l2 2h7.2a2 2 0 0 1 2 2v1.3"/></svg></span>
             <span class="codex-title"><strong>Iterate Rapport site directions</strong></span>
@@ -248,14 +245,15 @@ export const pageMarkup = String.raw`
           </header>
           <div class="codex-chat">
             <article class="chat-message user" data-story-item>
-              Make another pass on the Rapport site. Explore new directions, but don’t make me review work we already know is wrong.
+              Another pass, please.
             </article>
-            <article class="chat-message rapport-reply" data-story-item>
-              <div class="message-role rapport">Apprentice</div>
-              <p>In prior site studies, this user repeatedly rejects <strong>timid headline hierarchy</strong>, <strong>demo frames that arrive too late</strong>, and <strong>decorative treatments that compete with the product</strong>. These signals are stable across earlier reviews.</p>
+            <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Read skill · rapport-feedback</span></div>
+            <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Search sessions · previous Rapport site reviews</span></div>
+            <article class="chat-message assistant" data-story-item>
+              <p>I found three notes from your earlier reviews: <strong>“Show the product sooner,” “Keep the breathing room,”</strong> and <strong>“The lettering distracts from the demo.”</strong></p>
             </article>
             <article class="chat-message assistant" data-story-item>
-              <p>I’m pruning 01, 05, and 09 before the next iteration. They repeat those known failure modes and don’t test a meaningfully new hypothesis.</p>
+              <p>01 hides the product, 05 crowds the layout, and 09 lets the lettering take over. I’m pruning those three based on your earlier feedback.</p>
               <div class="prune-attachment" aria-label="Designs pruned from the iteration">
                 <span class="prune-shot"><img src="/demo-assets/site-variations/rapport-concept-08-mono.jpg" alt="Rapport manifesto direction pruned"></span>
                 <span class="prune-shot"><img src="/demo-assets/site-variations/portrait-rivet-spacing-2.jpg" alt="Crowded spacing direction pruned"></span>
@@ -263,9 +261,9 @@ export const pageMarkup = String.raw`
               </div>
               <div class="prune-reason">01 · product arrives too late &nbsp;·&nbsp; 05 · cramped hierarchy &nbsp;·&nbsp; 09 · display type overpowers the demo</div>
             </article>
-            <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Pruned 3 known misses · generating 4 novel branches</span></div>
+            <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Pruned 3 directions · exploring 4 alternatives</span></div>
             <article class="chat-message assistant" data-story-item>
-              <p>The remaining directions all keep decisive hierarchy and an obvious product frame, while testing genuinely new palette and composition choices.</p>
+              <p>I’ll keep the product visible and the spacing open, then explore four new palette and composition options. You can review those without revisiting the same issues.</p>
             </article>
           </div>
           <div class="codex-composer">

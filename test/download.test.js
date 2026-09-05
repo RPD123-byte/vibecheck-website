@@ -120,11 +120,11 @@ test('GET / exposes the public Rapport title and description', async () => {
     assert.equal(response.status, 200);
     assert.match(
       html,
-      /<title>Rapport — An apprentice to help filter through endless design variations\.<\/title>/,
+      /<title>Rapport — Give your agent the context to filter through endless design variations\.<\/title>/,
     );
     assert.match(
       html,
-      /name="description"\s+content="An apprentice to help filter through endless design variations\."/,
+      /name="description"\s+content="Give your agent the context to filter through endless design variations\."/,
     );
     assert.doesNotMatch(html, /Balto scattered hero study/i);
   });
