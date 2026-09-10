@@ -532,9 +532,10 @@
     .feedback-stage.is-selecting .demo-cursor { left: var(--feedback-cursor-left, 82%); top: var(--feedback-cursor-top, 27%); transform: rotate(-8deg) scale(.96); }
     .feedback-stage.is-clicked .demo-cursor { transform: rotate(-8deg) scale(.82); }
 
-    /* The production extension's active corner label, preserved at its native 306 x 53 geometry. */
+    /* The active voice-capture bubble, compacted now that expression controls are absent. */
     .rapport-corner-bar {
       --rapport-corner-scale: .88;
+      --rapport-corner-width: 178px;
       --rapport-corner-cream: #fdf6ef;
       --rapport-corner-ink: #241a2e;
       --rapport-corner-vermilion: #e8501f;
@@ -542,7 +543,7 @@
       z-index: 24;
       display: block;
       box-sizing: border-box;
-      width: 306px;
+      width: var(--rapport-corner-width);
       height: 53px;
       visibility: hidden;
       color: var(--rapport-corner-ink);
@@ -567,7 +568,7 @@
       position: absolute;
       inset: 0;
       display: flex;
-      width: 306px;
+      width: var(--rapport-corner-width);
       height: 53px;
       box-sizing: border-box;
       align-items: center;
@@ -587,36 +588,17 @@
     .rapport-corner-silhouette[data-layer="outline"] .rapport-corner-tail { background: var(--rapport-corner-ink); }
     .rapport-corner-silhouette[data-layer="fill"] .rapport-corner-shell,
     .rapport-corner-silhouette[data-layer="fill"] .rapport-corner-tail { background: var(--rapport-corner-cream); }
-    .rapport-corner-silhouette[data-layer="fill"] .rapport-corner-shell { left: 0; top: 0; width: 306px; height: 53px; }
-    .rapport-corner-silhouette[data-layer="outline"] .rapport-corner-shell { left: -2px; top: -2px; width: 310px; height: 57px; }
-    .rapport-corner-silhouette[data-layer="shadow"] .rapport-corner-shell { left: 2px; top: 2px; width: 310px; height: 57px; }
+    .rapport-corner-silhouette[data-layer="fill"] .rapport-corner-shell { left: 0; top: 0; width: var(--rapport-corner-width); height: 53px; }
+    .rapport-corner-silhouette[data-layer="outline"] .rapport-corner-shell { left: -2px; top: -2px; width: calc(var(--rapport-corner-width) + 4px); height: 57px; }
+    .rapport-corner-silhouette[data-layer="shadow"] .rapport-corner-shell { left: 2px; top: 2px; width: calc(var(--rapport-corner-width) + 4px); height: 57px; }
     .rapport-corner-bar[data-placement$="right"] { --tail-large-x: -8.2px; --tail-small-x: -14.1px; }
-    .rapport-corner-bar[data-placement$="left"] { --tail-large-x: 296.2px; --tail-small-x: 309.1px; }
+    .rapport-corner-bar[data-placement$="left"] { --tail-large-x: calc(var(--rapport-corner-width) - 9.8px); --tail-small-x: calc(var(--rapport-corner-width) + 3.1px); }
     .rapport-corner-silhouette[data-layer="fill"] .rapport-corner-tail[data-tail="large"] { left: var(--tail-large-x); top: 32.9px; width: 18px; height: 18px; }
     .rapport-corner-silhouette[data-layer="fill"] .rapport-corner-tail[data-tail="small"] { left: var(--tail-small-x); top: 42.1px; width: 11px; height: 11px; }
     .rapport-corner-silhouette[data-layer="outline"] .rapport-corner-tail[data-tail="large"] { left: calc(var(--tail-large-x) - 2px); top: 30.9px; width: 22px; height: 22px; }
     .rapport-corner-silhouette[data-layer="outline"] .rapport-corner-tail[data-tail="small"] { left: calc(var(--tail-small-x) - 2px); top: 40.1px; width: 15px; height: 15px; }
     .rapport-corner-silhouette[data-layer="shadow"] .rapport-corner-tail[data-tail="large"] { left: calc(var(--tail-large-x) + 2px); top: 34.9px; width: 22px; height: 22px; }
     .rapport-corner-silhouette[data-layer="shadow"] .rapport-corner-tail[data-tail="small"] { left: calc(var(--tail-small-x) + 2px); top: 44.1px; width: 15px; height: 15px; }
-    .rapport-corner-signal {
-      all: unset;
-      position: relative;
-      display: grid;
-      box-sizing: border-box;
-      width: 36px;
-      height: 40px;
-      margin-right: 8px;
-      place-items: center;
-      pointer-events: none;
-    }
-    .rapport-corner-signal > [aria-hidden="true"] {
-      display: block;
-      font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
-      font-size: 36px;
-      line-height: 40px;
-      transform: translateY(1.5px);
-    }
-    .rapport-corner-divider { width: 1.5px; height: 28px; margin-right: 18px; flex: 0 0 auto; border-radius: 1px; background: rgb(36 26 46 / 22%); }
     .rapport-corner-transport {
       all: unset;
       display: grid;
@@ -635,7 +617,6 @@
     .rapport-corner-timer { min-width: 37px; margin-right: 14px; color: var(--rapport-corner-vermilion); font: 500 18px/22px "Fraunces", Georgia, serif; letter-spacing: .01em; text-align: center; white-space: nowrap; transform: translateY(-1.25px); }
     .rapport-corner-icon-action { all: unset; display: grid; width: 22px; height: 22px; flex: 0 0 auto; place-items: center; color: var(--rapport-corner-ink); pointer-events: none; }
     .rapport-corner-icon-action svg { display: block; width: 20px; height: 20px; }
-    .rapport-corner-face-trash { margin-right: 18px; }
     .rapport-corner-retry { margin-right: 8px; opacity: .3; }
     @keyframes record-pulse { 50% { opacity: .35; } }
 
@@ -741,30 +722,6 @@
     .pasted-feedback { font-family: var(--mono); font-size: 8px; line-height: 13px; }
     .pasted-feedback strong { display: block; margin-bottom: 6px; color: #ff9a72; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size: 10px; }
     .pasted-feedback span { display: block; color: #cfcfcb; }
-    .affect-attachment {
-      display: grid;
-      grid-template-columns: 72px minmax(0,1fr);
-      align-items: center;
-      gap: 10px;
-      width: min(100%, 248px);
-      margin: 11px 0 0;
-      padding: 7px;
-      color: var(--cream);
-      background: rgba(255,255,255,.055);
-      border-radius: 10px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.1);
-    }
-    .affect-attachment img {
-      width: 72px;
-      height: 47px;
-      display: block;
-      object-fit: cover;
-      border-radius: 7px;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.12);
-    }
-    .affect-attachment figcaption { min-width: 0; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size: 8px; line-height: 11px; }
-    .affect-attachment strong { display: block; color: var(--cream); font-size: 9px; font-weight: var(--weight-semibold); }
-    .affect-attachment span { display: block; margin-top: 2px; color: #aaa9a6; }
     .chat-note { margin-top: 8px !important; color: #a5a5a2; font-size: 9px; }
     .prune-attachment { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; margin-top: 12px; }
     .prune-shot { position: relative; aspect-ratio: 1.35; overflow: hidden; border-radius: 8px; box-shadow: 0 0 0 1px rgba(255,255,255,.10); }

@@ -13,7 +13,7 @@ export const pageMarkup = String.raw`
       <div class="hero-lead">
         <div class="hero-copy">
           <h1>Give your <span class="dither-underline">agent</span> the context to filter through <span class="word-whole">endless</span> design <span class="word-whole"><span class="dither-underline">variations.</span></span></h1>
-          <p>Rapport captures what you say, what you type, and even the face you make. Its skill guides your agent through your past sessions, connecting those reactions to designs you’ve discussed before. Your agent uses that context to make the next pass, with less for you to explain.</p>
+          <p>Rapport captures what you say and type while keeping it attached to the exact piece of the design. Its skill guides your agent through your saved preferences and past sessions, so the next pass starts with more context and less for you to explain.</p>
           <div class="hero-actions">
             <a class="cta" href="/download">Try Rapport <span class="os">FREE&nbsp;·&nbsp;MACOS</span></a>
           </div>
@@ -151,21 +151,18 @@ export const pageMarkup = String.raw`
         <div class="story-copy">
           <span class="story-kicker">01 · React in place</span>
           <h2>Give feedback while the work is still in front of you.</h2>
-          <p>Pick the component. Rapport keeps the selection, your face, and anything you say attached to that exact piece of the design.</p>
+          <p>Pick the component. Rapport keeps the selection and anything you say attached to that exact piece of the design.</p>
           <div class="story-detail">One click keeps the context intact</div>
         </div>
         <div class="brand-gradient">
           <div class="feedback-stage" aria-label="Live Rapport feedback capture demo">
             <div class="feedback-browser-slot" data-browser-clone></div>
             <span class="demo-cursor" aria-hidden="true"><svg viewBox="0 0 30 38"><path d="M3 2 25 24l-10 .8-5 9.2L3 2Z"/></svg></span>
-            <div class="rapport-corner-bar" data-placement="outside-top-right" data-recording="true" aria-label="Rapport expression and voice feedback controls">
+            <div class="rapport-corner-bar" data-placement="outside-top-right" data-recording="true" aria-label="Rapport voice feedback controls">
               <div class="rapport-corner-content">
                 <span class="rapport-corner-silhouette" data-layer="shadow"><span class="rapport-corner-shell"></span><span class="rapport-corner-tail" data-tail="large"></span><span class="rapport-corner-tail" data-tail="small"></span></span>
                 <span class="rapport-corner-silhouette" data-layer="outline"><span class="rapport-corner-shell"></span><span class="rapport-corner-tail" data-tail="large"></span><span class="rapport-corner-tail" data-tail="small"></span></span>
                 <span class="rapport-corner-silhouette" data-layer="fill"><span class="rapport-corner-shell"></span><span class="rapport-corner-tail" data-tail="large"></span><span class="rapport-corner-tail" data-tail="small"></span></span>
-                <button class="rapport-corner-signal" type="button" tabindex="-1" aria-label="surprise, valence +0.61, arousal +0.74"><span aria-hidden="true">😮</span></button>
-                <button class="rapport-corner-icon-action rapport-corner-face-trash" type="button" tabindex="-1" aria-label="Discard facial expression"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M3.4 5.6H16.6M8.1 5.6V4.1a.9.9 0 0 1 .9-.9h2a.9.9 0 0 1 .9.9v1.5M5.4 5.6l.85 10.3a1.2 1.2 0 0 0 1.2 1.1h5.1a1.2 1.2 0 0 0 1.2-1.1l.85-10.3M8.6 8.8v5.1M11.4 8.8v5.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                <span class="rapport-corner-divider"></span>
                 <button class="rapport-corner-transport" type="button" tabindex="-1" aria-label="Stop recording"><span class="rapport-corner-transport-glyph"></span></button>
                 <span class="rapport-corner-record-light"></span>
                 <span class="rapport-corner-timer" aria-label="Recording duration 0:03">0:03</span>
@@ -187,10 +184,10 @@ export const pageMarkup = String.raw`
     <section class="scroll-story chat-story handoff-story" id="handoff">
       <div class="story-inner">
         <div class="story-copy">
-          <span class="story-kicker">02 · Hand it to the agent</span>
-          <h2>Your agent puts the reaction in context.</h2>
-          <p>Rapport brings the selected component, your note, and your facial expression into the task. The skill then guides your agent to search past sessions for relevant feedback and design decisions, so it can interpret the reaction in context.</p>
-          <div class="story-detail">Your reaction, connected to your past sessions</div>
+          <span class="story-kicker">02 · Bring in your preferences</span>
+          <h2>Your agent starts from what you already prefer.</h2>
+          <p>Rapport brings the selected component and your feedback into the task. Its skill searches your saved preferences and past sessions for the patterns that matter, giving your agent better context to create a much stronger next output.</p>
+          <div class="story-detail">Your feedback, connected to your preferences</div>
         </div>
         <div class="brand-gradient">
         <aside class="codex-pane" aria-label="Codex feedback handoff conversation">
@@ -202,20 +199,16 @@ export const pageMarkup = String.raw`
           </header>
           <div class="codex-chat">
             <article class="chat-message user" data-story-item>
-              <div class="pasted-feedback"><strong>Rapport feedback · pasted from selection</strong><span>component: landing-hero / rapport-type-03</span><span>selection: headline hierarchy + demo frame</span><span>voice: “The type feels decisive and the product is still obvious.”</span><span>expression: surprise · valence +0.61 · arousal 0.74</span></div>
-              <figure class="affect-attachment">
-                <img src="/demo-assets/surprise-expression-attachment.svg" alt="Surprised face expression captured by Rapport">
-                <figcaption><strong>Surprise · image attachment</strong><span>Expression signal attached to the selected hero.</span></figcaption>
-              </figure>
+              <div class="pasted-feedback"><strong>Rapport feedback · pasted from selection</strong><span>component: landing-hero / rapport-type-03</span><span>selection: headline hierarchy + demo frame</span><span>typed: “Decrease the tagline size and align it with the graphic.”</span><span>voice: “The type feels decisive and the product is still obvious.”</span></div>
             </article>
             <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Read skill · rapport-feedback</span></div>
-            <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Search sessions · hero hierarchy + product visibility</span></div>
+            <div class="codex-event" data-story-item><span class="event-spinner"></span><span>Search preferences · hero hierarchy + product visibility</span></div>
             <article class="chat-message assistant" data-story-item>
-              <p class="chat-note">Found in earlier site reviews</p>
-              <p>“Keep the product visible under the headline.”<br>“The extra frame makes everything compete.”</p>
+              <p class="chat-note">Found in your saved preferences</p>
+              <p><strong>Keep the product visible under the headline.</strong><br>Use decisive type without letting it overpower the demo.</p>
             </article>
             <article class="chat-message assistant" data-story-item>
-              <p>Your note and those earlier reviews suggest the surprise is about <strong>bold type that still leaves the product clear</strong>. I’ll keep that hierarchy and the demo in view as I vary the palette.</p>
+              <p>I’ll use those preferences to make the next output stronger: <strong>clearer hierarchy, a smaller tagline, and the product still in view.</strong></p>
             </article>
           </div>
           <div class="codex-composer">
@@ -231,9 +224,9 @@ export const pageMarkup = String.raw`
       <div class="story-inner">
         <div class="story-copy">
           <span class="story-kicker">03 · Less to review next time</span>
-          <h2>Skip the directions you’ve already ruled out.</h2>
-          <p>Ask for another pass. Your agent uses the skill to find what you kept, rejected, and why in earlier sessions. It can cut directions that repeat those problems and explore the rest, without making you repeat the brief.</p>
-          <div class="story-detail">Fewer variations, better reasons</div>
+          <h2>Cut the dead ends. Get to value faster.</h2>
+          <p>Ask for another pass. Rapport helps your agent find what you kept, rejected, and why. It can cut directions that repeat old problems and spend the next pass on ideas that are more likely to work—without making you repeat the brief.</p>
+          <div class="story-detail">Less review, faster value</div>
         </div>
         <div class="brand-gradient">
         <aside class="codex-pane" aria-label="Codex session-informed pruning conversation">
@@ -276,8 +269,8 @@ export const pageMarkup = String.raw`
     </section>
 
     <section class="closing" id="download">
-      <h2>Give your agent the part of the feedback you never had words for.</h2>
-      <p>Start with one shortcut. Let Rapport keep the signal attached to the work.</p>
+      <h2>Get to the work you want, faster.</h2>
+      <p>Start with one shortcut. Let Rapport keep your feedback attached to the work.</p>
       <div class="closing-actions">
         <a class="cta" href="/download">Try Rapport <span class="os">FREE&nbsp;·&nbsp;MACOS</span></a>
       </div>

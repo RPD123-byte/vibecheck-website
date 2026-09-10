@@ -1,5 +1,6 @@
 import { later, queryAll, selectVariation } from "./dom";
 import { setupFeedbackDemo } from "./feedback";
+import { posthogClient } from "./posthog";
 
 type AssetReference = readonly [name: string, weak: boolean];
 
@@ -192,11 +193,19 @@ export function setupHero(reduceMotion: boolean): void {
     later(finishHero, 2450);
   };
 
+  const selectHeroVariation = (index: number, controlType: "tab" | "tile"): void => {
+    selectVariation(heroWindow, index);
+    posthogClient?.capture("hero_variation_selected", {
+      variation_index: index,
+      control_type: controlType,
+    });
+  };
+
   tabs.forEach((tab, index) =>
-    tab.addEventListener("click", () => selectVariation(heroWindow, index)),
+    tab.addEventListener("click", () => selectHeroVariation(index, "tab")),
   );
   tiles.forEach((tile, index) =>
-    tile.addEventListener("click", () => selectVariation(heroWindow, index)),
+    tile.addEventListener("click", () => selectHeroVariation(index, "tile")),
   );
 
   if (reduceMotion) {

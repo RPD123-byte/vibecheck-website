@@ -1,4 +1,5 @@
 import { later, queryAll, selectVariation, type Timer } from "./dom";
+import { posthogClient } from "./posthog";
 
 export function setupFeedbackDemo(
   sourceWindow: HTMLElement,
@@ -120,8 +121,9 @@ export function setupFeedbackDemo(
     const noteGap = Number.parseFloat(
       getComputedStyle(typedNote).getPropertyValue("--rapport-note-gap"),
     ) || 24;
+    const cornerWidth = cornerBubble.offsetWidth;
     const desiredBubbleLeft = tileRect.right + 14 * scale;
-    const feedbackWidth = 306 * scale + noteGap + typedNote.offsetWidth;
+    const feedbackWidth = cornerWidth * scale + noteGap + typedNote.offsetWidth;
     const shouldFlipLeft =
       innerWidth <= 1009 || desiredBubbleLeft + feedbackWidth > innerWidth - 8;
     const baseBubbleTop = tileRect.top - 53;
@@ -130,14 +132,14 @@ export function setupFeedbackDemo(
 
     if (shouldFlipLeft) {
       const visualBubbleRight = tileRect.left - 14 * scale;
-      const visualBubbleLeft = visualBubbleRight - 306 * scale;
+      const visualBubbleLeft = visualBubbleRight - cornerWidth * scale;
       noteLeft = visualBubbleLeft - noteGap - typedNote.offsetWidth;
-      bubbleStyleLeft = visualBubbleRight - 306;
+      bubbleStyleLeft = visualBubbleRight - cornerWidth;
       cornerBubble.dataset.placement = "outside-top-left";
       typedNote.dataset.noteSide = "left";
     } else {
       bubbleStyleLeft = desiredBubbleLeft;
-      noteLeft = bubbleStyleLeft + 306 * scale + noteGap;
+      noteLeft = bubbleStyleLeft + cornerWidth * scale + noteGap;
       cornerBubble.dataset.placement = "outside-top-right";
       typedNote.dataset.noteSide = "right";
     }
@@ -180,11 +182,22 @@ export function setupFeedbackDemo(
     scheduleFeedback(typeNext, 180);
   };
 
+  const selectFeedbackVariation = (
+    index: number,
+    controlType: "tab" | "tile",
+  ): void => {
+    selectVariation(browserClone, index);
+    posthogClient?.capture("feedback_demo_variation_selected", {
+      variation_index: index,
+      control_type: controlType,
+    });
+  };
+
   feedbackTabs.forEach((tab, index) =>
-    tab.addEventListener("click", () => selectVariation(browserClone, index)),
+    tab.addEventListener("click", () => selectFeedbackVariation(index, "tab")),
   );
   feedbackTiles.forEach((tile, index) =>
-    tile.addEventListener("click", () => selectVariation(browserClone, index)),
+    tile.addEventListener("click", () => selectFeedbackVariation(index, "tile")),
   );
 
   const finishFeedback = (): void => {

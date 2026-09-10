@@ -15,7 +15,9 @@
     "test": "node --test"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "posthog-js": "^1.429.4",
+    "posthog-node": "^5.51.8"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.3.3",

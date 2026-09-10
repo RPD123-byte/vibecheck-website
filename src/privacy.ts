@@ -13,7 +13,7 @@ export const privacyMarkup = String.raw`
     <div class="privacy-intro__inner">
       <div class="privacy-intro__title">
         <h1 id="privacy-title">Privacy Policy</h1>
-        <p class="privacy-effective">Effective August 24th, 2026</p>
+        <p class="privacy-effective">Effective September 10th, 2026</p>
       </div>
 
       <aside class="privacy-summary" aria-labelledby="privacy-summary-title">
@@ -62,11 +62,11 @@ export const privacyMarkup = String.raw`
         <section id="data-use">
           <h2>How the data is used</h2>
           <p>
-            The selected component is combined locally with the expression you
-            confirm in Rapport. Rapport places the resulting text and cropped image
-            in its structured clipboard bundle so you can paste them into an agent
-            or another app. The extension uses no advertising, tracking, or sale of
-            personal data.
+            The selected component is combined locally with any typed or spoken
+            feedback you provide in Rapport. Rapport places the resulting text and
+            cropped image in its structured clipboard bundle so you can paste them
+            into an agent or another app. The extension uses no advertising,
+            tracking, or sale of personal data.
           </p>
         </section>
 
@@ -104,9 +104,9 @@ export const privacyMarkup = String.raw`
           <p>
             The extension accepts session state only from the local Rapport desktop
             bridge and verifies the expected protocol and extension identity. You
-            choose when a session starts, which component is selected, whether an
-            expression is confirmed, and when the session ends. Removing the
-            extension or quitting Rapport stops the connection.
+            choose when a session starts, which component is selected, what typed
+            or spoken feedback is included, and when the session ends. Removing
+            the extension or quitting Rapport stops the connection.
           </p>
         </section>
 
