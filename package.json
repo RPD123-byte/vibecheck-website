@@ -17,7 +17,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "posthog-js": "^1.429.4",
-    "posthog-node": "^5.51.8"
+    "posthog-node": "^5.55.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.3.3",
